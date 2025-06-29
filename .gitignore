@@ -1,0 +1,20 @@
+# Hugo build output
+/public/
+
+# Hugo cache
+/resources/_gen/
+/assets/jsconfig.json
+
+# Node.js dependencies (if used)
+node_modules/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Emacs / VSCode
+*~
+\#*\#
+.\#*
+.idea/
+.vscode/
