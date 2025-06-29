@@ -1,9 +1,22 @@
-baseURL = 'https://example.org/'
-languageCode = 'en-us'
-title = 'My New Hugo Site'
-theme = "PaperMod"
-[markup]
-  [markup.goldmark]
-    [markup.goldmark.renderer]
-      unsafe = true
+baseURL = 'https://hugo-tsono.pages.dev/'
+languageCode = 'ja'
+title = 'tsono blog'
+theme = 'hugo-theme-stack'
+defaultContentLanguage = 'ja'
 
+[pagination]
+  pagerSize = 10
+
+[params]
+  mainSections = ["posts"]
+  toc = true
+  favicon = "/favicon.ico"
+  description = "tsono blog"
+
+  [params.dateFormat]
+    published = "2006-01-02"
+
+  [params.author]
+    name = "tsono"
+    bio = "Django / Vue / Infra / Org-mode"
+    image = "/images/profile.png"
