@@ -6,9 +6,7 @@ tags = ["tool"]
 draft = false
 +++
 
-以下にYouTube動画を埋め込みます：
-
-{{< youtube YH8_AQrbwLw >}}
+true
 
 -   Windowsで `Shift+Space` で日本語と英語を切り替えているので、macでも同じようにしたい
     -   今まで `Crtl + \` で対応していたがWinであまりにも頻繁に `Shift+Space` を使って手癖になっているので、macでの文字入力に支障が出るほど効率が下がっていた

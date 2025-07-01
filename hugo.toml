@@ -1,4 +1,4 @@
-baseURL = 'https://hugo-tsono.pages.dev/'
+baseURL = 'https://blog.tsono.org'
 languageCode = 'ja'
 title = 'tsono blog'
 theme = 'hugo-theme-stack'
@@ -12,11 +12,29 @@ defaultContentLanguage = 'ja'
   toc = true
   favicon = "/favicon.ico"
   description = "tsono blog"
+  customCSS = ["css/custom.css"]
 
   [params.dateFormat]
     published = "2006-01-02"
 
   [params.author]
     name = "tsono"
-    bio = "Django / Vue / Infra / Org-mode"
     image = "/images/profile.png"
+
+  [params.comments]
+    enabled = true
+    provider = "giscus"
+
+[params.comments.giscus]
+  repo = "tsonobe1/hugo-tsono"
+  repoID = "R_kgDOPDr9kw"
+  category = "General"
+  categoryID = "DIC_kwDOPDr9k84CsOK_"
+  mapping = "pathname"
+  strict = false
+  reactionsEnabled = true
+  emitMetadata = false
+  inputPosition = "bottom"
+  theme = "preferred_color_scheme"
+  lang = "ja"
+  loading = "lazy"
