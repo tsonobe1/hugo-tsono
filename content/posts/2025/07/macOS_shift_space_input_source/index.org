@@ -42,7 +42,8 @@ macOSでの使用時は ~control + space~ で変換していました。
 
 #+CAPTION: システム設定 > キーボード > キーボードショートカット
 #+ATTR_HTML: :width 600px :alt  :title  
-[[file:macで_~shift_+_space~_のキーボードショートカットを設定できない/2025-07-03_06-28-05_スクリーンショット 2025-07-03 6.27.30.png]]
+[[file:macで_~shift_+_space~_のキーボードショートカットを設定できない/2025-07-03_07-06-30_setting1.png]]
+
 
 そこで調べていたところ、以下を記事を発見
 
@@ -53,13 +54,9 @@ macOSでの使用時は ~control + space~ で変換していました。
 - 61番が ~次の入力ソースを選択~
 に該当し、Item2の値を ~131072~ というキーコードに書き換えることで ~shift + space~ を登録できるようです
 
-#+CAPTION: com.apple.symbolichotkeys.plist変更前
-#+ATTR_HTML: :width 600px :alt 設定ファイル変更前 :title com.apple.symbolichotkeys.plist変更前
-[[file:macで_~shift_+_space~_のキーボードショートカットを設定できない/2025-07-03_06-29-47_スクリーンショット 2025-07-03 6.29.40.png]]
-
 #+CAPTION: com.apple.symbolichotkeys.plist変更後
 #+ATTR_HTML: :width 600px :alt 設定ファイル変更後 :title com.apple.symbolichotkeys.plist変更後
-[[file:macで_~shift_+_space~_のキーボードショートカットを設定できない/2025-07-03_06-30-58_スクリーンショット 2025-07-03 6.30.53.png]]
+[[file:macで_~shift_+_space~_のキーボードショートカットを設定できない/2025-07-03_07-07-13_plist.png]]
 
 
 PCを再起動することで、入力ソース切り替えのショートカットに ~shift + space~ が反映されました。

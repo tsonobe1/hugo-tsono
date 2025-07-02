@@ -2,7 +2,7 @@
 title: "macOSでshift + spaceで入力ソースを切りかえる"
 author: ["tsonobe"]
 date: 2025-07-02T00:00:00+09:00
-lastmod: 2025-07-03T06:58:26+09:00
+lastmod: 2025-07-03T07:07:28+09:00
 draft: false
 ---
 
@@ -37,7 +37,7 @@ macOSでの使用時は `control + space` で変換していました。
 しかし当方 `macOS 15.5` なのですが、システム設定 → キーボード → キーボードショートカットで `shift + space` が設定できないんですよね
 打ち込んでも反応しない。
 
-{{< figure src="macで_~shift_+_space~_のキーボードショートカットを設定できない/2025-07-03_06-28-05_スクリーンショット 2025-07-03 6.27.30.png" caption="<span class=\"figure-number\">Figure 3: </span>システム設定 &gt; キーボード &gt; キーボードショートカット" width="600px" >}}
+{{< figure src="/macで_~shift_+_space~_のキーボードショートカットを設定できない/2025-07-03_07-06-30_setting1.png" caption="<span class=\"figure-number\">Figure 3: </span>システム設定 &gt; キーボード &gt; キーボードショートカット" width="600px" >}}
 
 そこで調べていたところ、以下を記事を発見
 
@@ -50,13 +50,11 @@ macOSでの使用時は `control + space` で変換していました。
 
 に該当し、Item2の値を `131072` というキーコードに書き換えることで `shift + space` を登録できるようです
 
-{{< figure src="macで_~shift_+_space~_のキーボードショートカットを設定できない/2025-07-03_06-29-47_スクリーンショット 2025-07-03 6.29.40.png" alt="設定ファイル変更前" caption="<span class=\"figure-number\">Figure 4: </span>com.apple.symbolichotkeys.plist変更前" title="com.apple.symbolichotkeys.plist変更前" width="600px" >}}
-
-{{< figure src="macで_~shift_+_space~_のキーボードショートカットを設定できない/2025-07-03_06-30-58_スクリーンショット 2025-07-03 6.30.53.png" alt="設定ファイル変更後" caption="<span class=\"figure-number\">Figure 5: </span>com.apple.symbolichotkeys.plist変更後" title="com.apple.symbolichotkeys.plist変更後" width="600px" >}}
+{{< figure src="/macで_~shift_+_space~_のキーボードショートカットを設定できない/2025-07-03_07-07-13_plist.png" alt="設定ファイル変更後" caption="<span class=\"figure-number\">Figure 4: </span>com.apple.symbolichotkeys.plist変更後" title="com.apple.symbolichotkeys.plist変更後" width="600px" >}}
 
 PCを再起動することで、入力ソース切り替えのショートカットに `shift + space` が反映されました。
 
-{{< figure src="/疑問/2025-07-03_06-52-27_スクリーンショット 2025-07-03 6.52.13.png" caption="<span class=\"figure-number\">Figure 6: </span>システム設定 &gt; キーボード &gt; キーボードショートカット" title="システム設定 > キーボード > キーボードショートカット" width="600px" >}}
+{{< figure src="/疑問/2025-07-03_06-52-27_スクリーンショット 2025-07-03 6.52.13.png" caption="<span class=\"figure-number\">Figure 5: </span>システム設定 &gt; キーボード &gt; キーボードショートカット" title="システム設定 > キーボード > キーボードショートカット" width="600px" >}}
 
 これで、同じ使い心地で日本語と英語を切り替えられて快適です。
 
