@@ -1,0 +1,74 @@
+#+TITLE: macOSでshift + spaceで入力ソースを切りかえる
+#+DATE: 2025-07-02T22:41:30+0900
+#+HUGO_AUTO_SET_LASTMOD: t
+#+DESCRIPTION:
+#+hugo_tags::
+#+hugo_categories:
+#+DRAFT: false
+#+HUGO_BUNDLE: 2025/07/macOS_shift_space_input_source
+#+EXPORT_FILE_NAME: index
+
+* Summary
+1. ~open ~/Library/Preferences/com.apple.symbolichotkeys.plist~
+2. ~Root~ > ~AppleSymbolicHotKeys~ > ~61~ > ~value~ > ~parameters~
+4. ~item 2~ を ~131072~ に設定する
+5. PCを再起動
+6. ~システム設定~ -> ~キーボード~ -> ~キーボードショートカット~ -> ~入力ソース~ に ~shift + space~ が設定されていることを確認
+7. ~shift + space~ で入力ソースを切り替えられることを確認
+
+* 経緯
+昨年から仕事でwindowsを使うようになり、以前から私物のM1macに接続して愛用していた ~Keycron k2(英字キー)~ をWindowsにもつなぐようになりました。
+
+英字配列なのでIMEの ~日本語⇔英語~ 切り替えに設定が必須です。
+macOSでの使用時は ~control + space~ で変換していました。
+
+#+CAPTION: Macでの切り替え方法
+#+ATTR_HTML: :width 600px :alt macOSでの切り替え方法 :title macOSでの切り替え方法
+[[file:経緯/2025-07-02_22-49-14_mac_key.png]]
+
+
+ところがWindowsだと（経緯は忘れましたが）同様の設定ができず、結局 ~shift + space~ で運用することとしました。
+
+#+CAPTION: Windowsでの切り替え方法
+#+ATTR_HTML: :width 600px :alt Windowsでの切り替え方法  :title Windowsでの切り替え方法
+[[file:経緯/2025-07-02_22-48-44_win_key.png]]
+
+
+しかし仕事用PCのほうが高頻度で使用するためいつの間にか手癖が変わってしまい、macOS使用時も誤って ~shift + space~ を押してしまうタイプミスが頻発。かなり困っていました。
+
+* macで ~shift + space~ のキーボードショートカットを設定できない
+しかし当方 ~macOS 15.5~ なのですが、システム設定 → キーボード → キーボードショートカットで ~shift + space~ が設定できないんですよね
+打ち込んでも反応しない。
+
+#+CAPTION: システム設定 > キーボード > キーボードショートカット
+#+ATTR_HTML: :width 600px :alt  :title  
+[[file:macで_~shift_+_space~_のキーボードショートカットを設定できない/2025-07-03_06-28-05_スクリーンショット 2025-07-03 6.27.30.png]]
+
+そこで調べていたところ、以下を記事を発見
+
+[[https://seorenn.tistory.com/547][macOS 한영전환키를 Shift+Space로 설정하기 (feat. Sonoma)]]
+
+~com.apple.symbolichotkeys.plist~ ファイルの中にある、 ~AppleSymbolicHotkeys~ のうち
+- 60番が ~前の入力ソースを選択~
+- 61番が ~次の入力ソースを選択~
+に該当し、Item2の値を ~131072~ というキーコードに書き換えることで ~shift + space~ を登録できるようです
+
+#+CAPTION: com.apple.symbolichotkeys.plist変更前
+#+ATTR_HTML: :width 600px :alt 設定ファイル変更前 :title com.apple.symbolichotkeys.plist変更前
+[[file:macで_~shift_+_space~_のキーボードショートカットを設定できない/2025-07-03_06-29-47_スクリーンショット 2025-07-03 6.29.40.png]]
+
+#+CAPTION: com.apple.symbolichotkeys.plist変更後
+#+ATTR_HTML: :width 600px :alt 設定ファイル変更後 :title com.apple.symbolichotkeys.plist変更後
+[[file:macで_~shift_+_space~_のキーボードショートカットを設定できない/2025-07-03_06-30-58_スクリーンショット 2025-07-03 6.30.53.png]]
+
+
+PCを再起動することで、入力ソース切り替えのショートカットに ~shift + space~ が反映されました。
+#+CAPTION: システム設定 > キーボード > キーボードショートカット
+#+ATTR_HTML: :width 600px :alt  :title システム設定 > キーボード > キーボードショートカット
+[[file:疑問/2025-07-03_06-52-27_スクリーンショット 2025-07-03 6.52.13.png]]
+
+これで、同じ使い心地で日本語と英語を切り替えられて快適です。
+
+元記事でも言及されていますが、なぜショートカットに ~shift + space~ が登録できないのんでしょうか
+（ほかアプリのショートカットとバッティングする可能性が高いとか？）
+
