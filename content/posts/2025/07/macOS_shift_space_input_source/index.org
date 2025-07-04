@@ -4,7 +4,7 @@
 #+DESCRIPTION: macOSでショートカットに"shift + space"を割り当てる方法。
 #+hugo_tags: ショートカット macOS 入力ソース
 #+hugo_categories: tips
-#+DRAFT: false
+#+DRAFT: true
 #+HUGO_BUNDLE: 2025/07/macOS_shift_space_input_source
 #+EXPORT_FILE_NAME: index
 

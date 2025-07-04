@@ -1,0 +1,22 @@
+{{ define "main" }}
+  <article>
+    {{ .Content }}
+  </article>
+
+  <section class="post-list">
+    {{ range .Site.RegularPages }}
+      <article class="post-item">
+        <h2><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h2>
+        <p>{{ .Summary }}</p>
+      </article>
+    {{ end }}
+  </section>
+
+  <!-- Giscus コメント欄 -->
+  {{ if and .Site.Params.comments.enabled (eq .Site.Params.comments.provider "giscus") }}
+    <section class="comments">
+      <h3>コメント</h3>
+      {{ partial "giscus.html" . }}
+    </section>
+  {{ end }}
+{{ end }}

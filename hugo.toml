@@ -1,7 +1,9 @@
 baseURL = 'https://blog.tsono.org'
 languageCode = 'ja'
 title = 'tsono blog'
-theme = 'hugo-theme-stack'
+# theme = 'hugo-theme-stack'
+theme = "my-high-contrast-theme"
+
 defaultContentLanguage = 'ja'
 
 [pagination]
@@ -38,3 +40,4 @@ defaultContentLanguage = 'ja'
   theme = "preferred_color_scheme"
   lang = "ja"
   loading = "lazy"
+
