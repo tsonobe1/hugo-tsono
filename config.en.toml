@@ -1,0 +1,105 @@
+baseURL = 'https://blog.tsono.org'
+languageCode = 'en'
+title = 'tsono blog'
+theme = "my-high-contrast-theme"
+
+defaultContentLanguage = 'en'
+
+[pagination]
+  pagerSize = 10
+
+[params]
+  mainSections = ["posts"]
+  toc = true
+  favicon = "/favicon.ico"
+  description = "Tech blog about programming, macOS, and development tools"
+  keywords = "programming,macOS,development,tech blog,Hugo"
+  customCSS = ["css/custom.css"]
+
+  [params.dateFormat]
+    published = "January 2, 2006"
+
+  [params.author]
+    name = "tsono"
+    image = "/images/profile.png"
+    twitter = "tsonobe1"
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+  [markup.highlight]
+    style = "github-dark"
+    lineNos = true
+    tabWidth = 2
+
+[menu]
+  [[menu.main]]
+    name = "Home"
+    url = "/"
+    weight = 1
+  [[menu.main]]
+    name = "Posts"
+    url = "/posts/"
+    weight = 2
+  [[menu.main]]
+    name = "Tags"
+    url = "/tags/"
+    weight = 3
+
+[taxonomies]
+  tag = "tags"
+  category = "categories"
+
+[sitemap]
+  changefreq = "weekly"
+  priority = 0.5
+  filename = "sitemap.xml"
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+  page = ["HTML"]
+  section = ["HTML", "RSS"]
+
+[outputFormats]
+  [outputFormats.RSS]
+    mediatype = "application/rss"
+    baseName = "feed"
+
+[related]
+  includeNewer = true
+  threshold = 80
+  toLower = false
+  [[related.indices]]
+    name = "tags"
+    weight = 100
+  [[related.indices]]
+    name = "date"
+    weight = 10
+
+  [params.comments]
+    enabled = true
+    provider = "giscus"
+
+[params.comments.giscus]
+  repo = "tsonobe1/hugo-tsono"
+  repoID = "R_kgDOPDr9kw"
+  category = "General"
+  categoryID = "DIC_kwDOPDr9k84CsOK_"
+  mapping = "pathname"
+  strict = false
+  reactionsEnabled = true
+  emitMetadata = false
+  inputPosition = "bottom"
+  theme = "preferred_color_scheme"
+  lang = "en"
+  loading = "lazy"
+
+[languages]
+  [languages.en]
+    languageName = "English"
+    weight = 2
+    
+    [languages.en.params]
+      description = "Tech blog about programming, macOS, and development tools"
+      keywords = "programming,macOS,development,tech blog,Hugo"

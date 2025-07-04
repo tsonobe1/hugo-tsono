@@ -1,35 +1,53 @@
 <!DOCTYPE html>
-<html lang="ja" data-theme="dark"> <!-- ← デフォルトはdark -->
+<html lang="{{ site.Language.Lang }}" data-theme="dark">
 
 <head>
-  <meta charset="UTF-8">
-  <title>{{ block "title" . }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/css/style.css">
-  <script defer src="/js/theme-toggle.js"></script>
+  {{ partial "head.html" . }}
 </head>
 
 <body>
   <header role="banner">
-    <header role="banner">
-      <div class="container">
-        <h1><a href="/">{{ .Site.Title }}</a></h1>
-        {{ with .Site.Params.description }}
+    <div class="container">
+      <div>
+        <h1><a href="/">{{ site.Title }}</a></h1>
+        {{ with site.Params.description }}
         <p class="site-description">{{ . }}</p>
         {{ end }}
+      </div>
+      <div class="header-controls">
+        {{ partial "language-toggle.html" . }}
         <button id="theme-toggle">🌙 ダークモード</button>
       </div>
-    </header>
+    </div>
+  </header>
 
-    <main role="main" class="container">
+  <main role="main">
+    <div class="container">
       {{ block "main" . }}{{ end }}
-    </main>
+    </div>
+  </main>
 
-    <footer role="contentinfo">
-      <div class="container">
-        <p>&copy; {{ now.Format "2006" }} {{ .Site.Author.name | default "Your Name" }}</p>
-      </div>
-    </footer>
+  <footer role="contentinfo">
+    <div class="container">
+      <p>&copy; {{ now.Format "2006" }} {{ site.Params.author.name | default site.Title }}</p>
+    </div>
+  </footer>
+
+  <script defer src="/js/theme-toggle.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const reactionBtns = document.querySelectorAll('.reaction-btn');
+      reactionBtns.forEach(btn => {
+        const type = btn.getAttribute('data-reaction');
+        const key = `reaction_${type}_${window.location.pathname}`;
+        const isActive = localStorage.getItem(key) === 'true';
+        
+        if (isActive) {
+          btn.classList.add('active');
+        }
+      });
+    });
+  </script>
 </body>
 
 </html>

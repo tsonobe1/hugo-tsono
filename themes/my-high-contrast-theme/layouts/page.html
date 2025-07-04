@@ -1,10 +1,37 @@
 {{ define "main" }}
-  <h1>{{ .Title }}</h1>
-
-  {{ $dateMachine := .Date | time.Format "2006-01-02T15:04:05-07:00" }}
-  {{ $dateHuman := .Date | time.Format ":date_long" }}
-  <time datetime="{{ $dateMachine }}">{{ $dateHuman }}</time>
-
-  {{ .Content }}
-  {{ partial "terms.html" (dict "taxonomy" "tags" "page" .) }}
+<article class="post">
+  <header class="post-header">
+    <h1 class="post-title">{{ .Title }}</h1>
+    <div class="post-meta">
+      {{ if .Date }}
+        <time class="post-date" datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
+          {{ .Date.Format "2006年1月2日" }}
+        </time>
+      {{ end }}
+      {{ with .Params.Author }}
+        <span class="post-author">{{ . }}</span>
+      {{ end }}
+      {{ if .ReadingTime }}
+        <span class="post-reading-time">{{ .ReadingTime }}分で読めます</span>
+      {{ end }}
+    </div>
+    {{ partial "terms.html" (dict "taxonomy" "tags" "page" .) }}
+  </header>
+  
+  <div class="post-content">
+    {{ .Content }}
+  </div>
+  
+  <footer class="post-footer">
+    {{ partial "social-share.html" . }}
+    {{ partial "reactions.html" . }}
+    
+    {{ if and site.Params.comments.enabled (eq site.Params.comments.provider "giscus") }}
+      <section class="comments">
+        <h3>コメント</h3>
+        {{ partial "giscus.html" . }}
+      </section>
+    {{ end }}
+  </footer>
+</article>
 {{ end }}

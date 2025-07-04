@@ -17,11 +17,12 @@ defaultContentLanguage = 'ja'
   customCSS = ["css/custom.css"]
 
   [params.dateFormat]
-    published = "2006-01-02"
+    published = "2006年1月2日"
 
   [params.author]
     name = "tsono"
     image = "/images/profile.png"
+    twitter = "tsonobe1"
 
   [params.comments]
     enabled = true
@@ -41,20 +42,55 @@ defaultContentLanguage = 'ja'
   lang = "ja"
   loading = "lazy"
 
-[languages]
-  [languages.ja]
-    languageName = "日本語"
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+  [markup.highlight]
+    style = "github-dark"
+    lineNos = true
+    tabWidth = 2
+
+[menu]
+  [[menu.main]]
+    name = "ホーム"
+    url = "/"
     weight = 1
-    
-    [languages.ja.params]
-      description = "技術ブログ - プログラミング、macOS、開発ツールについて"
-      keywords = "プログラミング,macOS,開発,技術ブログ,Hugo"
-
-  [languages.en]
-    languageName = "English"
+  [[menu.main]]
+    name = "記事"
+    url = "/posts/"
     weight = 2
-    
-    [languages.en.params]
-      description = "Tech blog about programming, macOS, and development tools"
-      keywords = "programming,macOS,development,tech blog,Hugo"
+  [[menu.main]]
+    name = "タグ"
+    url = "/tags/"
+    weight = 3
 
+[taxonomies]
+  tag = "tags"
+  category = "categories"
+
+[sitemap]
+  changefreq = "weekly"
+  priority = 0.5
+  filename = "sitemap.xml"
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+  page = ["HTML"]
+  section = ["HTML", "RSS"]
+
+[outputFormats]
+  [outputFormats.RSS]
+    mediatype = "application/rss"
+    baseName = "feed"
+
+[related]
+  includeNewer = true
+  threshold = 80
+  toLower = false
+  [[related.indices]]
+    name = "tags"
+    weight = 100
+  [[related.indices]]
+    name = "date"
+    weight = 10

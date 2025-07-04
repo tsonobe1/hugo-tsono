@@ -1,0 +1,13 @@
+<div class="language-toggle">
+  {{ if .IsTranslated }}
+    {{ range .Translations }}
+      <a href="{{ .Permalink }}" class="lang-link {{ if eq .Language.Lang site.Language.Lang }}active{{ end }}">
+        {{ if eq .Language.Lang "ja" }}🇯🇵 日本語{{ else if eq .Language.Lang "en" }}🇺🇸 English{{ else }}{{ .Language.LanguageName }}{{ end }}
+      </a>
+    {{ end }}
+  {{ else }}
+    <span class="lang-link active">
+      {{ if eq site.Language.Lang "ja" }}🇯🇵 日本語{{ else if eq site.Language.Lang "en" }}🇺🇸 English{{ else }}{{ site.Language.LanguageName }}{{ end }}
+    </span>
+  {{ end }}
+</div>
