@@ -90,6 +90,14 @@ header[role="banner"], footer[role="contentinfo"] {
   padding-bottom: 1.5em;
 }
 
+.header-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1em; /* 必要に応じて調整 */
+    flex-grow: 1; /* 利用可能なスペースをすべて占める */
+}
+
 header[role="banner"] {
     border-bottom: 1px solid var(--border-color);
 }

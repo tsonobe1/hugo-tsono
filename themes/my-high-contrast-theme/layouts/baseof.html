@@ -6,16 +6,7 @@
 </head>
 
 <body>
-  <!-- DEBUG: baseof.html from my-high-contrast-theme is being rendered -->
-  <header role="banner">
-    <div class="container">
-      <h1><a href="/">{{ .Site.Title }}</a></h1>
-      {{ with .Site.Params.description }}
-      <p class="site-description">{{ . }}</p>
-      {{ end }}
-      <button id="theme-toggle">🌙 ダークモード</button>
-    </div>
-  </header>
+  {{ partial "header.html" . }}
 
   <main role="main" class="container">
     {{ block "main" . }}{{ end }}

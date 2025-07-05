@@ -29,7 +29,7 @@ ignoreFiles = ["\\.org$"]
   mainSections = ["posts"]
   toc = true
   favicon = "/favicon.ico"
-  description = "tsono blog"
+  description = ""
   customCSS = ["css/custom.css"]
 
   [params.dateFormat]

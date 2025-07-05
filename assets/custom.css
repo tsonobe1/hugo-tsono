@@ -52,3 +52,9 @@
     font-weight: bold;
     margin-top: 10px;
 }
+
+button#theme-toggle {
+    margin-left: auto; /* 右端に寄せる */
+    flex-shrink: 0; /* 縮小させない */
+    margin-right: -1.5rem; /* .container の padding-right を打ち消す */
+}
