@@ -4,7 +4,10 @@ title = 'tsono blog'
 theme = "my-high-contrast-theme"
 defaultContentLanguage = 'ja'
 
+ignoreFiles = ["\\.org$"]
+
 [taxonomies]
+
   category = "categories"
   tag = "tags"
 

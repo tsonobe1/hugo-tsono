@@ -3,13 +3,13 @@ For a given taxonomy, renders a list of terms.
 Outputs span elements with links inside, applying appropriate classes.
 
 @context {string} taxonomy The taxonomy (e.g., "tags", "categories").
-@context {slice} terms_list A slice of term strings (e.g., ["tag1", "tag2"]).
+@context {slice} terms A slice of Term objects.
 
-@example: {{ partial "terms.html" (dict "taxonomy" "tags" "terms_list" (split .Params.hugo_tags " ")) }}
+@example: {{ partial "terms.html" (dict "taxonomy" "tags" "terms" .GetTerms "tags") }}
 */}}
 
 {{- $taxonomy := .taxonomy }}
-{{- $terms_list := .terms_list }}
+{{- $terms := .terms }}
 {{- $class := "" }}
 
 {{- if eq $taxonomy "tags" }}
@@ -18,9 +18,8 @@ Outputs span elements with links inside, applying appropriate classes.
   {{- $class = "category-item" }}
 {{- end }}
 
-{{- if $terms_list }}
-  {{- range $terms_list }}
-    {{- $term_url := printf "/%s/%s/" $taxonomy (urlize .) }}
-    <span class="{{ $class }}"><a href="{{ $term_url | relURL }}">{{ . }}</a></span>
+{{- if $terms }}
+  {{- range $term := $terms }}
+    <span class="{{ $class }}"><a href="{{ $term.Permalink }}">{{ $term.Name }}</a></span>
   {{- end }}
 {{- end }}

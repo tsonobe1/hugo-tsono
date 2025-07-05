@@ -7,10 +7,10 @@
         <h2><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h2>
         <p>{{ .Description }}</p>
         <div class="post-meta-tags-categories">
-          {{ with .Params.hugo_categories }}
+          {{ with .Params.categories }}
             {{ partial "terms.html" (dict "taxonomy" "categories" "terms_list" (split . " ")) }}
           {{ end }}
-          {{ with .Params.hugo_tags }}
+          {{ with .Params.tags }}
             {{ partial "terms.html" (dict "taxonomy" "tags" "terms_list" (split . " ")) }}
           {{ end }}
         </div>

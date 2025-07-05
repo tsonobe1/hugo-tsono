@@ -1,18 +1,17 @@
 {{ define "main" }}
   <section class="post-list">
-    {{ $pages := where .Site.RegularPages "Section" "in" .Site.Params.mainSections }}
-    {{ range $pages }}
+    {{ range $page := (site.GetPage "section" "posts").Pages }}
       <article class="post-item">
-        <h2><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h2>
+        <h2><a href="{{ $page.RelPermalink }}">{{ $page.LinkTitle }}</a></h2>
         <div class="post-meta-tags-categories">
-          {{ with .Params.hugo_categories }}
-            {{ partial "terms.html" (dict "taxonomy" "categories" "terms_list" (split . " ")) }}
+          {{ if $page.Params.categories }}
+            {{ partial "terms.html" (dict "taxonomy" "categories" "terms" ($page.GetTerms "categories")) }}
           {{ end }}
-          {{ with .Params.hugo_tags }}
-            {{ partial "terms.html" (dict "taxonomy" "tags" "terms_list" (split . " ")) }}
+          {{ if $page.Params.tags }}
+            {{ partial "terms.html" (dict "taxonomy" "tags" "terms" ($page.GetTerms "tags")) }}
           {{ end }}
         </div>
-        <p>{{ .Description }}</p>
+        <p>{{ $page.Description }}</p>
       </article>
     {{ end }}
   </section>

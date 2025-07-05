@@ -18,18 +18,17 @@
   </div>
 
   <div class="post-meta-tags-categories">
-    {{ with .Params.hugo_categories }}
-      {{ partial "terms.html" (dict "taxonomy" "categories" "terms_list" (split . " ")) }}
+    {{ if .Params.categories }}
+      {{ partial "terms.html" (dict "taxonomy" "categories" "terms" (.GetTerms "categories")) }}
     {{ end }}
-    {{ with .Params.hugo_tags }}
-      {{ partial "terms.html" (dict "taxonomy" "tags" "terms_list" (split . " ")) }}
+
+    {{ if .Params.tags }}
+      {{ partial "terms.html" (dict "taxonomy" "tags" "terms" (.GetTerms "tags")) }}
     {{ end }}
   </div>
 
   {{ .Content }}
   {{ partial "share_buttons.html" . }}
-  {{ partial "terms.html" (dict "taxonomy" "categories" "page" .) }}
-  {{ partial "terms.html" (dict "taxonomy" "tags" "page" .) }}
 
     {{ if and site.Params.comments.enabled (eq site.Params.comments.provider "giscus") }}
       <section class="comments">

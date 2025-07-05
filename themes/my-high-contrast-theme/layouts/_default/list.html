@@ -2,16 +2,16 @@
   <h1>{{ .Title }}</h1>
 
   <section class="post-list">
-    {{ range .Paginator.Pages }}
+    {{ range $page := .Paginator.Pages }}
       <article class="post-item">
-        <h2><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h2>
-        <p>{{ .Description }}</p>
+        <h2><a href="{{ $page.RelPermalink }}">{{ $page.LinkTitle }}</a></h2>
+        <p>{{ $page.Description }}</p>
         <div class="post-meta-tags-categories">
-          {{ with .Params.hugo_categories }}
-            {{ partial "terms.html" (dict "taxonomy" "categories" "terms_list" (split . " ")) }}
+          {{ if $page.Params.categories }}
+            {{ partial "terms.html" (dict "taxonomy" "categories" "terms" ($page.GetTerms "categories")) }}
           {{ end }}
-          {{ with .Params.hugo_tags }}
-            {{ partial "terms.html" (dict "taxonomy" "tags" "terms_list" (split . " ")) }}
+          {{ if $page.Params.tags }}
+            {{ partial "terms.html" (dict "taxonomy" "tags" "terms" ($page.GetTerms "tags")) }}
           {{ end }}
         </div>
       </article>

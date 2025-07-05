@@ -169,32 +169,3 @@ article img {
     text-decoration: none;
 }
 
-/* terms.html の表示を確保 */
-.post-item div {
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-}
-
-.post-item div ul {
-    list-style: none;
-    padding: 0;
-    display: inline;
-}
-
-.post-item div ul li {
-    display: inline-block;
-    margin-right: 0.5em;
-    background-color: var(--accent-bg);
-    padding: 0.2em 0.5em;
-    border-radius: 3px;
-    font-size: 0.8em;
-}
-
-.post-item div ul li a {
-    color: var(--text-color);
-    text-decoration: none;
-}
-
-.post-item div ul li a:hover {
-    text-decoration: underline;
-}

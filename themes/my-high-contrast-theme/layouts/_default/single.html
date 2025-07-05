@@ -1,37 +1,39 @@
 {{ define "main" }}
-  <article>
-    <h1>{{ .Title }}</h1>
-    {{ with .Params.hugo_tags }}
-      <div class="tags-params-display">
-        {{ range (split . " ") }}
-          <span>{{ . }}</span>
-        {{ end }}
-      </div>
+  <h1>{{ .Title }}</h1>
+
+  <div class="post-dates">
+    <p>公開日: <time datetime="{{ .Date | time.Format "2006-01-02T15:04:05-07:00" }}">{{ .Date | time.Format ":date_long" }}</time></p>
+    {{ if ne .Date .Lastmod }}
+      <p>最終更新日: <time datetime="{{ .Lastmod | time.Format "2006-01-02T15:04:05-07:00" }}">{{ .Lastmod | time.Format ":date_long" }}</time></p>
     {{ end }}
-    {{ partial "terms.html" (dict "taxonomy" "categories" "page" .) }}
-    {{ partial "terms.html" (dict "taxonomy" "tags" "page" .) }}
-    {{ .Content }}
-  </article>
+    {{ $publishedDate := .Date }}
+    {{ $currentDate := now }}
+    {{ $diff := $currentDate.Sub $publishedDate }}
+    {{ $oneYear := (time.ParseDuration "8760h") }}
 
-  <!-- DEBUG: Attempting to call share-buttons.html in single.html -->
-  {{ partial "share-buttons.html" . }}
-
-  <section class="post-list">
-    <h3>最新の記事</h3>
-    {{ $recent_posts := where .Site.RegularPages "Section" "in" .Site.Params.mainSections | first 5 }}
-    {{ range $recent_posts }}
-      <article class="post-item">
-        <h2><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h2>
-        <p>{{ .Summary }}</p>
-      </article>
+    {{ if ge $diff $oneYear }}
+      <p class="old-article-warning">この記事は1年以上経過しています</p>
     {{ end }}
-  </section>
+  </div>
+  </div>
 
-  <!-- Giscus コメント欄 -->
-  {{ if and .Site.Params.comments.enabled (eq .Site.Params.comments.provider "giscus") }}
-    <section class="comments">
-      <h3>コメント</h3>
-      {{ partial "giscus.html" . }}
-    </section>
-  {{ end }}
+  <div class="post-meta-tags-categories">
+    {{ with .GetTerms "categories" }}
+      {{ partial "terms.html" (dict "taxonomy" "categories" "terms" .) }}
+    {{ end }}
+
+    {{ with .GetTerms "tags" }}
+      {{ partial "terms.html" (dict "taxonomy" "tags" "terms" .) }}
+    {{ end }}
+  </div>
+
+  {{ .Content }}
+  {{ partial "share_buttons.html" . }}
+
+    {{ if and site.Params.comments.enabled (eq site.Params.comments.provider "giscus") }}
+      <section class="comments">
+        <h3>コメント</h3>
+        {{ partial "giscus.html" . }}
+      </section>
+    {{ end }}
 {{ end }}

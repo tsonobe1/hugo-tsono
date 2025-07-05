@@ -1,6 +1,8 @@
 .post-meta-tags-categories {
     margin-top: 10px;
     margin-bottom: 10px;
+    display: flex; /* Flexbox を有効にする */
+    flex-wrap: wrap; /* 要素が収まらない場合に折り返す */
 }
 
 .tag-item,
