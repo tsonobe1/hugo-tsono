@@ -19,14 +19,10 @@
 
   <div class="post-meta-tags-categories">
     {{ with .Params.hugo_categories }}
-      {{ range (split . " ") }}
-        <span class="category-item">{{ . }}</span>
-      {{ end }}
+      {{ partial "terms.html" (dict "taxonomy" "categories" "terms_list" (split . " ")) }}
     {{ end }}
     {{ with .Params.hugo_tags }}
-      {{ range (split . " ") }}
-        <span class="tag-item">{{ . }}</span>
-      {{ end }}
+      {{ partial "terms.html" (dict "taxonomy" "tags" "terms_list" (split . " ")) }}
     {{ end }}
   </div>
 

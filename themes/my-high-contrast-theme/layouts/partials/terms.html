@@ -1,27 +1,26 @@
 {{- /*
-For a given taxonomy, renders a list of terms assigned to the page.
+For a given taxonomy, renders a list of terms.
+Outputs span elements with links inside, applying appropriate classes.
 
-@context {page} page The current page.
-@context {string} taxonomy The taxonomy.
+@context {string} taxonomy The taxonomy (e.g., "tags", "categories").
+@context {slice} terms_list A slice of term strings (e.g., ["tag1", "tag2"]).
 
-@example: {{ partial "terms.html" (dict "taxonomy" "tags" "page" .) }}
+@example: {{ partial "terms.html" (dict "taxonomy" "tags" "terms_list" (split .Params.hugo_tags " ")) }}
 */}}
 
-{{- $page := .page }}
 {{- $taxonomy := .taxonomy }}
+{{- $terms_list := .terms_list }}
+{{- $class := "" }}
 
-<!-- DEBUG: Calling terms.html for taxonomy: {{ $taxonomy }} -->
-{{- with $page.GetTerms $taxonomy }}
-  <!-- DEBUG: Found terms for {{ $taxonomy }}: {{ . }} -->
-  {{- $label := (index . 0).Parent.LinkTitle }}
-  <div>
-    <div>{{ $label }}:</div>
-    <ul>
-      {{- range . }}
-        <li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>
-      {{- end }}
-    </ul>
-  </div>
-{{- else }}
-  <!-- DEBUG: No terms found for {{ $taxonomy }} -->
+{{- if eq $taxonomy "tags" }}
+  {{- $class = "tag-item" }}
+{{- else if eq $taxonomy "categories" }}
+  {{- $class = "category-item" }}
+{{- end }}
+
+{{- if $terms_list }}
+  {{- range $terms_list }}
+    {{- $term_url := printf "/%s/%s/" $taxonomy (urlize .) }}
+    <span class="{{ $class }}"><a href="{{ $term_url | relURL }}">{{ . }}</a></span>
+  {{- end }}
 {{- end }}
