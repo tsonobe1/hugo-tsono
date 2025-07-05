@@ -10,7 +10,9 @@ For a given taxonomy, renders a list of terms assigned to the page.
 {{- $page := .page }}
 {{- $taxonomy := .taxonomy }}
 
+<!-- DEBUG: Calling terms.html for taxonomy: {{ $taxonomy }} -->
 {{- with $page.GetTerms $taxonomy }}
+  <!-- DEBUG: Found terms for {{ $taxonomy }}: {{ . }} -->
   {{- $label := (index . 0).Parent.LinkTitle }}
   <div>
     <div>{{ $label }}:</div>
@@ -20,4 +22,6 @@ For a given taxonomy, renders a list of terms assigned to the page.
       {{- end }}
     </ul>
   </div>
+{{- else }}
+  <!-- DEBUG: No terms found for {{ $taxonomy }} -->
 {{- end }}

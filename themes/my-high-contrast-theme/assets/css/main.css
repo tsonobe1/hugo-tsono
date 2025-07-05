@@ -1,22 +1,200 @@
+/* Base styles and variables */
+:root {
+  --bg-color: #1a1a1a;
+  --text-color: #e0e0e0;
+  --link-color: #61dafb;
+  --link-hover-color: aqua;
+  --accent-bg: #282c34;
+  --border-color: #444;
+  --button-bg: #333;
+  --button-color: #e0e0e0;
+}
+
+html[data-theme='light'] {
+  --bg-color: #ffffff;
+  --text-color: #222222;
+  --link-color: #007acc;
+  --link-hover-color: #005599;
+  --accent-bg: #f8f9fa;
+  --border-color: #dee2e6;
+  --button-bg: #e9ecef;
+  --button-color: #222222;
+}
+
+/* General body and typography */
 body {
-  color: #222;
-  font-family: sans-serif;
-  line-height: 1.5;
-  margin: 1rem;
-  max-width: 768px;
-}
-
-header {
-  border-bottom: 1px solid #222;
-  margin-bottom: 1rem;
-}
-
-footer {
-  border-top: 1px solid #222;
-  margin-top: 1rem;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+  line-height: 1.7;
+  margin: 0;
+  padding: 0;
 }
 
 a {
-  color: #00e;
+  color: var(--link-color);
   text-decoration: none;
+  transition: color 0.2s ease-in-out;
+}
+
+a:hover {
+  color: var(--link-hover-color);
+  text-decoration: underline;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-color);
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.4em;
+  margin-top: 1.5em;
+  margin-bottom: 1em;
+  position: relative;
+}
+
+h1 .anchor, h2 .anchor, h3 .anchor, h4 .anchor, h5 .anchor, h6 .anchor {
+  visibility: hidden;
+  position: absolute;
+  left: -1em;
+  padding-right: 0.5em;
+  color: var(--link-color);
+  text-decoration: none;
+}
+
+h1:hover .anchor, h2:hover .anchor, h3:hover .anchor, h4:hover .anchor, h5:hover .anchor, h6:hover .anchor {
+  visibility: visible;
+}
+
+.anchor:hover {
+  text-decoration: underline;
+}
+
+/* Layout containers */
+.container {
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+main[role="main"] {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+/* Header and Footer */
+header[role="banner"], footer[role="contentinfo"] {
+  background-color: var(--accent-bg);
+  color: var(--text-color);
+  padding-top: 1.5em;
+  padding-bottom: 1.5em;
+}
+
+header[role="banner"] {
+    border-bottom: 1px solid var(--border-color);
+}
+
+footer[role="contentinfo"] {
+    border-top: 1px solid var(--border-color);
+    margin-top: 2rem;
+    font-size: 0.9em;
+    text-align: center;
+}
+
+.site-description {
+  color: var(--text-color);
+  font-size: 1em;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+/* Theme toggle button */
+button#theme-toggle {
+  background-color: var(--button-bg);
+  color: var(--button-color);
+  border: 1px solid var(--border-color);
+  padding: 0.6em 1.2em;
+  cursor: pointer;
+  font-size: 0.9em;
+  margin-top: 0.5em;
+  border-radius: 8px;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+button#theme-toggle:hover {
+    background-color: var(--link-color);
+    color: var(--accent-bg);
+}
+
+/* Article and post styles */
+article {
+    margin-bottom: 2.5rem;
+}
+
+article img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 1.5rem 0;
+    border-radius: 8px;
+}
+
+/* Share Buttons */
+.share-buttons {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.share-buttons strong {
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.share-buttons a {
+    display: inline-block;
+    margin-right: 10px;
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    color: var(--link-color);
+    text-decoration: none;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.share-buttons a:hover {
+    background-color: var(--link-color);
+    color: var(--bg-color);
+    text-decoration: none;
+}
+
+/* terms.html の表示を確保 */
+.post-item div {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+.post-item div ul {
+    list-style: none;
+    padding: 0;
+    display: inline;
+}
+
+.post-item div ul li {
+    display: inline-block;
+    margin-right: 0.5em;
+    background-color: var(--accent-bg);
+    padding: 0.2em 0.5em;
+    border-radius: 3px;
+    font-size: 0.8em;
+}
+
+.post-item div ul li a {
+    color: var(--text-color);
+    text-decoration: none;
+}
+
+.post-item div ul li a:hover {
+    text-decoration: underline;
 }

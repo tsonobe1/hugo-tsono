@@ -20,7 +20,7 @@ defaultContentLanguage = 'ja'
     published = "2006-01-02"
 
   [params.author]
-    name = "tsono"
+    name = "tsonobe"
     image = "/images/profile.png"
 
   [params.comments]
@@ -40,4 +40,8 @@ defaultContentLanguage = 'ja'
   theme = "preferred_color_scheme"
   lang = "ja"
   loading = "lazy"
+
+[taxonomies]
+  category = "categories"
+  tag = "tags"
 

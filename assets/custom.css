@@ -1,6 +1,44 @@
-/* assets/css/custom.css */
+.post-meta-tags-categories {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
 
-:root {
-  --body-font: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Helvetica Neue", "Segoe UI", "Yu Gothic", Meiryo, sans-serif;
-  --heading-font: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Helvetica Neue", "Segoe UI", "Yu Gothic", Meiryo, sans-serif;
+.tag-item,
+.category-item {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    font-size: 0.9em;
+    white-space: nowrap;
+}
+
+.tag-item {
+    background-color: #f0f0f0; /* 非常に薄いグレー */
+    color: #555; /* やや濃いテキスト色 */
+    border: 1px solid #ddd; /* 薄いグレーのボーダー */
+}
+
+.category-item {
+    background-color: #2196F3; /* 鮮やかな青色 */
+    color: white; /* 白いテキスト */
+}
+
+.post-dates {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 0.9em;
+    color: #666;
+}
+
+.post-dates p {
+    margin: 0;
+    padding: 0;
+}
+
+.old-article-warning {
+    color: #DAA520; /* より濃い黄色系の警告色 (Goldenrod) */
+    font-weight: bold;
+    margin-top: 10px;
 }

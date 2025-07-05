@@ -2,34 +2,30 @@
 <html lang="ja" data-theme="dark"> <!-- ← デフォルトはdark -->
 
 <head>
-  <meta charset="UTF-8">
-  <title>{{ block "title" . }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/css/style.css">
-  <script defer src="/js/theme-toggle.js"></script>
+  {{ partial "head.html" . }}
 </head>
 
 <body>
+  <!-- DEBUG: baseof.html from my-high-contrast-theme is being rendered -->
   <header role="banner">
-    <header role="banner">
-      <div class="container">
-        <h1><a href="/">{{ .Site.Title }}</a></h1>
-        {{ with .Site.Params.description }}
-        <p class="site-description">{{ . }}</p>
-        {{ end }}
-        <button id="theme-toggle">🌙 ダークモード</button>
-      </div>
-    </header>
+    <div class="container">
+      <h1><a href="/">{{ .Site.Title }}</a></h1>
+      {{ with .Site.Params.description }}
+      <p class="site-description">{{ . }}</p>
+      {{ end }}
+      <button id="theme-toggle">🌙 ダークモード</button>
+    </div>
+  </header>
 
-    <main role="main" class="container">
-      {{ block "main" . }}{{ end }}
-    </main>
+  <main role="main" class="container">
+    {{ block "main" . }}{{ end }}
+  </main>
 
-    <footer role="contentinfo">
-      <div class="container">
-        <p>&copy; {{ now.Format "2006" }} {{ .Site.Author.name | default "Your Name" }}</p>
-      </div>
-    </footer>
+  <footer role="contentinfo">
+    <div class="container">
+      <p>&copy; {{ now.Format "2006" }} {{ .Site.Author.name | default "Your Name" }}</p>
+    </div>
+  </footer>
 </body>
 
 </html>

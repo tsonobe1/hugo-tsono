@@ -1,5 +1,5 @@
 #+TITLE: macOSでshift + spaceで入力ソースを切りかえる
-#+DATE: 2025-07-02T22:41:30+0900
+#+DATE: 2023-07-02T22:41:30+0900
 #+HUGO_AUTO_SET_LASTMOD: t
 #+DESCRIPTION: macOSでショートカットに"shift + space"を割り当てる方法。
 #+hugo_tags: ショートカット macOS 入力ソース
