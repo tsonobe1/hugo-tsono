@@ -1,0 +1,14 @@
+Refactor: Fix tag and category display on list pages
+
+This commit addresses the issue where tags and categories were displayed as a single block on list pages (home.html, list.html), instead of individual items.
+
+Why:
+The core issue was Hugo's inconsistent interpretation of taxonomy parameters (tags/categories) in list page contexts, especially with Org-mode generated content. While single pages correctly parsed them as arrays, list pages often treated them as single strings.
+
+How:
+1.  **Front Matter Standardization:** Converted Org-mode front matter to standard YAML front matter in `index.org` and ensured `index.md` used hyphenated array format for `tags` and `categories`.
+2.  **Content Processing Control:** Configured `hugo.toml` to `ignoreFiles = ["\\.org$"]`, ensuring Hugo processes only `ox-hugo` generated Markdown files.
+3.  **Template Context Correction:** Modified `home.html` and `list.html` to explicitly assign the page object to `$page` within loops and call `.GetTerms` on `$page`, guaranteeing correct retrieval of taxonomy terms as objects.
+4.  **CSS Refinement:** Applied `display: flex` and `flex-wrap: wrap` to the `.post-meta-tags-categories` container and `display: inline-block` to individual tag/category spans for proper visual layout.
+
+These combined changes ensured correct data interpretation and display formatting.
