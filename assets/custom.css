@@ -22,9 +22,17 @@
     border: 1px solid #ddd; /* 薄いグレーのボーダー */
 }
 
+.tag-item a {
+    color: #333; /* タグのリンク色を濃いグレーに */
+}
+
 .category-item {
     background-color: #2196F3; /* 鮮やかな青色 */
     color: white; /* 白いテキスト */
+}
+
+.category-item a {
+    color: white; /* カテゴリのリンク色を白に */
 }
 
 .post-dates {
