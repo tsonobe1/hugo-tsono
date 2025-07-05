@@ -1,0 +1,26 @@
+feat: Enhance article metadata display and styling
+
+This commit introduces several enhancements to how article metadata (tags, categories, and dates) is displayed and styled, improving readability and user experience.
+
+Why:
+- To provide clear visual distinction between tags and categories.
+- To display article publication and last modification dates for better context.
+- To alert users when an article is older than one year, indicating potentially outdated information.
+- To improve the overall aesthetic and organization of article metadata.
+
+How:
+- **Tags & Categories Display**:
+    - Modified `themes/my-high-contrast-theme/layouts/_default/home.html` and `themes/my-high-contrast-theme/layouts/page.html` to display `hugo_tags` and `hugo_categories` directly from page parameters.
+    - Encapsulated tags and categories within a `post-meta-tags-categories` div, with individual items styled using `tag-item` and `category-item` classes.
+    - Removed previous emoji and text labels for a cleaner look.
+- **Styling**:
+    - Updated `assets/custom.css` to define distinct background colors and borders for `tag-item` (light gray) and `category-item` (vibrant blue) for clear visual separation.
+    - Adjusted margins and padding for a more compact and organized appearance.
+    - Added styling for `post-dates` to control date display.
+    - Set `old-article-warning` color to a darker yellow (`#DAA520`) for better contrast in light mode.
+- **Date Display**:
+    - Modified `themes/my-high-contrast-theme/layouts/page.html` to display both publication date and last modification date.
+    - Implemented logic to show last modification date only if it differs from the publication date.
+    - Added a warning message for articles older than one year, calculated using `time.ParseDuration`.
+- **CSS Loading**:
+    - Corrected `themes/my-high-contrast-theme/layouts/partials/head/css.html` to explicitly load `custom.css`, ensuring custom styles are applied.

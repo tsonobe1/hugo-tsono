@@ -45,3 +45,8 @@ defaultContentLanguage = 'ja'
   category = "categories"
   tag = "tags"
 
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+
