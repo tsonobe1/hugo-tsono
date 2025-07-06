@@ -64,6 +64,8 @@ ignoreFiles = ["\\.org$"]
     github = "https://github.com/tsonobe1"
     twitter = "https://twitter.com/tsonobe_"
 
+  googleAnalytics = "G-DDY3NMJKLW"
+
 [markup]
   [markup.goldmark]
     [markup.goldmark.renderer]
