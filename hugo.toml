@@ -39,7 +39,7 @@ ignoreFiles = ["\\.org$"]
     published = "2006-01-02"
 
   [params.author]
-    name = "tsonobe"
+    name = "tsono"
     image = "/images/profile.png"
 
   [params.comments]

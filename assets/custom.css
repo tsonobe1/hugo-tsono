@@ -102,3 +102,16 @@ button#theme-toggle {
     justify-content: space-between;
     align-items: center;
 }
+
+.translation-note {
+    margin-top: 1em;
+    padding: 0.5em 1em;
+    border-left: 4px solid #ccc; /* 薄いグレーの左ボーダー */
+    background-color: #f8f8f8; /* 非常に薄いグレーの背景 */
+    color: #666; /* 中程度のグレーのテキスト */
+    font-size: 0.9em;
+}
+
+.translation-note p {
+    margin: 0;
+}

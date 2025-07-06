@@ -8,6 +8,7 @@ lastmod: 2023-07-03T08:27:56+09:00
 tags: ["shortcut", "macOS", "input source"]
 categories: ["tips"]
 draft: false
+translated_by: "Google's Gemini 2.5 Flash model"
 ---
 
 ## Summary {#summary}
@@ -64,3 +65,5 @@ Now, I can comfortably switch between Japanese and English with the same feel.
 As mentioned in the original article, why can't `shift + space` be registered as a shortcut?
 (Is it highly likely to conflict with shortcuts of other apps?)
 Currently, it does not conflict with any resident applications (Emacs, iTerm, Aqua Voice) and works without problems.
+
+```
