@@ -1,6 +1,6 @@
 ---
 title: "Changing Input Source with Shift + Space on macOS"
-author: ["tsonobe"]
+author: "tsonobe"
 description: 'How to assign "shift + space" as a shortcut on macOS.'
 summary: 'How to assign "shift + space" as a shortcut on macOS.'
 date: 2023-07-02T00:00:00+09:00
