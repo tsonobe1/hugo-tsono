@@ -57,6 +57,10 @@ ignoreFiles = ["\\.org$"]
   lang = "ja"
   loading = "lazy"
 
+  [params.social]
+    github = "https://github.com/tsonobe1"
+    twitter = "https://twitter.com/tsonobe_"
+
 [markup]
   [markup.goldmark]
     [markup.goldmark.renderer]

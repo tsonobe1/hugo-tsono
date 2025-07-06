@@ -58,3 +58,22 @@ button#theme-toggle {
     flex-shrink: 0; /* 縮小させない */
     margin-right: -1.5rem; /* .container の padding-right を打ち消す */
 }
+
+.social-links {
+    margin-top: 0.5em;
+}
+
+.social-links a {
+    display: inline-block;
+    margin-right: 1em;
+    color: var(--text-color);
+    text-decoration: none;
+}
+
+.social-links a:hover {
+    text-decoration: underline;
+}
+
+.social-links i {
+    margin-right: 0.3em;
+}
