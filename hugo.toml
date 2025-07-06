@@ -3,8 +3,11 @@ languageCode = 'ja'
 title = 'tsono blog'
 theme = "my-high-contrast-theme"
 defaultContentLanguage = 'ja'
-
 ignoreFiles = ["\\.org$"]
+
+[languages]
+  ja = { title = "tsono blog", languageName = "Japanese", weight = 10 }
+  en = { title = "tsono blog", languageName = "English", weight = 20 }
 
 [taxonomies]
 

@@ -16,10 +16,19 @@
                     <a href="{{ . }}" target="_blank" rel="noopener" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
                     {{ end }}
                 </div>
+                </div>
+            <div class="header-actions">
+                {{ if .IsTranslated }}
+                <div class="language-switcher">
+                    {{ range .Translations }}
+                    <a href="{{ .Permalink }}" lang="{{ .Lang }}">{{ .Lang | upper }}</a>
+                    {{ end }}
+                </div>
+                {{ end }}
+                <button id="theme-toggle" aria-label="Toggle theme">
+                    <!-- Icon will be set by JavaScript -->
+                </button>
             </div>
-            <button id="theme-toggle" aria-label="Toggle theme">
-                <!-- Icon will be set by JavaScript -->
-            </button>
         </div>
         <nav>
             {{ partial "menu.html" (dict "menuID" "main" "page" .) }}
