@@ -1,5 +1,6 @@
 ---
 title: "macOSでshift + spaceで入力ソースを切りかえる"
+image: "./macOS_shift_space_input_source/macで_~shift_+_space~_のキーボードショートカットを設定できない/2025-07-03_07-07-13_plist.png"
 author: ["tsonobe"]
 description: 'macOSでショートカットに"shift + space"を割り当てる方法。'
 summary: 'macOSでショートカットに"shift + space"を割り当てる方法。'
