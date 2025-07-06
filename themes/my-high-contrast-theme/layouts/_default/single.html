@@ -28,6 +28,7 @@
   </div>
 
   {{ .Content }}
+  {{ partial "translation_note.html" . }}
   {{ partial "share_buttons.html" . }}
 
     {{ if and site.Params.comments.enabled (eq site.Params.comments.provider "giscus") }}
