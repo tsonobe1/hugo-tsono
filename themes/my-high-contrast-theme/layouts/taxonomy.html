@@ -1,0 +1,22 @@
+{{ define "main" }}
+  <h1>{{ .Title }}</h1>
+
+  <section class="post-list">
+    {{ range .Paginator.Pages }}
+      <article class="post-item">
+        <h2><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h2>
+        <p>{{ .Description }}</p>
+        <div class="post-meta-tags-categories">
+          {{ with .Params.categories }}
+            {{ partial "terms.html" (dict "taxonomy" "categories" "terms_list" (split . " ")) }}
+          {{ end }}
+          {{ with .Params.tags }}
+            {{ partial "terms.html" (dict "taxonomy" "tags" "terms_list" (split . " ")) }}
+          {{ end }}
+        </div>
+      </article>
+    {{ end }}
+  </section>
+
+  {{ partial "pagination.html" . }}
+{{ end }}

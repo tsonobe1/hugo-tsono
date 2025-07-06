@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ja" data-theme="dark"> <!-- ← デフォルトはdark -->
+
+<head>
+  {{ partial "head.html" . }}
+</head>
+
+<body>
+  {{ partial "header.html" . }}
+
+  <main role="main" class="container">
+    {{ block "main" . }}{{ end }}
+  </main>
+
+  <footer role="contentinfo">
+    <div class="container">
+      <p>&copy; {{ now.Format "2006" }} {{ .Site.Author.name | default "Your Name" }}</p>
+    </div>
+  </footer>
+</body>
+
+</html>

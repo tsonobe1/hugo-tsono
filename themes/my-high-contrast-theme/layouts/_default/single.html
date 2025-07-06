@@ -1,0 +1,39 @@
+{{ define "main" }}
+  <h1>{{ .Title }}</h1>
+
+  <div class="post-dates">
+    <p>{{ i18n "published_date" }}: <time datetime="{{ .Date | time.Format "2006-01-02T15:04:05-07:00" }}">{{ .Date | time.Format ":date_long" }}</time></p>
+    {{ if ne .Date .Lastmod }}
+      <p>{{ i18n "last_updated_date" }}: <time datetime="{{ .Lastmod | time.Format "2006-01-02T15:04:05-07:00" }}">{{ .Lastmod | time.Format ":date_long" }}</time></p>
+    {{ end }}
+    {{ $publishedDate := .Date }}
+    {{ $currentDate := now }}
+    {{ $diff := $currentDate.Sub $publishedDate }}
+    {{ $oneYear := (time.ParseDuration "8760h") }}
+
+    {{ if ge $diff $oneYear }}
+      <p class="old-article-warning">{{ i18n "old_article_warning" }}</p>
+    {{ end }}
+  </div>
+  </div>
+
+  <div class="post-meta-tags-categories">
+    {{ with .GetTerms "categories" }}
+      {{ partial "terms.html" (dict "taxonomy" "categories" "terms" .) }}
+    {{ end }}
+
+    {{ with .GetTerms "tags" }}
+      {{ partial "terms.html" (dict "taxonomy" "tags" "terms" .) }}
+    {{ end }}
+  </div>
+
+  {{ .Content }}
+  {{ partial "share_buttons.html" . }}
+
+    {{ if and site.Params.comments.enabled (eq site.Params.comments.provider "giscus") }}
+      <section class="comments">
+        <h3>{{ i18n "comments_title" }}</h3>
+        {{ partial "giscus.html" . }}
+      </section>
+    {{ end }}
+{{ end }}

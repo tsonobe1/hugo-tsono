@@ -1,0 +1,25 @@
+{{- /*
+For a given taxonomy, renders a list of terms.
+Outputs span elements with links inside, applying appropriate classes.
+
+@context {string} taxonomy The taxonomy (e.g., "tags", "categories").
+@context {slice} terms A slice of Term objects.
+
+@example: {{ partial "terms.html" (dict "taxonomy" "tags" "terms" .GetTerms "tags") }}
+*/}}
+
+{{- $taxonomy := .taxonomy }}
+{{- $terms := .terms }}
+{{- $class := "" }}
+
+{{- if eq $taxonomy "tags" }}
+  {{- $class = "tag-item" }}
+{{- else if eq $taxonomy "categories" }}
+  {{- $class = "category-item" }}
+{{- end }}
+
+{{- if $terms }}
+  {{- range $term := $terms }}
+    <span class="{{ $class }}"><a href="{{ $term.Permalink }}">{{ $term.Name }}</a></span>
+  {{- end }}
+{{- end }}

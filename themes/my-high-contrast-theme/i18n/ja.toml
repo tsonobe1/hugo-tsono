@@ -1,0 +1,11 @@
+[published_date]
+other = "公開日"
+
+[old_article_warning]
+other = "この記事は1年以上経過しています"
+
+[last_updated_date]
+other = "最終更新日"
+
+[comments_title]
+other = "コメント"

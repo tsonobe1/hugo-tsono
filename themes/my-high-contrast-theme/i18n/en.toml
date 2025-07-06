@@ -1,0 +1,11 @@
+[published_date]
+other = "Published Date"
+
+[old_article_warning]
+other = "This article is more than one year old."
+
+[last_updated_date]
+other = "Last Updated"
+
+[comments_title]
+other = "Comments"

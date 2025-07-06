@@ -1,8 +1,29 @@
 baseURL = 'https://blog.tsono.org'
 languageCode = 'ja'
 title = 'tsono blog'
-theme = 'hugo-theme-stack'
+theme = "my-high-contrast-theme"
 defaultContentLanguage = 'ja'
+ignoreFiles = ["\\.org$"]
+
+[languages]
+  ja = { title = "tsono blog", languageName = "Japanese", weight = 10 }
+  en = { title = "tsono blog", languageName = "English", weight = 20 }
+
+[taxonomies]
+
+  category = "categories"
+  tag = "tags"
+
+[permalinks]
+  tags = "/tags/:slug/"
+  categories = "/categories/:slug/"
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+  page = ["HTML"]
+  section = ["HTML", "RSS"]
+  taxonomy = ["HTML", "RSS"]
+  term = ["HTML", "RSS"]
 
 [pagination]
   pagerSize = 10
@@ -11,14 +32,14 @@ defaultContentLanguage = 'ja'
   mainSections = ["posts"]
   toc = true
   favicon = "/favicon.ico"
-  description = "tsono blog"
+  description = ""
   customCSS = ["css/custom.css"]
 
   [params.dateFormat]
     published = "2006-01-02"
 
   [params.author]
-    name = "tsono"
+    name = "tsonobe"
     image = "/images/profile.png"
 
   [params.comments]
@@ -38,3 +59,14 @@ defaultContentLanguage = 'ja'
   theme = "preferred_color_scheme"
   lang = "ja"
   loading = "lazy"
+
+  [params.social]
+    github = "https://github.com/tsonobe1"
+    twitter = "https://twitter.com/tsonobe_"
+
+  googleAnalytics = "G-DDY3NMJKLW"
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
