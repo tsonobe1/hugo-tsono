@@ -1,0 +1,12 @@
+<meta property="og:title" content="{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }}{{ end }}" />
+<meta property="og:description" content="{{ with .Description }}{{ . }}{{ else }}{{ with .Summary }}{{ . }}{{ else }}{{ site.Params.description }}{{ end }}{{ end }}" />
+<meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}" />
+<meta property="og:url" content="{{ .Permalink }}" />
+{{ with .Params.image }}<meta property="og:image" content="{{ . | absURL }}" />{{ end }}
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@{{ site.Params.social.twitter | replaceRE "https://twitter.com/" "" }}" />
+<meta name="twitter:creator" content="@{{ site.Params.social.twitter | replaceRE "https://twitter.com/" "" }}" />
+<meta name="twitter:title" content="{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }}{{ end }}" />
+<meta name="twitter:description" content="{{ with .Description }}{{ . }}{{ else }}{{ with .Summary }}{{ . }}{{ else }}{{ site.Params.description }}{{ end }}{{ end }}" />
+{{ with .Params.image }}<meta name="twitter:image" content="{{ . | absURL }}" />{{ end }}
