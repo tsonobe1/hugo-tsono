@@ -265,3 +265,53 @@ button#theme-toggle:hover {
         align-self: center; /* 中央に配置 */
     }
 }
+
+/* Image Preview Modal */
+.image-preview-modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+    justify-content: center;
+    align-items: center;
+}
+
+.image-preview-modal.active {
+    display: flex; /* Show when active */
+}
+
+.image-preview-content {
+    margin: auto;
+    display: block;
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain; /* Ensure the image fits within the bounds */
+}
+
+/* Close Button (Optional, but good for UX) */
+.image-preview-close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.image-preview-close:hover,
+.image-preview-close:focus {
+    color: #bbb;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+body.no-scroll {
+    overflow: hidden;
+}

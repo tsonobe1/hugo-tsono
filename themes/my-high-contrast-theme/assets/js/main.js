@@ -48,4 +48,37 @@ document.addEventListener("DOMContentLoaded", () => {
       link.setAttribute('rel', 'noopener');
     }
   });
+
+  // Image preview functionality
+  const images = document.querySelectorAll('main img');
+  
+  const modal = document.createElement('div');
+  modal.classList.add('image-preview-modal');
+  const modalContent = document.createElement('img');
+  modalContent.classList.add('image-preview-content');
+  modal.appendChild(modalContent);
+  document.body.appendChild(modal);
+
+  images.forEach(img => {
+    img.style.cursor = 'pointer'; // Add pointer cursor to indicate clickability
+    img.addEventListener('click', () => {
+      modal.classList.add('active');
+      modalContent.src = img.src;
+      document.body.classList.add('no-scroll');
+    });
+  });
+
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      modal.classList.remove('active');
+      document.body.classList.remove('no-scroll');
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.classList.contains('active')) {
+      modal.classList.remove('active');
+      document.body.classList.remove('no-scroll');
+    }
+  });
 });
