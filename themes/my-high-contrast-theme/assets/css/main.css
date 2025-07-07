@@ -234,8 +234,10 @@ button#theme-toggle:hover {
 
 @media (max-width: 768px) {
     .header-top-row {
-        flex-direction: column;
-        align-items: flex-start;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%; /* 親要素の幅を確実に占める */
     }
 
     .header-container {
@@ -253,16 +255,45 @@ button#theme-toggle:hover {
         align-items: center;
         gap: 0.5rem;
     }
-    .theme-toggle-container {
-        order: 2; /* ナビゲーションの後に表示 */
-        margin-top: 1rem;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-    }
     button#theme-toggle {
         width: auto; /* ボタンの幅を自動調整 */
         align-self: center; /* 中央に配置 */
+    }
+
+    /* Mobile specific header adjustments */
+    .header-actions {
+        display: flex;
+        justify-content: flex-end; /* 右寄せ */
+        align-items: center;
+        margin-right: 1rem; /* 右端に隙間を追加 */
+    }
+
+    .language-switcher {
+        display: flex;
+        align-items: center;
+        margin-right: 0.5rem; /* 言語切り替えとテーマ切り替えの間のスペースを詰める */
+    }
+
+    .language-switcher a {
+        padding: 0.6em 1.2em; /* theme-toggleボタンと合わせる */
+        line-height: 1; /* テキストの垂直方向の揃えを改善 */
+        font-size: 0.9em; /* theme-toggleボタンとフォントサイズを合わせる */
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        background-color: var(--button-bg);
+        color: var(--button-color);
+        text-decoration: none;
+        transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+    }
+
+    .language-switcher a:hover {
+        background-color: var(--link-color);
+        color: var(--accent-bg);
+    }
+
+    header[role="banner"] {
+        padding-top: 0.5em;
+        padding-bottom: 0.5em;
     }
 }
 
