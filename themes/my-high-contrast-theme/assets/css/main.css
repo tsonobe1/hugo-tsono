@@ -117,8 +117,27 @@ footer[role="contentinfo"] {
 }
 
 /* Article and post styles */
+/* Article and post styles */
 article {
     margin-bottom: 2.5rem;
+}
+
+/* Ensure all code elements wrap */
+code {
+    word-break: break-all; /* 長い文字列を強制的に折り返す */
+    overflow-wrap: break-word; /* 単語の途中で改行する */
+    white-space: normal; /* 折り返しを有効にする */
+}
+
+/* For code blocks */
+pre {
+    white-space: pre-wrap; /* テキストを折り返す */
+    overflow-x: auto; /* はみ出した場合に横スクロールバーを表示 */
+}
+
+pre code {
+    word-break: break-all; /* pre内のcodeも強制的に折り返す */
+    overflow-wrap: break-word; /* pre内のcodeも単語の途中で改行する */
 }
 
 article img {
