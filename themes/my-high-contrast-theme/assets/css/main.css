@@ -129,6 +129,11 @@ article img {
     border-radius: 8px;
 }
 
+img {
+    max-width: 100%;
+    height: auto;
+}
+
 /* Share Buttons */
 .share-buttons {
     margin-top: 2rem;
@@ -228,6 +233,11 @@ button#theme-toggle:hover {
 }
 
 @media (max-width: 768px) {
+    .header-top-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
     .header-container {
         flex-direction: column;
         align-items: flex-start;
@@ -240,11 +250,18 @@ button#theme-toggle:hover {
     }
     nav ul {
         flex-direction: column;
+        align-items: center;
         gap: 0.5rem;
     }
-    button#theme-toggle {
+    .theme-toggle-container {
+        order: 2; /* ナビゲーションの後に表示 */
         margin-top: 1rem;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+    button#theme-toggle {
         width: auto; /* ボタンの幅を自動調整 */
-        align-self: flex-end; /* ボタンを右端に配置 */
+        align-self: center; /* 中央に配置 */
     }
 }
