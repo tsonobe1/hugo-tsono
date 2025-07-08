@@ -122,6 +122,11 @@ article {
     margin-bottom: 2.5rem;
 }
 
+figure {
+    margin: 0; /* デフォルトのマージンをリセット */
+    padding: 0;
+}
+
 /* Ensure all code elements wrap */
 code {
     word-break: break-all; /* 長い文字列を強制的に折り返す */
@@ -252,6 +257,14 @@ button#theme-toggle:hover {
 }
 
 @media (max-width: 768px) {
+    article img {
+        width: calc(100% + 3rem); /* コンテナの幅 + 左右のパディング */
+        margin-left: -1.5rem; /* 左のパディングを打ち消す */
+        margin-right: -1.5rem; /* 右のパディングを打ち消す */
+        max-width: unset; /* 親要素の幅を超えて広がることを許可 */
+        border-radius: 0; /* 角の丸みをなくす */
+    }
+
     .header-top-row {
         flex-direction: row;
         justify-content: space-between;
@@ -326,7 +339,7 @@ button#theme-toggle:hover {
     width: 100%; /* Full width */
     height: 100%; /* Full height */
     overflow: auto; /* Enable scroll if needed */
-    background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+    background-color: rgba(0,0,0,0.5); /* Black w/ opacity */
     justify-content: center;
     align-items: center;
 }
