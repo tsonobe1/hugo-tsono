@@ -16,9 +16,6 @@
                     <a href="{{ . }}" target="_blank" rel="noopener" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
                     {{ end }}
                 </div>
-                <nav>
-                    {{ partial "menu.html" (dict "menuID" "main" "page" .) }}
-                </nav>
                 </div>
             <div class="header-actions">
                 {{ if .IsTranslated }}
@@ -36,6 +33,10 @@
             </div>
         </div>
     </div>
+    <!-- Navigation moved outside container to reach absolute right edge -->
+    <nav class="main-navigation">
+        {{ partial "menu.html" (dict "menuID" "main" "page" .) }}
+    </nav>
 </header>
 
 

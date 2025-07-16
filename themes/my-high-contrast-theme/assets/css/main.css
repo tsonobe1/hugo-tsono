@@ -209,6 +209,17 @@ img {
     margin-top: 0; /* 説明文の上部の余白をなくす */
 }
 
+/* Main navigation positioned outside container for absolute right alignment */
+nav.main-navigation {
+    position: absolute;
+    top: 1.5em;
+    right: 0;
+    margin: 0;
+    padding: 0 1.5rem 0 0; /* Only right padding to prevent touching edge */
+    z-index: 10;
+}
+
+/* Legacy nav styling for any remaining nav elements */
 nav {
     margin-left: auto; /* ナビゲーションを右に寄せる */
     margin-right: 0; /* 右端に配置 */
@@ -277,6 +288,17 @@ button#theme-toggle:hover {
         flex-direction: column;
         align-items: flex-start;
     }
+    
+    /* Mobile navigation positioning */
+    nav.main-navigation {
+        position: static;
+        margin-top: 1rem;
+        width: 100%;
+        right: auto;
+        top: auto;
+        padding: 0;
+    }
+    
     nav {
         margin-left: 0;
         margin-right: 0;
@@ -391,6 +413,26 @@ body.no-scroll {
 .giscus-frame {
   background-color: var(--bg-color) !important;
   border: none !important;
+}
+
+/* Fix Giscus header background color to match site theme */
+.giscus iframe {
+  background-color: var(--bg-color) !important;
+}
+
+/* Target Giscus header elements specifically */
+.giscus .gsc-header,
+.giscus-frame .gsc-header,
+.giscus iframe .gsc-header {
+  background-color: var(--bg-color) !important;
+  background: var(--bg-color) !important;
+  border: none !important;
+}
+
+/* Additional Giscus theme integration */
+.giscus .gsc-main,
+.giscus-frame .gsc-main {
+  background-color: var(--bg-color) !important;
 }
 
 .comments {
