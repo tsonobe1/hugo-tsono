@@ -8,6 +8,7 @@
 {{ partialCached "head/js.html" . }}
 {{ partial "head/meta.html" . }}
 {{ partial "head/schema.html" . }}
+{{ partial "head/security.html" . }}
 
 {{ if .Site.Params.googleAnalytics }}
 <!-- Google tag (gtag.js) -->
@@ -16,6 +17,9 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', '{{ .Site.Params.googleAnalytics }}');
+  gtag('config', '{{ .Site.Params.googleAnalytics }}', {
+    'anonymize_ip': true,
+    'cookie_flags': 'SameSite=None;Secure'
+  });
 </script>
 {{ end }}
