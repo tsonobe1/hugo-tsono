@@ -1,6 +1,6 @@
 {{ define "main" }}
   <section class="post-list">
-    {{ range $page := (site.GetPage "section" "posts").Pages }}
+    {{ range $page := (.Site.GetPage "section" "posts").Pages }}
       <article class="post-item">
         <h2><a href="{{ $page.RelPermalink }}">{{ $page.LinkTitle }}</a></h2>
         <div class="post-meta-tags-categories">

@@ -31,7 +31,7 @@
   {{ partial "translation_note.html" . }}
   {{ partial "share_buttons.html" . }}
 
-    {{ if and site.Params.comments.enabled (eq site.Params.comments.provider "giscus") }}
+    {{ if and .Site.Params.comments.enabled (eq .Site.Params.comments.provider "giscus") }}
       <section class="comments">
         <h3>{{ i18n "comments_title" }}</h3>
         {{ partial "giscus.html" . }}
