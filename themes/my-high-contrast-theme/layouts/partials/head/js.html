@@ -1,4 +1,4 @@
-{{- $isServer := .Site.IsServer }}
+{{- $isServer := site.IsServer }}
 {{- with resources.Get "js/main.js" }}
   {{- $opts := dict
     "minify" (not $isServer)
