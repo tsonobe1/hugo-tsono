@@ -68,11 +68,6 @@ ignoreFiles = ["\\.org$"]
 
 [menus]
   [[menus.main]]
-    name = 'Home'
-    pageRef = '/'
-    weight = 10
-
-  [[menus.main]]
     name = 'Posts'
     pageRef = '/posts'
     weight = 20

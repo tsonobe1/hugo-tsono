@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function updateIcon(theme) {
     // テキストを削除し、アイコンのみにする
-    toggleButton.textContent = theme === "dark" ? "☀️" : "🌙";
+    toggleButton.innerHTML = theme === "dark" ? "<i class=\"fas fa-sun\"></i>" : "<i class=\"fas fa-moon\"></i>";
   }
 
   function setGiscusTheme(theme) {
