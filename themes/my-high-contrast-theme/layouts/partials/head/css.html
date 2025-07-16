@@ -1,8 +1,10 @@
 {{- with resources.Get "css/tailwind.css" }}
   {{- if hugo.IsDevelopment }}
-    <link rel="stylesheet" href="{{ .RelPermalink }}">
+    {{- with . | resources.PostCSS }}
+      <link rel="stylesheet" href="{{ .RelPermalink }}">
+    {{- end }}
   {{- else }}
-    {{- with . | minify | fingerprint }}
+    {{- with . | resources.PostCSS | minify | fingerprint }}
       <link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous">
     {{- end }}
   {{- end }}

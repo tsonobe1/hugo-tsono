@@ -5,7 +5,7 @@
 /* Custom component styles using @apply for complex patterns */
 @layer components {
   .anchor {
-    @apply invisible absolute -left-4 pr-2 text-link-dark dark:text-link-light no-underline;
+    @apply invisible absolute left-[-1rem] pr-2 text-link-dark dark:text-link-light no-underline;
   }
   
   .anchor:hover {
@@ -62,7 +62,7 @@
   }
   
   code {
-    @apply break-all overflow-wrap-break-word whitespace-normal;
+    @apply break-all break-words whitespace-normal;
   }
   
   pre {
