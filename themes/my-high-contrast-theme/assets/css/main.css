@@ -212,6 +212,7 @@ img {
 nav {
     margin-left: auto; /* ナビゲーションを右に寄せる */
     margin-right: 0; /* 右端に配置 */
+    padding-right: 0; /* 右端のパディングも削除 */
 }
 
 nav ul {
@@ -383,9 +384,18 @@ body.no-scroll {
 .giscus, .giscus-frame {
   width: 100% !important;
   max-width: 100% !important;
+  border: none !important;
+  background: transparent !important;
+}
+
+.giscus-frame {
+  background-color: var(--bg-color) !important;
+  border: none !important;
 }
 
 .comments {
   width: 100%;
   max-width: 100%;
+  border: none;
+  background: transparent;
 }
