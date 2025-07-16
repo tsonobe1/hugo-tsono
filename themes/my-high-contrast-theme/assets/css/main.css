@@ -211,7 +211,7 @@ img {
 
 nav {
     margin-left: auto; /* ナビゲーションを右に寄せる */
-    margin-right: 1rem; /* ボタンとの間にスペース */
+    margin-right: 0; /* 右端に配置 */
 }
 
 nav ul {
@@ -377,4 +377,15 @@ button#theme-toggle:hover {
 
 body.no-scroll {
     overflow: hidden;
+}
+
+/* Giscus comments styling */
+.giscus, .giscus-frame {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.comments {
+  width: 100%;
+  max-width: 100%;
 }
