@@ -12,14 +12,12 @@ Outputs span elements with links inside, applying appropriate classes.
 {{- $terms := .terms }}
 {{- $class := "" }}
 
-{{- if eq $taxonomy "tags" }}
-  {{- $class = "tag-item" }}
-{{- else if eq $taxonomy "categories" }}
-  {{- $class = "category-item" }}
-{{- end }}
-
 {{- if $terms }}
   {{- range $term := $terms }}
-    <span class="{{ $class }}"><a href="{{ $term.Permalink }}">{{ $term.Name }}</a></span>
+    {{- if eq $taxonomy "tags" }}
+      <span class="inline-block px-2 py-1 rounded mr-1.5 mb-1.5 text-sm whitespace-nowrap bg-gray-100 text-gray-700 border border-gray-300"><a href="{{ $term.Permalink }}" class="text-gray-800 no-underline">{{ $term.Name }}</a></span>
+    {{- else if eq $taxonomy "categories" }}
+      <span class="inline-block px-2 py-1 rounded mr-1.5 mb-1.5 text-sm whitespace-nowrap bg-blue-500 text-white"><a href="{{ $term.Permalink }}" class="text-white no-underline">{{ $term.Name }}</a></span>
+    {{- end }}
   {{- end }}
 {{- end }}

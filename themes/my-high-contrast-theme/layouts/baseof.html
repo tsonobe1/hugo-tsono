@@ -1,19 +1,19 @@
 <!DOCTYPE html>
-<html lang="ja" data-theme="dark"> <!-- ← デフォルトはdark -->
+<html lang="ja" class="dark" data-theme="dark"> <!-- ← デフォルトはdark -->
 
 <head>
   {{ partial "head.html" . }}
 </head>
 
-<body>
+<body class="bg-bg-dark dark:bg-bg-light text-text-dark dark:text-text-light font-sans leading-relaxed m-0 p-0">
   {{ partial "header.html" . }}
 
-  <main role="main" class="container">
+  <main role="main" class="max-w-container mx-auto px-6 py-8">
     {{ block "main" . }}{{ end }}
   </main>
 
-  <footer role="contentinfo">
-    <div class="container">
+  <footer role="contentinfo" class="bg-accent-dark dark:bg-accent-light text-text-dark dark:text-text-light py-6 border-t border-border-dark dark:border-border-light mt-8 text-sm text-center">
+    <div class="max-w-container mx-auto px-6">
       <p>&copy; {{ now.Format "2006" }} tsono</p>
     </div>
   </footer>

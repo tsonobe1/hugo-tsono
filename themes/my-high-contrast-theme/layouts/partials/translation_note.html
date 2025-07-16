@@ -1,5 +1,5 @@
 {{ if and (eq .Lang "en") .Params.translated_by }}
-<div class="translation-note">
-  <p>Translated from Japanese by {{ .Params.translated_by }}.</p>
+<div class="mt-4 px-4 py-2 border-l-4 border-gray-300 bg-gray-50 text-gray-600 text-sm">
+  <p class="m-0">Translated from Japanese by {{ .Params.translated_by }}.</p>
 </div>
 {{ end }}

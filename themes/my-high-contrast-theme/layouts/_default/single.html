@@ -1,7 +1,7 @@
 {{ define "main" }}
   <h1>{{ .Title }}</h1>
 
-  <div class="post-dates">
+  <div class="mt-2.5 mb-2.5 text-sm text-gray-600 dark:text-gray-400">
     <p>{{ i18n "published_date" }}: <time datetime="{{ .Date | time.Format "2006-01-02T15:04:05-07:00" }}">{{ .Date | time.Format ":date_long" }}</time></p>
     {{ if ne .Date .Lastmod }}
       <p>{{ i18n "last_updated_date" }}: <time datetime="{{ .Lastmod | time.Format "2006-01-02T15:04:05-07:00" }}">{{ .Lastmod | time.Format ":date_long" }}</time></p>
@@ -12,12 +12,12 @@
     {{ $oneYear := (time.ParseDuration "8760h") }}
 
     {{ if ge $diff $oneYear }}
-      <p class="old-article-warning">{{ i18n "old_article_warning" }}</p>
+      <p class="text-yellow-600 font-bold mt-2.5">{{ i18n "old_article_warning" }}</p>
     {{ end }}
   </div>
   </div>
 
-  <div class="post-meta-tags-categories">
+  <div class="mt-2.5 mb-2.5 flex flex-wrap">
     {{ with .GetTerms "categories" }}
       {{ partial "terms.html" (dict "taxonomy" "categories" "terms" .) }}
     {{ end }}
@@ -32,8 +32,8 @@
   {{ partial "share_buttons.html" . }}
 
     {{ if and site.Params.comments.enabled (eq site.Params.comments.provider "giscus") }}
-      <section class="comments">
-        <h3>{{ i18n "comments_title" }}</h3>
+      <section class="mt-8">
+        <h3 class="text-text-dark dark:text-text-light border-b border-border-dark dark:border-border-light pb-2 mt-6 mb-4 relative">{{ i18n "comments_title" }}</h3>
         {{ partial "giscus.html" . }}
       </section>
     {{ end }}

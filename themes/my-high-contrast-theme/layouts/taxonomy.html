@@ -1,12 +1,12 @@
 {{ define "main" }}
   <h1>{{ .Title }}</h1>
 
-  <section class="post-list">
+  <section class="space-y-8">
     {{ range .Paginator.Pages }}
-      <article class="post-item">
-        <h2><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h2>
-        <p>{{ .Description }}</p>
-        <div class="post-meta-tags-categories">
+      <article class="mb-10">
+        <h2 class="text-text-dark dark:text-text-light border-b border-border-dark dark:border-border-light pb-2 mt-6 mb-4 relative"><a href="{{ .RelPermalink }}" class="text-link-dark dark:text-link-light no-underline transition-colors duration-200 ease-in-out hover:text-link-hover-dark dark:hover:text-link-hover-light hover:underline">{{ .LinkTitle }}</a></h2>
+        <p class="text-text-dark dark:text-text-light mb-4">{{ .Description }}</p>
+        <div class="mt-2.5 mb-2.5 flex flex-wrap">
           {{ with .Params.categories }}
             {{ partial "terms.html" (dict "taxonomy" "categories" "terms_list" (split . " ")) }}
           {{ end }}

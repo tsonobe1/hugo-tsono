@@ -1,38 +1,38 @@
-<header role="banner" class="relative">
-    <div class="container header-container">
-        <div class="header-top-row">
-            <div class="site-info">
-                <h1 class="site-name">
-                    <a href="{{ .Site.BaseURL | relLangURL }}">{{ .Site.Title }}</a>
+<header role="banner" class="relative bg-accent-dark dark:bg-accent-light text-text-dark dark:text-text-light py-6 border-b border-border-dark dark:border-border-light">
+    <div class="max-w-container mx-auto px-6 md:flex-row flex-col md:items-center items-start flex-wrap">
+        <div class="flex justify-between items-center mb-4 flex-grow w-full">
+            <div class="flex flex-col items-start">
+                <h1 class="mb-2">
+                    <a href="{{ .Site.BaseURL | relLangURL }}" class="text-text-dark dark:text-text-light no-underline transition-colors duration-200 ease-in-out hover:text-link-hover-dark dark:hover:text-link-hover-light hover:underline">{{ .Site.Title }}</a>
                 </h1>
                 {{ with .Site.Params.description }}
-                <p class="site-description">{{ . }}</p>
+                <p class="text-text-dark dark:text-text-light text-base mt-2 mb-4">{{ . }}</p>
                 {{ end }}
-                <div class="social-links">
+                <div class="mt-2">
                     {{ with .Site.Params.social.github }}
-                    <a href="{{ . }}" target="_blank" rel="noopener" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                    <a href="{{ . }}" target="_blank" rel="noopener" aria-label="GitHub" class="inline-block mr-4 text-text-dark dark:text-text-light no-underline hover:underline"><i class="fab fa-github mr-1"></i></a>
                     {{ end }}
                     {{ with .Site.Params.social.twitter }}
-                    <a href="{{ . }}" target="_blank" rel="noopener" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
+                    <a href="{{ . }}" target="_blank" rel="noopener" aria-label="Twitter" class="inline-block mr-4 text-text-dark dark:text-text-light no-underline hover:underline"><i class="fab fa-x-twitter mr-1"></i></a>
                     {{ end }}
                 </div>
                 </div>
-            <div class="header-actions">
+            <div class="flex items-center ml-auto gap-4">
                 {{ if .IsTranslated }}
-                <div class="language-switcher">
+                <div class="flex items-center mr-2">
                     {{ range .Translations }}
-                    <a href="{{ .Permalink }}" lang="{{ .Lang }}">{{ .Lang | upper }}</a>
+                    <a href="{{ .Permalink }}" lang="{{ .Lang }}" class="no-underline text-text-dark dark:text-text-light px-3 py-2.5 border border-border-dark dark:border-border-light rounded-lg bg-button-dark dark:bg-button-light transition-all duration-200 ease-in-out hover:bg-link-dark dark:hover:bg-link-light hover:text-accent-dark dark:hover:text-accent-light">{{ .Lang | upper }}</a>
                     {{ end }}
                 </div>
                 {{ end }}
-                <div class="theme-toggle-container">
-                    <button id="theme-toggle" aria-label="Toggle theme">
+                <div>
+                    <button id="theme-toggle" aria-label="Toggle theme" class="bg-button-dark dark:bg-button-light text-button-dark dark:text-button-light border border-border-dark dark:border-border-light px-5 py-2.5 cursor-pointer text-sm rounded-lg transition-all duration-200 ease-in-out whitespace-nowrap hover:bg-link-dark dark:hover:bg-link-light hover:text-accent-dark dark:hover:text-accent-light">
                         <!-- Icon will be set by JavaScript -->
                     </button>
                 </div>
             </div>
         </div>
-        <nav>
+        <nav class="md:ml-auto md:mr-4 ml-0 mr-0 md:mt-0 mt-4 md:w-auto w-full">
             {{ partial "menu.html" (dict "menuID" "main" "page" .) }}
         </nav>
     </div>

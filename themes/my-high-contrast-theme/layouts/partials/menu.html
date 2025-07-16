@@ -12,7 +12,7 @@ Renders a menu for the given menu ID.
 
 {{- with index site.Menus $menuID }}
   <nav>
-    <ul>
+    <ul class="list-none p-0 m-0 md:flex-row flex-col md:justify-start items-center md:gap-4 gap-2 flex">
       {{- partial "inline/menu/walk.html" (dict "page" $page "menuEntries" .) }}
     </ul>
   </nav>
@@ -34,7 +34,7 @@ Renders a menu for the given menu ID.
       {{- end }}
     {{- end }}
     <li>
-      <a
+      <a class="block px-4 py-2 no-underline text-text-dark dark:text-text-light bg-accent-dark dark:bg-accent-light rounded transition-colors duration-300 ease-in-out hover:bg-link-dark dark:hover:bg-link-light hover:text-accent-dark dark:hover:text-accent-light"
         {{- range $k, $v := $attrs }}
           {{- with $v }}
             {{- printf " %s=%q" $k $v | safeHTMLAttr }}
@@ -42,7 +42,7 @@ Renders a menu for the given menu ID.
         {{- end -}}
       >{{ $name }}</a>
       {{- with .Children }}
-        <ul>
+        <ul class="list-none p-0 m-0 flex flex-col gap-2">
           {{- partial "inline/menu/walk.html" (dict "page" $page "menuEntries" .) }}
         </ul>
       {{- end }}
