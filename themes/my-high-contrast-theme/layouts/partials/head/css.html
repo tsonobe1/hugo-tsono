@@ -1,4 +1,4 @@
-{{- $isServer := site.IsServer }}
+{{- $isServer := eq hugo.Environment "development" }}
 {{- with resources.Get "css/main.css" }}
   {{- if $isServer }}
     <link rel="stylesheet" href="{{ .RelPermalink }}">
