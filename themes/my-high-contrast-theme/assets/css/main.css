@@ -378,3 +378,20 @@ button#theme-toggle:hover {
 body.no-scroll {
     overflow: hidden;
 }
+
+/* テーマが .highlight を使っている場合 */
+.highlight pre, .highlight code {
+  white-space: pre !important;
+}
+
+.highlight {
+    background-color: #262626;
+    padding: 1em;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.9em;
+}
+
+.chroma .p {
+  color: #cccccc;
+}

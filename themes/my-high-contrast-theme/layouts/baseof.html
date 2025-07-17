@@ -3,8 +3,12 @@
 
 <head>
   {{ partial "head.html" . }}
-</head>
-
+{{ $style := resources.Get "css/chroma.css" }}
+{{ if $style }}
+  <link rel="stylesheet" href="{{ $style.RelPermalink }}">
+{{ else }}
+  <!-- chroma.css not found -->
+{{ end }}
 <body>
   {{ partial "header.html" . }}
 

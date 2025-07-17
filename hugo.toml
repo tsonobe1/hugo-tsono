@@ -70,3 +70,9 @@ ignoreFiles = ["\\.org$"]
   [markup.goldmark]
     [markup.goldmark.renderer]
       unsafe = true
+
+  [markup.highlight]
+    noClasses = false     # クラスベースにする
+    style = "hr_high_contrast"     # 色スタイル（任意で変更可）
+    codeFences = true     # ``` コードブロック有効
+    guessSyntax = true    # ```なしでも自動判定
