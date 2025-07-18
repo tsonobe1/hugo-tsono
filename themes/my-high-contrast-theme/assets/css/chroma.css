@@ -1,0 +1,130 @@
+
+/* badger-theme based Chroma CSS (refined) */
+
+/* Error */
+.chroma .err {
+  color: #E2434C;
+  background-color: #433F4F;
+}
+
+/* Line highlight */
+.chroma .hl {
+  background-color: #1D1D1D;
+}
+
+/* Line numbers */
+.chroma .ln, .chroma .lnt {
+  color: #656868;
+  user-select: none;
+  margin-right: 0.4em;
+  padding: 0 0.4em;
+}
+
+/* Line container */
+.chroma .line {
+  display: flex;
+  width: 100%;
+}
+
+/* Keywords */
+.chroma .k,
+.chroma .kc, .chroma .kd, .chroma .kn,
+.chroma .kp, .chroma .kr {
+  color: #8AC6F2;
+}
+
+/* Keyword Type */
+.chroma .kt {
+  color: #C7B299;
+}
+
+/* Strings */
+.chroma .s,
+.chroma .sa, .chroma .sb, .chroma .sc,
+.chroma .dl, .chroma .sd, .chroma .s2,
+.chroma .se, .chroma .sh, .chroma .si,
+.chroma .sx, .chroma .sr, .chroma .s1,
+.chroma .ss, .chroma .ld {
+  color: #86B187;
+}
+
+/* Numbers */
+.chroma .m,
+.chroma .mb, .chroma .mf, .chroma .mh,
+.chroma .mi, .chroma .il, .chroma .mo {
+  color: #C7B299;
+}
+
+/* Comments */
+.chroma .c,
+.chroma .ch, .chroma .cm, .chroma .c1,
+.chroma .cs, .chroma .cp, .chroma .cpf {
+  color: #656868;
+  font-style: italic;
+}
+
+/* Functions (orange) */
+.chroma .nf, .chroma .fm {
+  color: #EA9847;
+}
+
+/* Variables (violet) */
+.chroma .nv,
+.chroma .vc, .chroma .vg, .chroma .vi, .chroma .vm {
+  color: #BF93C3;
+}
+
+/* Constants */
+.chroma .no {
+  color: #635770;
+}
+
+/* Class & tag names (orange) */
+.chroma .nc, .chroma .nd, .chroma .nn, .chroma .nt {
+  color: #EA9847;
+}
+
+/* Builtins (violet) */
+.chroma .nb, .chroma .bp {
+  color: #BF93C3;
+}
+
+/* Attributes and properties (violet) */
+.chroma .na, .chroma .py {
+  color: #BF93C3;
+}
+
+/* Operators (white) */
+.chroma .o, .chroma .ow {
+  color: #F6F3E8;
+}
+
+/* Punctuation like {} () [] (white) */
+.chroma .p {
+  color: #F6F3E8;
+}
+
+/* Plain text (explicit) */
+.chroma .n {
+  color: #F6F3E8;
+}
+
+/* Line links */
+.chroma .lnlinks {
+  color: #8AC6F2;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+/* Generics */
+.chroma .gd { color: #E2434C; text-decoration: line-through; }
+.chroma .gi { color: #84C452; }
+.chroma .gp { color: #F6F3E8; }
+.chroma .gs { font-weight: bold; color: #84C452; }
+.chroma .ge { font-style: italic; color: #E18CBB; }
+.chroma .gu { color: #656868; }
+
+/* Whitespace */
+.chroma .w { color: #F6F3E8; }
+
+.chroma .nx { color: #F6F3E8; }

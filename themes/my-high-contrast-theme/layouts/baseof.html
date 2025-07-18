@@ -1,14 +1,12 @@
 <!DOCTYPE html>
-<html lang="ja" data-theme="dark"> <!-- ← デフォルトはdark -->
+<html lang="ja" data-theme="dark">
 
 <head>
   {{ partial "head.html" . }}
-{{ $style := resources.Get "css/chroma.css" }}
-{{ if $style }}
-  <link rel="stylesheet" href="{{ $style.RelPermalink }}">
-{{ else }}
-  <!-- chroma.css not found -->
-{{ end }}
+  {{ $style := resources.Get "css/chroma.css" | minify | fingerprint }}
+  <link rel="stylesheet" href="{{ $style.RelPermalink }}" integrity="{{ $style.Data.Integrity }}">
+</head>
+
 <body>
   {{ partial "header.html" . }}
 

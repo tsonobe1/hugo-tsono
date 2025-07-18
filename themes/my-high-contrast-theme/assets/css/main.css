@@ -391,7 +391,3 @@ body.no-scroll {
     overflow-x: auto;
     font-size: 0.9em;
 }
-
-.chroma .p {
-  color: #cccccc;
-}
