@@ -115,3 +115,32 @@ button#theme-toggle {
 .translation-note p {
     margin: 0;
 }
+
+.copy-code-button {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    padding: 6px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    cursor: pointer;
+    font-size: 14px;
+    font-family: sans-serif;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out, background-color 0.2s ease;
+}
+
+.highlight:hover .copy-code-button {
+    opacity: 1;
+}
+
+.copy-code-button:hover {
+    background-color: var(--hover-bg-color);
+}
+
+.copy-code-button.copied {
+    background-color: #28a745; /* Green for success */
+    color: white;
+}

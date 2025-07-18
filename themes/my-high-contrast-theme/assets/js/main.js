@@ -81,4 +81,52 @@ document.addEventListener("DOMContentLoaded", () => {
       document.body.classList.remove('no-scroll');
     }
   });
+
+  // Add copy button to code blocks
+  document.querySelectorAll('.highlight').forEach((highlightDiv) => {
+    // Hugo can generate code blocks with line numbers (using a table) or without.
+    // We need to handle both cases to find the correct element containing the code.
+    let codeElement = highlightDiv.querySelector('table.lntable td:nth-child(2) code');
+    let codeContainer = null;
+
+    if (codeElement) {
+      // This is a code block with line numbers. The container is the parent <pre> of the code cell.
+      codeContainer = codeElement.parentElement;
+    } else {
+      // This is a code block without line numbers.
+      codeElement = highlightDiv.querySelector('pre > code');
+      if (codeElement) {
+        codeContainer = codeElement.parentElement;
+      }
+    }
+
+    // If we couldn't find a code element or its container, skip.
+    if (!codeElement || !codeContainer) {
+      return;
+    }
+
+    const button = document.createElement('button');
+    button.className = 'copy-code-button';
+    button.innerText = 'copy';
+    button.setAttribute('aria-label', 'Copy code to clipboard');
+
+    // The button should be positioned relative to the container (<pre> tag).
+    codeContainer.style.position = 'relative';
+    codeContainer.appendChild(button);
+
+    button.addEventListener('click', () => {
+      const codeToCopy = codeElement.innerText;
+      navigator.clipboard.writeText(codeToCopy).then(() => {
+        button.innerText = 'copied!';
+        button.classList.add('copied');
+        setTimeout(() => {
+          button.innerText = 'copy';
+          button.classList.remove('copied');
+        }, 2000);
+      }).catch(err => {
+        console.error('Failed to copy code: ', err);
+        button.innerText = 'Failed';
+      });
+    });
+  });
 });
