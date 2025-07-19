@@ -1,4 +1,8 @@
-<video controls width="{{ .Get "width" | default "640" }}">
-  <source src="{{ .Get "src" }}" type="video/mp4">
+<video controls style="width: {{ .Get "width" | default "80%" }}; max-width: 100%;">
+  {{ with .Page.Resources.GetMatch (.Get "src") }}
+    <source src="{{ .RelPermalink }}" type="video/mp4">
+  {{ else }}
+    <source src="{{ .Get "src" | safeURL }}" type="video/mp4">
+  {{ end }}
   Your browser does not support the video tag.
 </video>
