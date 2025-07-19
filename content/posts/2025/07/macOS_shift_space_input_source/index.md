@@ -47,7 +47,7 @@ macOSでの使用時は `control + space` で変換していました（厳密�
 
 そこで調べていたところ、以下を記事を発見
 
-[macOS 한영전환키를 Shift+Space로 설정하기 (feat. Sonoma)](https://seorenn.tistory.com/547)
+{{< linkcard "https://seorenn.tistory.com/547" >}}
 
 やはり `shift + space` は設定できないようですが、解決策が書いてありました。
 `com.apple.symbolichotkeys.plist` ファイルの中にある、 `AppleSymbolicHotkeys` のうち

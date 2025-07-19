@@ -44,7 +44,7 @@ It doesn't respond when I type it.
 
 So, I did some research and found the following article:
 
-[macOS 한영전환키를 Shift+Space로 설정하기 (feat. Sonoma)](https://seorenn.tistory.com/547)
+{{< linkcard "https://seorenn.tistory.com/547" >}}
 
 It seems that `shift + space` cannot be set, but there was a solution written.
 Among `AppleSymbolicHotkeys` in the `com.apple.symbolichotkeys.plist` file,
