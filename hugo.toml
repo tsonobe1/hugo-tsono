@@ -66,6 +66,11 @@ ignoreFiles = ["\\.org$"]
 
   googleAnalytics = "G-DDY3NMJKLW"
 
+[security]
+  [security.http]
+    methods = ["GET", "POST"]
+    urls = [".*"]
+
 [markup]
   [markup.goldmark]
     [markup.goldmark.renderer]
@@ -75,3 +80,4 @@ ignoreFiles = ["\\.org$"]
     noClasses = false
     codeFences = true
     guessSyntax = true
+    lineNos = true
