@@ -18,8 +18,15 @@ ignoreFiles = ["\\.org$"]
   tags = "/tags/:slug/"
   categories = "/categories/:slug/"
 
+[outputFormats.RobotsTXT]
+mediaType = "text/plain"
+baseName = "robots"
+isPlainText = true
+notAlternative = true
+permalinkable = false
+
 [outputs]
-  home = ["HTML", "RSS", "JSON"]
+  home = ["HTML", "RSS", "JSON", "Sitemap", "RobotsTXT"]
   page = ["HTML"]
   section = ["HTML", "RSS"]
   taxonomy = ["HTML", "RSS"]

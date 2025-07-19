@@ -1,8 +1,8 @@
 #+TITLE: Bootstrap5で入れ子モーダルを実現する
 #+IMAGE:
-#+DATE: 2025-07-19T00:35:23+0900
+#+DATE: 2025-07-18T00:35:23+0900
 #+HUGO_AUTO_SET_LASTMOD: t
-#+DESCRIPTION: Bootstrap5では公式にサポートされていない入れ子モーダルを、jQueryとz-indexの制御によって実現する方法を紹介します。
+#+DESCRIPTION: 
 #+tags: Bootstrap5 modal
 #+categories: tips
 #+DRAFT: false
@@ -68,9 +68,9 @@ $(function () {
     const modalInstance = new bootstrap.Modal(newModal[0]);
     modalInstance.show();
 
-    setupModalZIndex(newModal);
-    setupBackdrop(modalId);
-    cleanupModal(newModal, modalId);
+    _setupModalZIndex(newModal);
+    _setupBackdrop(modalId);
+    _cleanupModal(newModal, modalId);
   }
 
   /**
@@ -78,7 +78,7 @@ $(function () {
    * z-index = 1040 + 10 * 表示中のモーダル数（Bootstrap標準の重なり順に準拠）
    * ex: 1段目: 1040, 2段目: 1050, 3段目: 1060, ...
    */
-  function setupModalZIndex(modal) {
+  function _setupModalZIndex(modal) {
     modal.one('shown.bs.modal', function () {
       const modalCount = $('.modal.show').length;
       const zIndex = 1040 + (10 * modalCount);
@@ -91,7 +91,7 @@ $(function () {
    * モーダルbackdropのz-indexを調整する
    * ex: 1段目: 1039, 2段目: 1049, 3段目: 1059, ...
    */
-  function setupBackdrop(modalId) {
+  function _setupBackdrop(modalId) {
     // z-index の設定は shown.bs.modal の後でないと正しい数にならない
     $('#' + modalId).one('shown.bs.modal', function () {
       const modal = $(this);
@@ -112,7 +112,7 @@ $(function () {
    * モーダルが閉じられたとき（hidden.bs.modal）に、対応するbackdropを削除し、
    * フォーカスを親モーダルかbodyへ逃がす
    */
-  function cleanupModal(modal, modalId) {
+  function _cleanupModal(modal, modalId) {
     modal.one('hidden.bs.modal', () => {
       $(`.modal-backdrop[data-backdrop-for="${modalId}"]`).remove();
 
