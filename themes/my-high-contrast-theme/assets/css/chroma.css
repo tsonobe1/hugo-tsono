@@ -128,3 +128,8 @@
 .chroma .w { color: #F6F3E8; }
 
 .chroma .nx { color: #F6F3E8; }
+
+/* Default fallback for any unspecified token */
+.chroma span {
+  color: #F6F3E8;
+}

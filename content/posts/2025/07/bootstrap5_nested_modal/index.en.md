@@ -18,9 +18,7 @@ As noted in the official documentation, this is an intentional UX limitation. Wh
 
 ## Why the current modal gets closed
 
-The reason Bootstrap 5 does not support nested modals lies in the internal implementation—not just UX concerns.
-
-Typically, modals in Bootstrap are triggered using data attributes:
+This is not about why Bootstrap 5 doesn’t support nested modals conceptually, but rather the code-level reason. Normally, Bootstrap 5 modals are triggered and managed using data attributes.
 
 ```html
 <button class="btn btn-primary"
@@ -258,8 +256,8 @@ Each time a new modal is opened, its z-index and that of its backdrop are set in
 ```
 
 To trigger a modal, just use a button with:
-•	the show-modal class
-•	and a data-show-modal="modalId" attribute
+- the show-modal class
+- and a data-show-modal="modalId" attribute
 
 The modal markup itself follows the usual Bootstrap 5 pattern:
 ```html
