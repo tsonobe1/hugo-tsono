@@ -1,18 +1,20 @@
 {{- $url := .Get 0 -}}
 {{- $title := "" -}}
 
-{{- with try (resources.GetRemote $url) -}}
-  {{- with .Err -}}
-    {{- warnf "Error getting remote resource %q: %s" $url . -}}
-  {{- else with .Value -}}
-    {{- $matches := findRE "<title>(.*?)</title>" .Content -}}
-    {{- if ge (len $matches) 1 -}}
-      {{- $title = index $matches 0 | replaceRE "<title>" "" | replaceRE "</title>" "" | htmlUnescape -}}
-      {{- $title = $title | replaceRE "\\s*·\\s*GitHub.*$" "" -}}
+{{- if site.Params.enableLinkCardRemoteFetch | default true -}}
+  {{- with try (resources.GetRemote $url) -}}
+    {{- with .Err -}}
+      {{- warnf "Error getting remote resource %q: %s" $url . -}}
+    {{- else with .Value -}}
+      {{- $matches := findRE "<title>(?s)(.*?)(?:</title>)" .Content -}}
+      {{- if ge (len $matches) 1 -}}
+        {{- $title = index $matches 0 | replaceRE "<title>(?s)(.*?)(?:</title>)" "$1" | htmlUnescape -}}
+        {{- $title = $title | replaceRE "\\s*·\\s*GitHub.*$" "" -}}
+      {{- end -}}
     {{- end -}}
+  {{- else -}}
+    {{- warnf "Unable to get remote resource %q" $url -}}
   {{- end -}}
-{{- else -}}
-  {{- warnf "Unable to get remote resource %q" $url -}}
 {{- end -}}
 
 {{- $host := (urls.Parse $url).Host -}}
