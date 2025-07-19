@@ -118,22 +118,27 @@ button#theme-toggle {
 
 .copy-code-button {
     position: absolute;
-    top: 8px;
-    right: 8px;
-    padding: 6px 12px;
+    top: 0.5em;
+    right: 0.5em;
+    padding: 4px 10px;
     border: 1px solid var(--border-color);
     border-radius: 6px;
-    background-color: var(--bg-color);
-    color: var(--text-color);
+    background-color: var(--button-bg);
+    color: var(--button-color);
     cursor: pointer;
-    font-size: 14px;
+    font-size: 12px;
     font-family: sans-serif;
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out, background-color 0.2s ease;
+    opacity: 1;
+    transition: background-color 0.2s ease;
 }
 
-.highlight:hover .copy-code-button {
-    opacity: 1;
+.highlight {
+    position: relative;
+    background-color: #262626;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.9em;
+    width: 100%; /* コードブロックが親要素の全幅を占めるようにする */
 }
 
 .copy-code-button:hover {
@@ -212,7 +217,7 @@ button#theme-toggle {
 
 /* GitHub Link Card Specific Styles */
 .link-card--github::after {
-  content: "\f09b"; /* Font Awesome GitHub icon */
+  content: "09b"; /* Font Awesome GitHub icon */
   font-family: "Font Awesome 6 Brands"; /* Font Awesomeが読み込まれていることを確認 */
   color: var(--text-color); /* テーマのテキスト色を使用 */
   margin-left: 0.5em;
@@ -220,7 +225,7 @@ button#theme-toggle {
 }
 
 /* モバイル対応 */
-@media (max-width: 600px) {
+ @media (max-width: 600px) {
   .link-card {
     flex-direction: column;
     align-items: flex-start;

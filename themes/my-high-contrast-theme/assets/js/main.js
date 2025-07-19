@@ -100,8 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    // If we couldn't find a code element or its container, skip.
-    if (!codeElement || !codeContainer) {
+    if (!codeElement) {
       return;
     }
 
@@ -110,12 +109,11 @@ document.addEventListener("DOMContentLoaded", () => {
     button.innerText = 'copy';
     button.setAttribute('aria-label', 'Copy code to clipboard');
 
-    // The button should be positioned relative to the container (<pre> tag).
-    codeContainer.style.position = 'relative';
-    codeContainer.appendChild(button);
+    // The button should be a direct child of the highlightDiv for positioning
+    highlightDiv.appendChild(button);
 
     button.addEventListener('click', () => {
-      const codeToCopy = codeElement.innerText;
+      const codeToCopy = codeElement.textContent;
       navigator.clipboard.writeText(codeToCopy).then(() => {
         button.innerText = 'copied!';
         button.classList.add('copied');
