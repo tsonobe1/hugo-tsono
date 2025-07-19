@@ -29,6 +29,9 @@ ignoreFiles = ["\\.org$"]
   pagerSize = 10
 
 [params]
+  # To disable remote fetching for link cards, set enableLinkCardRemoteFetch to false.
+  # This can be useful for local or offline builds.
+  # enableLinkCardRemoteFetch = false
   mainSections = ["posts"]
   toc = true
   favicon = "/favicon.ico"
@@ -66,6 +69,11 @@ ignoreFiles = ["\\.org$"]
 
   googleAnalytics = "G-DDY3NMJKLW"
 
+[security]
+  [security.http]
+    methods = ["GET", "POST"]
+    urls = [".*"]
+
 [markup]
   [markup.goldmark]
     [markup.goldmark.renderer]
@@ -75,3 +83,4 @@ ignoreFiles = ["\\.org$"]
     noClasses = false
     codeFences = true
     guessSyntax = true
+    lineNos = true

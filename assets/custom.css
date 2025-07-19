@@ -118,22 +118,27 @@ button#theme-toggle {
 
 .copy-code-button {
     position: absolute;
-    top: 8px;
-    right: 8px;
-    padding: 6px 12px;
+    top: 0.5em;
+    right: 0.5em;
+    padding: 4px 10px;
     border: 1px solid var(--border-color);
     border-radius: 6px;
-    background-color: var(--bg-color);
-    color: var(--text-color);
+    background-color: var(--button-bg);
+    color: var(--button-color);
     cursor: pointer;
-    font-size: 14px;
+    font-size: 12px;
     font-family: sans-serif;
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out, background-color 0.2s ease;
+    opacity: 1;
+    transition: background-color 0.2s ease;
 }
 
-.highlight:hover .copy-code-button {
-    opacity: 1;
+.highlight {
+    position: relative;
+    background-color: #262626;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.9em;
+    width: 100%; /* コードブロックが親要素の全幅を占めるようにする */
 }
 
 .copy-code-button:hover {
@@ -143,4 +148,103 @@ button#theme-toggle {
 .copy-code-button.copied {
     background-color: #28a745; /* Green for success */
     color: white;
+}
+
+.link-card {
+  display: flex;
+  align-items: center;
+  padding: 1em;
+  margin: 1em 0;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--accent-bg);
+  text-decoration: none;
+  color: var(--text-color);
+  transition: box-shadow 0.2s ease, background-color 0.2s ease;
+  position: relative;
+  overflow: hidden;        /* ✅ 全体のはみ出しを防ぐ */
+  box-sizing: border-box; /* ✅ パディングとボーダーを幅に含める */
+}
+
+.link-card:hover {
+  background-color: var(--hover-bg-color);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.link-card__anchor {
+  display: block; /* ✅ aタグをブロック要素にする */
+  text-decoration: none;
+  color: inherit;
+  flex-grow: 1; /* ✅ 親要素の幅いっぱいに広がるようにする */
+  min-width: 0; /* ✅ flexアイテムとして縮小可能にする */
+}
+
+.link-card__content {
+  flex-grow: 1;
+  min-width: 0; /* ✅ overflow制御に必要 */
+}
+
+.link-card__title {
+  font-weight: bold;
+  font-size: 1.1em;
+  margin-bottom: 0.3em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--link-color);
+  max-width: 100%;
+  display: block;
+  flex-shrink: 1; /* ✅ 必要に応じて縮小する */
+}
+
+.link-card__site {
+  font-size: 0.9em;
+  color: var(--text-color);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  display: block;
+}
+
+/* 外部リンクアイコン (Generic) */
+.link-card:not(.link-card--github)::after {
+  content: "↗"; /* Unicode for external link arrow */
+  margin-left: 0.5em;
+  font-size: 1.2em;
+  color: var(--link-color);
+}
+
+/* GitHub Link Card Specific Styles */
+.link-card--github::after {
+  content: "09b"; /* Font Awesome GitHub icon */
+  font-family: "Font Awesome 6 Brands"; /* Font Awesomeが読み込まれていることを確認 */
+  color: var(--text-color); /* テーマのテキスト色を使用 */
+  margin-left: 0.5em;
+  font-size: 1.2em;
+}
+
+/* モバイル対応 */
+ @media (max-width: 600px) {
+  .link-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .link-card:not(.link-card--github)::after,
+  .link-card--github::after {
+    margin-left: 0;
+    margin-top: 0.5em;
+    position: static; /* モバイルではstaticに戻す */
+    transform: none;
+  }
+}
+
+.link-card__anchor:hover {
+  text-decoration: underline;
+  text-decoration-color: #4dff58; /* 黄緑色 */
+}
+
+.link-card__anchor:hover .link-card__title {
+  color: #4dff58; /* 黄緑色 */
 }

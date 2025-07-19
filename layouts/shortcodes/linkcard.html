@@ -1,0 +1,32 @@
+{{- $url := .Get 0 -}}
+{{- $title := "" -}}
+
+{{- if site.Params.enableLinkCardRemoteFetch | default true -}}
+  {{- with try (resources.GetRemote $url) -}}
+    {{- with .Err -}}
+      {{- warnf "Error getting remote resource %q: %s" $url . -}}
+    {{- else with .Value -}}
+      {{- $matches := findRE "<title>(?s)(.*?)(?:</title>)" .Content -}}
+      {{- if ge (len $matches) 1 -}}
+        {{- $title = index $matches 0 | replaceRE "<title>(?s)(.*?)(?:</title>)" "$1" | htmlUnescape -}}
+        {{- $title = $title | replaceRE "\\s*·\\s*GitHub.*$" "" -}}
+      {{- end -}}
+    {{- end -}}
+  {{- else -}}
+    {{- warnf "Unable to get remote resource %q" $url -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $host := (urls.Parse $url).Host -}}
+{{- $isGitHub := in $url "github.com" -}}
+
+<article class="link-card{{ if $isGitHub }} link-card--github{{ end }}">
+  <a href="{{ $url }}" target="_blank" rel="noopener noreferrer" class="link-card__anchor">
+    <div class="link-card__content">
+      <div class="link-card__title">{{ if $title }}{{ $title }}{{ else }}{{ $url | truncate 60 "..." }}{{ end }}</div>
+      {{- if and $host (not (in $title $host)) -}}
+        <div class="link-card__site">{{ $host }}</div>
+      {{- end -}}
+    </div>
+  </a>
+</article>
