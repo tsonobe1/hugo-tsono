@@ -132,17 +132,20 @@ code {
     word-break: break-all; /* 長い文字列を強制的に折り返す */
     overflow-wrap: break-word; /* 単語の途中で改行する */
     white-space: normal; /* 折り返しを有効にする */
+    font-size: 1em; /* フォントサイズを統一 */
 }
 
 /* For code blocks */
 pre {
     white-space: pre-wrap; /* テキストを折り返す */
     overflow-x: auto; /* はみ出した場合に横スクロールバーを表示 */
+    font-size: 1em; /* フォントサイズを統一 */
 }
 
 pre code {
     word-break: break-all; /* pre内のcodeも強制的に折り返す */
     overflow-wrap: break-word; /* pre内のcodeも単語の途中で改行する */
+    font-size: 1em; /* フォントサイズを統一 */
 }
 
 article img {
@@ -389,4 +392,39 @@ body.no-scroll {
     border-radius: 6px;
     overflow-x: auto;
     font-size: 1em;
+}
+
+.post-content-summary {
+  background-color: var(--accent-bg);
+  border: 1px solid var(--border-color);
+  padding: 1rem;
+  margin-top: 1rem;
+  border-radius: 8px;
+}
+
+.post-content-summary p {
+  margin-bottom: 0.5rem;
+}
+
+.post-content-summary .post-meta-tags-categories {
+  margin-top: 0.5rem;
+  font-size: 0.9em;
+  color: #aaa;
+  margin-bottom: 0.2rem; /* ここを調整 */
+}
+
+.post-content-summary h2 {
+  margin-top: 0.2rem; /* ここを調整 */
+  margin-bottom: 0; /* ここを調整 */
+  border-bottom: none; /* タイトル下のボーダーを削除 */
+  padding-bottom: 0; /* タイトル下のパディングを削除 */
+}
+
+.post-content-summary time {
+  display: block;
+  font-size: 0.85em;
+  color: #888;
+  margin-top: 0; /* ここを調整 */
+  padding-top: 0; /* ここを調整 */
+  margin-bottom: 0.2rem;
 }
