@@ -154,6 +154,18 @@ pre code {
     font-size: 1.1em !important; /* 適切なサイズに調整 */
 }
 
+@media (max-width: 768px) {
+  pre,
+  pre code,
+  .highlight,
+  .highlight pre,
+  .highlight code,
+  .chroma {
+    font-size: 0.85em !important;
+    line-height: 1.5;
+  }
+}
+
 article img {
     max-width: 100%;
     height: auto;
