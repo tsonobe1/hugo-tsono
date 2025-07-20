@@ -4,15 +4,18 @@
   <section class="post-list">
     {{ range $page := .Paginator.Pages }}
       <article class="post-item">
-        <h2><a href="{{ $page.RelPermalink }}">{{ $page.LinkTitle }}</a></h2>
-        <p>{{ $page.Description }}</p>
-        <div class="post-meta-tags-categories">
-          {{ if $page.Params.categories }}
-            {{ partial "terms.html" (dict "taxonomy" "categories" "terms" ($page.GetTerms "categories")) }}
-          {{ end }}
-          {{ if $page.Params.tags }}
-            {{ partial "terms.html" (dict "taxonomy" "tags" "terms" ($page.GetTerms "tags")) }}
-          {{ end }}
+        <div class="post-content-summary">
+          <div class="post-meta-tags-categories">
+            {{ if $page.Params.categories }}
+              {{ partial "terms.html" (dict "taxonomy" "categories" "terms" ($page.GetTerms "categories")) }}
+            {{ end }}
+            {{ if $page.Params.tags }}
+              {{ partial "terms.html" (dict "taxonomy" "tags" "terms" ($page.GetTerms "tags")) }}
+            {{ end }}
+          </div>
+          <h2><a href="{{ $page.RelPermalink }}">{{ $page.LinkTitle }}</a></h2>
+          <time datetime="{{ $page.Date.Format "2006-01-02" }}"><i class="fa-solid fa-calendar-days"></i> {{ $page.Date.Format "2006-01-02" }}</time>
+          <p>{{ $page.Description }}</p>
         </div>
       </article>
     {{ end }}
