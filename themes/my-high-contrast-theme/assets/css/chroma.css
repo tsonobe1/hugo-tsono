@@ -20,12 +20,20 @@
   padding: 0 0.4em;
 }
 
-/* Line container */
-.chroma .line {
-  display: flex;
-  width: 100%;
+/* 最終行の空白行対策 */
+.chroma .line:empty {
+  display: none;
 }
 
+/* または空白しかない行を非表示に */
+.chroma .line {
+  min-height: 0 !important;
+}
+
+.chroma .line::after {
+  content: '';
+  display: none;
+}
 /* Keywords */
 .chroma .k,
 .chroma .kc, .chroma .kd, .chroma .kn,

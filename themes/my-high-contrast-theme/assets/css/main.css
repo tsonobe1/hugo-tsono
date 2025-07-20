@@ -150,6 +150,10 @@ pre code {
     font-size: 1em; /* フォントサイズを統一 */
 }
 
+pre code {
+    font-size: 1.1em !important; /* 適切なサイズに調整 */
+}
+
 article img {
     max-width: 100%;
     height: auto;

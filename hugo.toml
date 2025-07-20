@@ -85,3 +85,5 @@ ignoreFiles = ["\\.org$"]
     codeFences = true
     guessSyntax = true
     lineNos = true
+    style = "github"
+    lineNumbersInTable = true
