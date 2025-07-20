@@ -6,8 +6,8 @@ defaultContentLanguage = 'ja'
 ignoreFiles = ["\\.org$"]
 
 [languages]
-  ja = { title = "tsono blog", languageName = "Japanese", weight = 10 }
-  en = { title = "tsono blog", languageName = "English", weight = 20 }
+  ja = { title = "tsono blog", languageName = "Japanese", weight = 10, outputs = ["HTML", "RSS", "JSON", "SITEMAP"] }
+  en = { title = "tsono blog", languageName = "English", weight = 20, outputs = ["HTML", "RSS", "JSON", "SITEMAP"] }
 
 [taxonomies]
 
@@ -17,16 +17,10 @@ ignoreFiles = ["\\.org$"]
 [permalinks]
   tags = "/tags/:slug/"
   categories = "/categories/:slug/"
-
-[outputFormats.RobotsTXT]
-mediaType = "text/plain"
-baseName = "robots"
-isPlainText = true
-notAlternative = true
-permalinkable = false
+  posts = "/posts/:year/:month/:slug/"
 
 [outputs]
-  home = ["HTML", "RSS", "JSON", "Sitemap", "RobotsTXT"]
+  home = ["HTML", "RSS", "JSON"]
   page = ["HTML"]
   section = ["HTML", "RSS"]
   taxonomy = ["HTML", "RSS"]
