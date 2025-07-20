@@ -142,16 +142,13 @@ pre {
     white-space: pre-wrap; /* テキストを折り返す */
     overflow-x: auto; /* はみ出した場合に横スクロールバーを表示 */
     font-size: 1em; /* フォントサイズを統一 */
+    margin-left: 1.3em;
 }
 
 pre code {
     word-break: break-all; /* pre内のcodeも強制的に折り返す */
     overflow-wrap: break-word; /* pre内のcodeも単語の途中で改行する */
     font-size: 1em; /* フォントサイズを統一 */
-}
-
-pre code {
-    font-size: 1.1em !important; /* 適切なサイズに調整 */
 }
 
 @media (max-width: 768px) {
