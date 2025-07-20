@@ -8,6 +8,7 @@
   --border-color: #444;
   --button-bg: #333;
   --button-color: #e0e0e0;
+  --muted-text-color: #888;
 }
 
 html[data-theme='light'] {
@@ -19,6 +20,7 @@ html[data-theme='light'] {
   --border-color: #dee2e6;
   --button-bg: #e9ecef;
   --button-color: #222222;
+  --muted-text-color: #666;
 }
 
 /* General body and typography */
@@ -423,7 +425,7 @@ body.no-scroll {
 .post-content-summary time {
   display: block;
   font-size: 0.85em;
-  color: #888;
+  color: var(--muted-text-color);
   margin-top: 0; /* ここを調整 */
   padding-top: 0; /* ここを調整 */
   margin-bottom: 0.2rem;
