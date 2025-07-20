@@ -158,7 +158,7 @@ pre code {
   .highlight pre,
   .highlight code,
   .chroma {
-    font-size: 0.85em !important;
+    font-size: 1em !important;
     line-height: 1.5;
   }
 }

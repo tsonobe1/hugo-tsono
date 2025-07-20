@@ -225,16 +225,32 @@ button#theme-toggle {
 }
 
 /* モバイル対応 */
- @media (max-width: 600px) {
+@media (max-width: 600px) {
   .link-card {
+    /* flex-direction: column; REMOVED */
+    align-items: center; /* Changed from flex-start */
+    padding: 0.8em; /* モバイル用にパディングを調整 */
+  }
+
+  .link-card__content {
+    display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    flex-grow: 1;
+    min-width: 0;
+  }
+
+  .link-card__title {
+    font-size: 1em; /* モバイル用にフォントサイズを調整 */
+  }
+
+  .link-card__site {
+    font-size: 0.85em; /* モバイル用にフォントサイズを調整 */
   }
 
   .link-card:not(.link-card--github)::after,
   .link-card--github::after {
-    margin-left: 0;
-    margin-top: 0.5em;
+    margin-left: 0.5em; /* Changed from 0 */
+    margin-top: 0; /* Changed from 0.5em */
     position: static; /* モバイルではstaticに戻す */
     transform: none;
   }
