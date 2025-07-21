@@ -21,7 +21,7 @@ ignoreFiles = ["\\.org$"]
 
 [outputs]
   home = ["HTML", "RSS", "JSON"]
-  page = ["HTML"]
+  page = ["HTML", "Sitemap"]
   section = ["HTML", "RSS"]
   taxonomy = ["HTML", "RSS"]
   term = ["HTML", "RSS"]

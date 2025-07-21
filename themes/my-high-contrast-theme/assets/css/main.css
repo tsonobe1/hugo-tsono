@@ -1,10 +1,10 @@
 /* Base styles and variables */
 :root {
-  --bg-color: #1a1a1a;
+  --bg-color: #0e0e0e;
   --text-color: #e0e0e0;
   --link-color: #61dafb;
   --link-hover-color: #4dff58;
-  --accent-bg: #282c34;
+  --accent-bg: #1d1f23;
   --border-color: #444;
   --button-bg: #333;
   --button-color: #e0e0e0;
