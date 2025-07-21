@@ -7,6 +7,7 @@ description: "Bootstrap5では公式にサポートされていない入れ子�
 tags: [Bootstrap5, modal, jQuery, JavaScript]
 categories: [tips]
 draft: false
+url: /en/posts/2025/07/bootstrap5_nested_modal/
 ---
 
 ウェブアプリ開発において、ユーザーからの操作や情報入力を段階的に進めるために、複数のモーダルを重ねて表示したいケースがしばしば存在します。しかしBootstrap5では標準のモーダル機能として入れ子のモーダルをサポートしていません。

@@ -8,6 +8,7 @@ tags: [Bootstrap5, modal, jQuery, JavaScript]
 categories: [tips]
 draft: false
 translated_by: "ChatGPT 4o"
+url: /posts/2025/07/bootstrap5_nested_modal/
 ---
 
 In web application development, it's often necessary to guide users through multi-step interactions or inputs. One way to achieve this is by displaying multiple modals in a stacked manner. However, Bootstrap 5 does not officially support nested modals as part of its standard functionality.
