@@ -6,7 +6,7 @@ lastmod: 2025-07-16T08:30:34+09:00
 tags: ["Code Review", "Psychological Safety", "Mid-career Beginner"]
 categories: ["Poem", "Work Style", "Career"]
 draft: false
-url: /en/posts/2025/07/review_is_not_exam/
+slug: review_is_not_exam
 translated_by: "ChatGPT 4o"
 ---
 

@@ -9,7 +9,7 @@ lastmod: 2025-07-03T08:27:56+09:00
 tags: ["ショートカット", "macOS", "入力ソース"]
 categories: ["tips"]
 draft: false
-url: /posts/2025/07/macOS_shift_space_input_source/
+slug: macOS_shift_space_input_source
 ---
 
 ## Summary {#summary}

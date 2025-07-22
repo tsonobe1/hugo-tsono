@@ -8,7 +8,7 @@ lastmod: 2025-07-03T08:27:56+09:00
 tags: ["shortcut", "macOS", "input source"]
 categories: ["tips"]
 draft: false
-url: /en/posts/2025/07/macOS_shift_space_input_source/
+slug: macOS_shift_space_input_source
 translated_by: "Google's Gemini 2.5 Flash model"
 ---
 
