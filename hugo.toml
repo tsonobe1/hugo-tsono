@@ -87,3 +87,5 @@ ignoreFiles = ["\\.org$"]
     # lineNos = true
     style = "github"
     # lineNumbersInTable = true
+
+ignoreFiles = ["\\.org$"]
