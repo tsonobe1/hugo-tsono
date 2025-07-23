@@ -4,6 +4,7 @@ languageCode = 'ja'
 title = 'tsono blog'
 theme = "my-high-contrast-theme"
 defaultContentLanguage = 'ja'
+defaultContentLanguageInSubdir = true
 
 [languages]
   [languages.en]
@@ -28,7 +29,7 @@ defaultContentLanguage = 'ja'
 #  posts = "/posts/:year/:month/:slug/"
 
 [outputs]
-  home = ["HTML", "RSS", "JSON", "Sitemap"]
+  home = ["HTML", "RSS", "JSON"]
   page = ["HTML", "Sitemap"]
   section = ["HTML", "RSS"]
   taxonomy = ["HTML", "RSS"]
