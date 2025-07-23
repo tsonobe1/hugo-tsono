@@ -1,26 +1,34 @@
+ignoreFiles = ["\\.org$"]
 baseURL = 'https://blog.tsono.org'
 languageCode = 'ja'
 title = 'tsono blog'
 theme = "my-high-contrast-theme"
 defaultContentLanguage = 'ja'
-ignoreFiles = ["\\.org$"]
 
 [languages]
-  ja = { title = "tsono blog", languageName = "Japanese", weight = 10, outputs = ["HTML", "RSS", "JSON", "SITEMAP"] }
-  en = { title = "tsono blog", languageName = "English", weight = 20, outputs = ["HTML", "RSS", "JSON", "SITEMAP"] }
+  [languages.en]
+    languageName = "English"
+    weight = 10
+  [languages.ja]
+    languageName = "Japanese"
+    weight = 20
+
+[sitemap]
+  changefreq = "monthly"
+  priority = 0.5
+  filename = "sitemap.xml"
 
 [taxonomies]
-
   category = "categories"
   tag = "tags"
 
-[permalinks]
-  tags = "/tags/:slug/"
-  categories = "/categories/:slug/"
-  posts = "/posts/:year/:month/:slug/"
+#[permalinks]
+#  tags = "/tags/:slug/"
+#  categories = "/categories/:slug/"
+#  posts = "/posts/:year/:month/:slug/"
 
 [outputs]
-  home = ["HTML", "RSS", "JSON"]
+  home = ["HTML", "RSS", "JSON", "Sitemap"]
   page = ["HTML", "Sitemap"]
   section = ["HTML", "RSS"]
   taxonomy = ["HTML", "RSS"]
