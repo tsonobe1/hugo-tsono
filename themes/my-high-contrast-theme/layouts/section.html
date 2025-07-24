@@ -1,8 +1,21 @@
 {{ define "main" }}
   <h1>{{ .Title }}</h1>
-  {{ .Content }}
-  {{ range .Pages }}
-    <h2><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h2>
-    {{ .Summary }}
-  {{ end }}
+  <section class="post-list">
+    {{ range .Pages }}
+      <article class="post-item">
+        <div class="post-content-summary">
+          <div class="post-meta-tags-categories">
+            {{ with .GetTerms "categories" }}
+              {{ partial "terms.html" (dict "taxonomy" "categories" "terms" .) }}
+            {{ end }}
+            {{ with .GetTerms "tags" }}
+              {{ partial "terms.html" (dict "taxonomy" "tags" "terms" .) }}
+            {{ end }}
+          </div>
+          <h2><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h2>
+          <p>{{ .Description }}</p>
+        </div>
+      </article>
+    {{ end }}
+  </section>
 {{ end }}

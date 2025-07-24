@@ -1,7 +1,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width">
 <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ printf "%s | %s" .Title site.Title }}{{ end }}</title>
-{{ if or (eq .Kind "taxonomy") (eq .Kind "term") }}
+{{ if or (eq .Kind "taxonomy") (eq .Kind "term") (eq .Kind "section") }}
 <meta name="robots" content="noindex">
 {{ end }}
 {{ with .Description }}<meta name="description" content="{{ . }}">{{ end }}
