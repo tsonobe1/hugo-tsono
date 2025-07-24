@@ -30,7 +30,7 @@ defaultContentLanguageInSubdir = true
 
 [outputs]
   home = ["HTML", "RSS", "JSON"]
-  page = ["HTML", "Sitemap"]
+  page = ["HTML"]
   section = ["HTML", "RSS"]
   taxonomy = ["HTML", "RSS"]
   term = ["HTML", "RSS"]
