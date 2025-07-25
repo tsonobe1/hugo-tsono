@@ -10,9 +10,11 @@ defaultContentLanguageInSubdir = true
   [languages.en]
     languageName = "English"
     weight = 10
+    baseURL = "https://blog.tsono.org/en/"
   [languages.ja]
     languageName = "Japanese"
     weight = 20
+    baseURL = "https://blog.tsono.org/ja/"
 
 [sitemap]
   changefreq = "monthly"
