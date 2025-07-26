@@ -18,12 +18,12 @@
   </div>
 
   <div class="post-meta-tags-categories">
-    {{ with .GetTerms "categories" }}
-      {{ partial "terms.html" (dict "taxonomy" "categories" "terms" .) }}
+    {{ if .Params.categories }}
+      {{ partial "terms.html" (dict "taxonomy" "categories" "terms" (.GetTerms "categories")) }}
     {{ end }}
 
-    {{ with .GetTerms "tags" }}
-      {{ partial "terms.html" (dict "taxonomy" "tags" "terms" .) }}
+    {{ if .Params.tags }}
+      {{ partial "terms.html" (dict "taxonomy" "tags" "terms" (.GetTerms "tags")) }}
     {{ end }}
   </div>
 
@@ -31,10 +31,10 @@
   {{ partial "translation_note.html" . }}
   {{ partial "share_buttons.html" . }}
 
-    {{ if and site.Params.comments.enabled (eq site.Params.comments.provider "giscus") }}
-      <section class="comments">
-        <h3>{{ i18n "comments_title" }}</h3>
-        {{ partial "giscus.html" . }}
-      </section>
-    {{ end }}
+    {{ if .Site.Params.comments.enabled }}
+    <section class="comments">
+      <h3>{{ i18n "comments_title" }}</h3>
+      {{ template "_internal/disqus.html" . }}
+    </section>
+  {{ end }}
 {{ end }}
