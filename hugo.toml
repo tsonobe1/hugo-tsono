@@ -6,15 +6,19 @@ theme = "my-high-contrast-theme"
 defaultContentLanguage = 'ja'
 defaultContentLanguageInSubdir = true
 
+
+
+[services]
+  [services.disqus]
+    shortname = 'blog-tsono'
+
 [languages]
   [languages.en]
     languageName = "English"
     weight = 10
-    baseURL = "https://blog.tsono.org/en/"
   [languages.ja]
     languageName = "Japanese"
     weight = 20
-    baseURL = "https://blog.tsono.org/ja/"
 
 [sitemap]
   changefreq = "monthly"
@@ -59,7 +63,6 @@ defaultContentLanguageInSubdir = true
 
   [params.comments]
     enabled = true
-    provider = "giscus"
 
 [params.comments.giscus]
   repo = "tsonobe1/hugo-tsono"
