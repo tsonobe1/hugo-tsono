@@ -15,6 +15,19 @@ document.addEventListener("DOMContentLoaded", () => {
       }
   }
 
+  function reloadDisqus() {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: function () {
+          this.page.url = window.location.href;
+          this.page.identifier = window.location.pathname;
+          this.page.title = document.title;
+        }
+      });
+    }
+  }
+
   // 初期状態をlocalStorageから
   const savedTheme = localStorage.getItem("theme") || "dark";
   html.setAttribute("data-theme", savedTheme);
@@ -28,6 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem("theme", next);
     updateIcon(next);
     setGiscusTheme(next === "dark" ? "dark" : "light");
+    reloadDisqus();
   });
 
   // giscusからのメッセージを監視してテーマを切り替える
