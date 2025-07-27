@@ -75,7 +75,7 @@ defaultContentLanguageInSubdir = true
   emitMetadata = false
   inputPosition = "bottom"
   theme = "preferred_color_scheme"
-  lang = "ja"
+  
   loading = "lazy"
 
   [params.social]
