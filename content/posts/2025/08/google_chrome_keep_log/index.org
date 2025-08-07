@@ -1,0 +1,28 @@
+#+TITLE: Google Chromeでページを遷移したときにログを残す
+#+IMAGE:
+#+DATE: 2025-08-07T09:26:01+0900
+#+HUGO_AUTO_SET_LASTMOD: t
+#+DESCRIPTION:
+#+tags: chrome debug 
+#+categories: tips
+#+DRAFT: false
+#+HUGO_BUNDLE: 2025/08/google_chrome_keep_log
+#+EXPORT_FILE_NAME: index
+
+Chromeの開発者ツールでコンソール・ネットワークを見てデバッグをする場合、ページのリロードによって履歴が消えてしまう。その対処法。
+
+* コンソールログ
+1. 開発者ツール
+2. 歯車マーク
+3. コンソール > 移動時にログを保持にチェック
+   
+#+DOWNLOADED: file:/var/folders/6m/b6v0g20j3k96ch8r7w54tqcw0000gn/T/TemporaryItems/NSIRD_screencaptureui_LliOc1/スクリーンショット 2025-08-07 20.21.16.png @ 2025-08-07 20:21:19
+   [[file:コンソールログ/2025-08-07_20-21-19_スクリーンショット 2025-08-07 20.21.16.png]]
+
+* ネットワーク
+1. 開発者ツール
+2. 歯車マーク
+3. ネットワーク > ログを保持にチェック
+   
+#+DOWNLOADED: file:/var/folders/6m/b6v0g20j3k96ch8r7w54tqcw0000gn/T/TemporaryItems/NSIRD_screencaptureui_ksukLp/スクリーンショット 2025-08-07 20.22.54.png @ 2025-08-07 20:22:57
+   [[file:ネットワーク/2025-08-07_20-22-57_スクリーンショット 2025-08-07 20.22.54.png]]
