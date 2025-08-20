@@ -82,7 +82,7 @@ defaultContentLanguageInSubdir = true
     github = "https://github.com/tsonobe1"
     twitter = "https://twitter.com/tsonobe_"
 
-  googleAnalytics = "G-DDY3NMJKLW"
+  #  googleAnalytics = "G-DDY3NMJKLW"
 
 [security]
   [security.http]
