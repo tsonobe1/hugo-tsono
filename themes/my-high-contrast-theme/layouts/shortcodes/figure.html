@@ -1,0 +1,21 @@
+{{ $src := .Get "src" }}
+{{ $image := .Page.Resources.GetMatch $src }}
+
+{{ if not $image }}
+  {{ $image = resources.Get $src }}
+{{ end }}
+
+{{ if $image }}
+  <figure class="image-container" {{ with .Get "width" }}style="max-width: {{ . }}px; margin-left: auto; margin-right: auto;"{{ end }}>
+    <img src="{{ $image.RelPermalink }}" 
+         alt="{{ .Get "alt" | default (.Get "caption") }}" 
+         loading="lazy">
+    {{ with .Get "caption" | default (.Get "title") }}
+      <figcaption>{{ . }}</figcaption>
+    {{ end }}
+  </figure>
+{{ else }}
+  <div style="border: 2px solid orange; padding: 1em;">
+    <p>Image not found: {{ $src }}</p>
+  </div>
+{{ end }}

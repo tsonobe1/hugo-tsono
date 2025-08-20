@@ -1,0 +1,1039 @@
+#+TITLE: ラズパイで写真管理をするようになって、1年経った
+#+IMAGE:
+#+DATE: 2025-08-13T08:06:24+0900
+#+HUGO_AUTO_SET_LASTMOD: t
+#+DESCRIPTION:
+#+HUGO_TAGS: RaspberryPi Immich 写真管理 自宅サーバー Cloudflare "Cloudflare Tunnel"
+#+HUGO_CATEGORIES: tips
+#+DRAFT: false
+#+HUGO_BUNDLE: 2025/08/raspberry_pi_self_hosted_photo
+#+EXPORT_FILE_NAME: index
+#+mermaid: true
+
+* はじめに
+
+src="はじめに/2025-08-17_20-06-15_IMG_6183.jpg"
+width=720
+caption="自宅サーバの様子（ラズパイ・HDD・ルータ）"
+alt="自宅サーバの様子（ラズパイ・HDD・ルータ）"
+
+2024年6月から、自宅サーバを作って「おうちGoogleフォト」的な写真・動画管理環境を運用しています。
+スマホで撮影した写真・動画をほぼ無制限にバックアップし、タイムライン・アルバムなどの機能で快適に閲覧できます。
+
+video="はじめに/2025-08-19_21-51-54_画面収録 2025-08-19 21.48.111.mp4"
+width=720
+
+遠方の両親には孫専用アルバムを共有しています。
+
+運用開始から約1年、安定稼働しているので、構築手順やハマりどころなどを振り返ってみます。
+
+* モチベーション
+2024年前半に第一子が生まれ、写真・動画が一気に増えました。
+それまで Google フォト のフリープランで運用していましたが[無制限が終了](https://www.itmedia.co.jp/news/articles/2011/12/news057.html)したことで容量が 16GB ほどに制限されてしまいおり、さすがに限界を迎えました。
+
+/*この記事内で「写真」と表記している箇所は「写真と動画」 を意味しています。*/
+
+息子の写真を撮るたびに容量が気になります...。長時間の動画も気にせず撮りたい...。容量問題は解決しなければならない課題でした。
+
+この課題の達成条件は👇️の5つです
+1. 事実上、無限に写真と動画が保存できること
+2. スマホから保存・閲覧できること
+3. サブスクはしないこと
+4. Google フォトに保存した大量のコンテンツを引き継げること
+5. 息子の写真を、遠方の両親にラクにシェアできること
+   - ラインで逐次送るのが面倒なので「このアプリのここをタップすれば孫の写真が見られるよ！」という状態にしたい
+
+「サブスクしないこと」は写真を削除しない限り永続的に課金し続ける必要があるからです。私の現在（2025/08）の写真・動画データは合計265.6GBあります。
+
+この量をサブスクで運用すると...
+- [[https://www.apple.com/jp/icloud/][iCloud]] 2TB ¥1,500/月
+- [[https://one.google.com/about/plans?hl=ja&g1_landing_page=0][Google]] 2TB ¥1,450/月
+- [[https://www.amazon.co.jp/b?ie=UTF8&node=5262648051][Amazonフォト]] は動画が5GBまでなので却下
+- [[https://mitene.us/][みてね]] は動画一本の長さが2分までに制限されるので却下
+
+Googleでも年で ¥17,400 かかかりますし、それが永続的に続くと想像しながら暮らすのはストレスです。
+個人的には、むしろHDDを買って手元で管理するほうが精神衛生的に良いです。
+
+この記事では、
+1. 容量無制限フォトストレージの構築（1.2.3.4.）
+2. 遠隔地の写真をシェアする(5.)
+という2つのゴールに分けて解説していきます。
+
+* 完成図
+src="完成図/2025-08-18_23-02-08_IMG_6205.jpg"
+width=720
+caption="左から、ラズパイ・ルータ・HDD・ONU"
+
+#+begin_src mermaid
+graph LR
+
+subgraph lan["LAN"]
+subgraph rapy["Raspberry Pi 4"]
+    immich-server
+    cloudflared
+end
+
+subgraph hdds["HDDケース"]
+    hdd1
+    hdd2
+end
+
+web_in_lan
+mobile_in_lan
+end
+
+    immich-server -->|"DB / 写真"| hdd1["HDD 1"]
+    hdd1 -->|"バックアップ"| hdd2["HDD 2"]
+
+    mobile_in_lan["Mobile App"] <--> immich-server
+    web_in_lan["Web App"] <--> immich-server
+
+    cloudflared <--> immich-server
+    cloudflared <--> |"Cloudflare Tunnel"|cloudflare["Cloudflare"]
+    
+    cloudflare <--> |"サービストークン"|mobile["Mobile App"]
+    cloudflare <--> |"ワンタイムパスワード / SSO認証"|web["Web App"]
+#+end_src
+
+上の図では、LAN 内の Immich サーバが Cloudflare を通じて外部公開される流れを示しています。モバイルアプリからはトークン、WebアプリからはSSO認証を通じてアクセスします。
+
+**** 登場人物
+1. Immich: 写真・動画管理用のOSSアプリケーション
+2. Raspberry Pi: Immichをホストするサーバ
+3. HDD・ケース: DB,写真の保存領域
+4. Cloudflare: LAN外との通信用のドメイン、トンネリング
+
+* ゴール1: 容量無制限フォトストレージの構築
+
+自宅内で写真の保存・閲覧を可能にするため、👇️の環境を構築します
+#+begin_src mermaid
+graph
+
+subgraph lan["LAN"]
+subgraph rapy["Raspberry Pi 4"]
+    immich-server
+end
+
+subgraph hdds["HDDケース"]
+    hdd1
+    hdd2
+end
+
+web_in_lan
+mobile_in_lan
+end
+
+    immich-server -->|"DB / 写真"| hdd1["HDD 1"]
+    hdd1 -->|"バックアップ"| hdd2["HDD 2"]
+
+    mobile_in_lan["Mobile App"] <--> immich-server
+    web_in_lan["Web App"] <--> immich-server
+#+end_src
+
+** 必要なもの
+写真管理用のアプリケーションとそれをホストするサーバ、そして保存領域が必要です。
+
+*** アプリケーション
+OSSのフォトアプリケーションはたくさんありますが、我が家はスマホでのみ写真を撮影するためモバイルアプリの存在が重要です。
+
+👇️の比較表から見たときにモバイルアプリとアルバム機能がある *Immich* を採用しました。
+
+https://github.com/meichthys/foss_photo_libraries
+
+
+url=https://immich.app/
+description="Self-hosted photo and video management solution"
+title="Home | Immich"
+image=https://immich.app/img/feature-panel.png
+
+これはGoogleフォトライクな写真・動画管理アプリです。別のツールを使用することでGoogle フォトからのデータ移行（後述）もサポートしています。
+
+*** サーバ
+サーバは Raspberry Pi 4 にしました。
+
+メインの目的ではありませんが、クリアケースに入れて基盤が見えている無骨な姿にしたかったんですよね。
+昔、ゲームボーイ や NINTENDO64 にあった[[https://www.nintendo.co.jp/n01/n64/hardware/clear.html][スケルトンモデル]]が好きでした...
+
+ラズパイなら小さくて扱いやすいし、クリアケースもよく売っているので選びやすいのです。
+
+url=https://amzn.to/4fJMDiX
+image=https://m.media-amazon.com/images/I/71RL4VEhHkS._AC_SY300_SX300_QL70_ML2_.jpg
+
+url=https://www.amazon.co.jp/dp/B08PTQMZY3?ref_=ppx_hzod_title_dt_b_fed_asin_title_0_1
+image=https://m.media-amazon.com/images/I/71bdQexTguL._SS568_.jpg
+
+OSのインストール用に必要
+
+url=https://amzn.to/4mJ9zBl
+image=https://m.media-amazon.com/images/I/513LEFJLOML._AC_.jpg
+
+電源はケースについてます
+
+Immichの必須要件をクリアしている必要はあるので注意。
+
+url=https://immich.app/docs/install/requirements/
+title="Requirements | Immich"
+description="Hardware and software requirements for Immich:"
+image=https://immich.app/img/feature-panel.png
+
+*** 保存領域
+容量については物理HDDを2つ（1つはバックアップ用）用意。
+
+url=https://kakaku.com/item/K0000385373/
+description="TEST容量1TBの3.5インチHDD。WESTERN DIGITAL WD10EZEX [1TB SATA600 7200]全国各地のお店の価格情報がリアルタイムにわかるのは価格.comならでは。製品レビューやクチコミもあります。"
+title="WD10EZEX [1TB SATA600 7200]"
+
+
+url=https://amzn.to/4fFb29p
+description="Amazon.co.jp: ロジテック HDD SSD コピー スタンド デュプリケーター クローン 換装 usb対応 SATA 【 エラースキップ機能 / 3.5インチ / 2.5インチ / Win/Mac/テレビ 】 国内メーカー LHR-2BDPU3ES : パソコン・周辺機器"
+image=https://m.media-amazon.com/images/I/71DyDE5k9bL._AC_SL1500_.jpg 
+
+
+玄人志向のスタンドに裸のHDDを立てて、クリアケースに入れたラズパイを隣においておく...
+これもやりたかったんですよね...。
+
+さて、必要なものが揃ったら次にラズパイをセットアップします
+
+** ラズパイとHDDのセットアップ
+#+begin_src mermaid
+graph
+
+subgraph lan["LAN"]
+subgraph rapy["Raspberry Pi 4"]
+    immich-server
+end
+
+subgraph hdds["HDDケース"]
+    hdd1
+    hdd2
+end
+
+web_in_lan
+mobile_in_lan
+end
+
+    immich-server -->|"DB / 写真"| hdd1["HDD 1"]
+    hdd1 -->|"バックアップ"| hdd2["HDD 2"]
+
+    mobile_in_lan["Mobile App"] <--> immich-server
+    web_in_lan["Web App"] <--> immich-server
+
+    style rapy fill:#E6FFFA,stroke:#008080,stroke-width:3px,color:black
+    style hdds fill:#E6FFFA,stroke:#008080,stroke-width:3px,color:black
+    #+end_src
+
+*** OSのインストール
+基本的には公式の手順に従います。OSを入れたSDカードをラズパイに指してbootする流れです。
+
+url=https://www.raspberrypi.com/documentation/computers/getting-started.html#sd-cards
+title="Getting started - Raspberry Pi Documentation"
+description="The official documentation for Raspberry Pi computers and microcontrollers"
+image=https://www.raspberrypi.com/documentation/images/opensocial.png
+
+*** ローカルIP固定化
+ラズパイが起動したらローカルIPを固定します。今後ラズパイにログインしたり、自宅から Immich にアクセスしたりするとき、このIPを使うためです。DHCPによる自動割り当てだとIPが変わってしまうことがあるので、固定化しておきましょう。
+
+ルータのDHCP設定画面で、 *ラズパイの有線LANのMACアドレス* と任意のIPアドレスを手動設定します。
+
+src="ゴール1：容量無制限フォトストレージの構築/2025-08-13_22-26-08_DHCP Settings.png"
+width=720
+caption="バッファローのルータ管理画面"
+
+画像の一番下の行で、ラズパイの有線LANのMACアドレスに対して任意のIPアドレスを紐づけています。
+MACアドレスは以下の手順で調べられます
+
+1. ラズパイでコマンドラインを開く
+2. ~ip a~ を打ち込む
+   #+begin_src sh
+    ip a
+   #+end_src
+3. ~eth0:~ の ~link/ether~ の後に書いてある
+
+wifiを使うなら ~wlan0~ を探すと良いですが、速度を考えると有線がおすすめです。
+
+なお、使いたいIPアドレスが別の機器に設定されている場合、そのままでは手動割り当てできません。どうしても特定のIPアドレス（今回の例では 11.14）を使いたい場合は、以下の手順に従います。
+1. 特定のIPアドレスを使用中の機器をネットワークから切断する
+2. ルータを再起動してIPアドレスの割り当てをリセットする
+3. 手動設定する
+
+家庭用ルータのDHCPサーバは「利用可能な番号から順に」割り当てることが多く、結果として若い番号から埋まっていく傾向があります（機種や設定で変わる）。そのため、若い番号を使いたい場合は、多くの機器を切断したうえでルータを再起動しなければならないと思われます。
+
+また、『ラズパイ ip 固定』で検索すると、 ~/etc/dhcpcd.conf~ を編集したり ~NetworkManager~ を設定したりと様々な方法が紹介されています。しかし私の環境ではどれもうまくいかず...。最終的にはルータ側で設定することによって成功しました。ちなみにラズパイ公式も、この方法を推奨しているようです。
+
+**** とても参考になった記事
+
+https://qiita.com/mochi_2225/items/3abcc45db6378e7dbb17
+
+*** VNCやSSHによる遠隔操作
+ラズパイのセットアップが終わったら、いちいちモニタに接続するのも面倒なので遠隔で操作できるようにしておきたいです。
+
+https://www.indoorcorgielec.com/resources/raspberry-pi/raspberry-pi-vnc/
+
+https://raspi-school.com/ssh/
+
+また、sshしたときにパスワードを要求されるのも面倒なので、公開鍵認証できるようにしておくと楽ちん
+
+https://qiita.com/Olykoek/items/32d643e5f39bf7b8db74#公開鍵認証の設定方法クライアント側win10
+
+*** ハードディスクのフォーマットとパーティション設定
+次に、HDDケースにHDDを設置して、ラズパイとHDDケースをつなげます。
+
+src="ゴール1:_容量無制限フォトストレージの構築/2025-08-19_09-21-57_IMG_9131.jpg"
+width=720
+caption="床で作業している様子"
+
+src="ゴール1:_容量無制限フォトストレージの構築/2025-08-19_09-25-05_IMG_9940.jpg"
+width=500
+caption="2台目を接続"
+
+その後、以下を参考に2つのHDDをマウントします。
+
+https://qiita.com/shimanuki-yu/items/cddf7e1d490ad66743f3
+
+/私の場合、メインは ~/mnt/hdd1~ 、バックアップ用は ~/mnt/hdd2~ にマウントしました。/
+
+ここまでで、ラズパイにOSを入れ、ローカルIPを固定し、HDDをマウントするところまで完了しました。
+*次はいよいよ Immich の導入です。*
+
+** Immichのセットアップ
+#+begin_src mermaid
+graph
+
+subgraph lan["LAN"]
+subgraph rapy["Raspberry Pi 4"]
+    immich-server
+end
+
+subgraph hdds["HDDケース"]
+    hdd1
+    hdd2
+end
+
+web_in_lan
+mobile_in_lan
+end
+
+    immich-server -->|"DB / 写真"| hdd1["HDD 1"]
+    hdd1 -->|"バックアップ"| hdd2["HDD 2"]
+
+    mobile_in_lan["Mobile App"] <--> immich-server
+    web_in_lan["Web App"] <--> immich-server
+
+    style immich-server fill:#E6FFFA,stroke:#008080,stroke-width:3px,color:black
+    #+end_src
+
+*** Dockerでのセットアップと設定ファイルの用意
+公式のクイックスタートと同じくDockerで立ち上げるのが楽です。
+
+url=https://immich.app/docs/overview/quick-start
+image=https://immich.app/img/feature-panel.png
+title="Quick start | Immich"
+description="Here is a quick, no-choices path to install Immich and take it for a test drive."
+
+なお ~.env~ ファイルのうち写真アップロード先と・DB保存先は、先程マウントした ~hdd1~ にします。
+#+begin_src env
+  UPLOAD_LOCATION=/mnt/hdd1/immich/images
+  DB_DATA_LOCATION=/mnt/hdd1/immich/postgres
+#+end_src
+
+*** Immich管理アカウント作成
+~docker compose up -d~ によってコンテナ立ち上げが成功すると、 ~http://<machine-ip-address>:2283~ でImmichにアクセスできます。アクセス後はadminユーザの作成をします。
+
+src="ゴール1:_容量無制限フォトストレージの構築/2025-08-19_13-58-38_スクリーンショット 2025-08-19 13.58.29.png"
+width=400
+caption="アクセス後の画面"
+
+adminユーザなら一般ユーザアカウントも作成できるので、そのまま私・妻用のアカウントを作ってしまいます
+
+url=https://immich.app/docs/administration/user-management#register-the-admin-user
+title="User Management"
+description="Immich supports multiple users, each with their own library."
+image=https://immich.app/img/feature-panel.png
+
+また、ここでStorageTemplateの設定を確認しておくとよいです
+
+*** StorageTemplate
+
+url=https://immich.app/docs/administration/storage-template/
+title="Storage Template | Immich"
+image=https://immich.app/img/feature-panel.png
+
+これは写真や動画の保存先・フォルダ構造やファイル名の付け方を設定できる機能です。  
+
+私は ~UPLOAD_LOCATION/library/ユーザ名/2022/2022-02-03/IMAGE_56437.jpg~ のような形式で保存されるように設定しています。
+
+この設定は、設定変更以降に追加した写真から反映されます。変更前に追加済であったものは、 ~ジョブ → ストレージテンプレートの移行~ ボタンを押すことで反映可能です。  
+
+src="ゴール1：容量無制限フォトストレージの構築/2025-08-14_09-11-23_スクリーンショット 2025-08-14 9.11.17.png"
+caption="Immich ストレージテンプレートの移行"
+width=720
+
+私の場合、Google フォト から大量の写真を移動してきたあとに設定をしたので、反映にかなりの時間がかかりました。好みがあればあらかじめ設定しておくことをおすすめします。
+
+ここまでで、ラズパイ・HDD・Immich のセットアップが完了しました。
+次は Googleフォト にある写真・動画を Immich 経由でHDDに保存していきます。
+
+** Googleフォトからの写真移行
+
+#+begin_src mermaid
+graph
+
+subgraph lan["LAN"]
+subgraph rapy["Raspberry Pi 4"]
+    immich-server
+end
+
+GoogleTakeout -->|"immich-go"| immich-server
+
+subgraph hdds["HDDケース"]
+    hdd1
+    hdd2
+end
+
+web_in_lan
+mobile_in_lan
+end
+
+    immich-server -->|"DB / 写真"| hdd1["HDD 1"]
+    hdd1 -->|"バックアップ"| hdd2["HDD 2"]
+
+    mobile_in_lan["Mobile App"] <--> immich-server
+    web_in_lan["Web App"] <--> immich-server
+
+    %% ノードスタイル
+    style immich-server fill:#E6FFFA,stroke:#008080,stroke-width:3px,color:black
+    style GoogleTakeout fill:#E6FFFA,stroke:#008080,stroke-width:3px,color:black
+    style hdd1 fill:#E6FFFA,stroke:#008080,stroke-width:3px,color:black
+
+    %% 矢印スタイル (index は上から数えた順)
+    %% GoogleTakeout --> immich-server が最初のエッジ (0)
+    %% immich-server --> hdd1 が次のエッジ (1)
+    linkStyle 0 stroke:#008080,stroke-width:4px,color:008080
+    linkStyle 1 stroke:#008080,stroke-width:4px,color:008080
+#+end_src
+
+~immich-go~ を使います。Google フォトの 写真をImmichで管理する保存領域に移行できるコマンドラインツールです。
+
+必要な材料は👇️です
+1. immich-go
+2. Google Takeout
+   - Google アカウントに保存されているデータをエクスポートしたもの
+3. ユーザアカウントごとのImmich API キー
+   - Immichに対してアプリケーション外から操作をする際に必要な鍵
+
+具体的には、
+#+begin_src sh
+  ./immich-go -server=http://<machine-ip-address>:2283 -key=<Immichで作成したAPI キー> upload -create-albums -google-photos <ダウンロードしたGoogle Photo Takeout のパス>
+#+end_src
+とコマンドを実行することで、Googleから落としてきたコンテンツをImmichの任意ユーザのコンテンツとして取り込むことが出来ます。
+
+*** 写真の重複について
+バックアップ前に“写真がどこにあるか”を整理しておく必要があります。過去のすべての写真がスマホに入っていれば Immich のモバイルアプリを起動して、スマホからバックアップするだけで済みます。
+しかし実際には「Googleフォトだけにある写真」「スマホだけにある写真」「両方にある写真」が混在しています。
+
+#+begin_src ascii
+// Google フォトに保存された写真と、スマホに保存された写真が一部重なってるイメージ
+時系列:      2008 ------2017-------2023----------> 新しい
+
+Googleフォト: [===========++++++++++]
+スマホ       :           [++++++++++==========]
+#+end_src
+
+同じ写真がバックアップされてしまう容量がもったいないです。今回の方針では、2008〜2023年は Google フォトから移行し、それ以降はスマホから直接バックアップすることにしました。
+
+厳密に分けることは難しく2024年前後に重複が発生しますが、Immich には重複検出・削除機能があるため、多少は許容範囲としています。
+
+video="ゴール1:_容量無制限フォトストレージの構築/2025-08-19_21-52-23_画面収録 2025-08-19 21.49.57.mp4"
+width=720
+
+/Immichの重複検出・削除機能/
+
+
+*** immich-go
+
+https://github.com/simulot/immich-go
+
+では immich-go をダウンロードします。 ~<> Code~ 押下 > ~Download ZIP~ でOK。
+
+src="ゴール1:_容量無制限フォトストレージの構築/2025-08-16_08-09-42_スクリーンショット 2025-08-16 8.09.31.png"
+caption="immich-goのリポジトリ"
+width=720
+
+PC内の好きな場所においておきます
+
+*** Google Takeout
+
+Takeout は以下から出力できます。
+
+url=https://takeout.google.com/
+title="Google データ エクスポート"
+
+Google フォトのみチェックボックスをONにして ~次のステップ~ を押下
+
+src="ゴール1:_容量無制限フォトストレージの構築/2025-08-16_08-13-54_スクリーンショット 2025-08-16 8.13.50.png"
+caption="Google データ エクスポート"
+width=500
+
+次に ~エクスポートを作成~ を押下
+
+src="ゴール1:_容量無制限フォトストレージの構築/2025-08-16_08-16-41_スクリーンショット 2025-08-16 8.16.39.png"
+width=500
+
+しばらく待つとGoogleからメールが届きます
+
+src="ゴール1:_容量無制限フォトストレージの構築/2025-08-18_20-39-22_スクリーンショット 2025-08-18 20.39.13.png"
+caption="Googleから届くメール"
+width=720
+
+メールを開き、メール内リンクに飛ぶと、件数ごとにダウンロードボタンが設置されているので順次押下してダウンロードしていけばOKです。
+zipファイルがダウンロードされるはず。
+
+src="ゴール1:_容量無制限フォトストレージの構築/2025-08-18_20-40-07_スクリーンショット 2025-08-18 20.40.00.png"
+width=600
+
+もし件数が多すぎて面倒であれば、エクスポート時のファイルサイズ設定を大きめにしましょう。
+
+/私の場合は、自分と妻の2アカウント分をダウンロードしました。/
+
+*** Immich API キー
+
+お次に ~API キー~ を発行します。 ~immich-go~ から Immich のユーザアカウントに対して操作をする際に必要な鍵です。ユーザアカウント事に発行します。
+
+手順
+1. Immichにログイン
+2. アカウント設定
+3. APIキー
+4. 新しいAPIキー
+5. 任意の名前をつけて作成押下
+6. 新しいキーが発行されるのでコピーしておく
+
+src="ゴール1:_容量無制限フォトストレージの構築/2025-08-16_09-25-55_スクリーンショット 2025-08-16 9.25.52.png"
+caption="apiキーの作成"
+width=720
+
+作成を押すとapiキーが表示されるのでコピーしておきましょう。
+
+/こちらも私のアカウントと、妻のアカウントの2つ分を作成。/
+
+*** immich-goによる移行
+
+コマンドを実行する前に、 ~Google Takeout~ の zip を解凍して中身を確認します。今回は 2024年以降の写真はスマホからバックアップする方針のため、その期間を含む zip は不要です。
+
+/例：Takeout が14分割で、11/14 以降の zip に 2024年のデータが含まれる場合は、11〜14を使用しませんのでどこかに移動しておきます。/
+
+必要な zip ファイルを準備ができたら、 ~immich-go~ をダウンロードしたディレクトリへ移動して、次のコマンドを実行します。
+
+#+begin_src sh
+
+  ./immich-go -server=http://<machine-ip-address>:2283 -key=<Immichで作成したAPI キー> upload -create-albums -google-photos /takeoutがあるディレクトリ名/takeout-*.zip
+  
+#+end_src
+
+なお ~--dry-run~ オプションをつけることで、実行される処理を事前に確認できます。
+
+コマンド実行後、しばらく待てば Immich に画像や動画が取り込まれているはずです。私のアカウントは写真が多かったのでコマンドを実行して寝ました🛌。翌朝には終わっていた記憶です。
+
+/私と妻の2アカウント分実行しました/
+
+** モバイルアプリの設定
+次に Immich モバイルアプリをダウンロードしてセッティングしましょう。
+
+#+begin_src mermaid
+graph
+
+subgraph lan["LAN"]
+subgraph rapy["Raspberry Pi 4"]
+    immich-server
+end
+
+subgraph hdds["HDDケース"]
+    hdd1
+    hdd2
+end
+
+web_in_lan
+mobile_in_lan
+end
+
+    immich-server -->|"DB / 写真"| hdd1["HDD 1"]
+    hdd1 -->|"バックアップ"| hdd2["HDD 2"]
+
+    mobile_in_lan["Mobile App"] <--> immich-server
+    web_in_lan["Web App"] <--> immich-server
+
+    style mobile_in_lan fill:#E6FFFA,stroke:#008080,stroke-width:3px,color:black
+#+end_src
+
+ダウンロード・ログイン・バックアップ、すべて以下のドキュメントに従えばOKです👍️
+
+url=https://immich.app/docs/features/mobile-app/
+
+
+アプリ起動直後は、 ~http://<machine-ip-address>:2283~ を打ち込みます。
+
+src="ゴール1:_容量無制限フォトストレージの構築/2025-08-19_14-11-54_image-20.png"
+caption="Immichモバイルアプリ起動直後"
+width=300
+
+その後、作成したユーザのメールアドレスとパスワードを打ち込めばログイン完了！
+
+src="ゴール1:_容量無制限フォトストレージの構築/2025-08-19_14-13-10_image-11.png"
+width=300
+caption="ログイン画面"
+
+次にスマホのローカルに入っている写真・動画のバックアップ設定を行います。
+
+url=https://immich.app/docs/features/mobile-app/#backup
+title="Mobile App | Immich"
+image=https://immich.app/img/feature-panel.png
+
+自動バックアップ設定もしておくと良い
+
+url=https://immich.app/docs/features/automatic-backup
+title="Automatic Backup | Immich"
+image=https://immich.app/img/feature-panel.png
+
+これで、スマホで取った写真をImmich経由でHDDに保存し、そのまま閲覧できるようになります。
+
+src="ゴール1:_容量無制限フォトストレージの構築/2025-08-19_14-16-55_image-19.png"
+width=300
+caption="Immichモバイルアプリ タイムラインの様子"
+
+
+** HDD1をバックアップする
+最後にHDD1のデータをHDD2にも保存しておきたいです。HDD1がだめになったらすべての資産が消えてしまうので
+
+#+begin_src mermaid
+graph
+
+subgraph lan["LAN"]
+subgraph rapy["Raspberry Pi 4"]
+    immich-server
+end
+
+subgraph hdds["HDDケース"]
+    hdd1
+    hdd2
+end
+
+web_in_lan
+mobile_in_lan
+end
+
+    immich-server -->|"DB / 写真"| hdd1["HDD 1"]
+    hdd1 -->|"バックアップ"| hdd2["HDD 2"]
+
+    mobile_in_lan["Mobile App"] <--> immich-server
+    web_in_lan["Web App"] <--> immich-server
+
+    %% ノードスタイル
+    style hdd1 fill:#E6FFFA,stroke:#008080,stroke-width:3px,color:black
+    style hdd2 fill:#E6FFFA,stroke:#008080,stroke-width:3px,color:black
+#+end_src
+
+
+HDD1からHDD2へのバックアップには、 ~Borg~ を使います。差分バックアップツールです。
+
+https://www.borgbackup.org
+
+https://qiita.com/sax_/items/a3d3883ecf7231b30d8a
+
+Immich公式でも ~borg~ によるバックアップ方法がドキュメントとして整備されているため採用。
+
+url=https://immich.app/docs/guides/template-backup-script/
+description="Borg is a feature-rich deduplicating archiving software with built-in versioning. We provide a template bash script that can be run daily/weekly as a cron job to back up your files and database. We encourage you to read the quick-start guide for Borg before running this script."
+title="Backup Script | Immich"
+image=https://immich.app/img/feature-panel.png
+
+手順は公式ドキュメントに従えばOK。ドキュメント中の “Borg backup template” をベースにしたスクリプトを immich-borg.sh として保存し、毎週土曜の午前1:00に実行されるよう crontab を設定しています。
+#+begin_src cron
+  0 1 * * 6 /immich-borg.sh
+#+end_src
+
+** Done
+これで、スマホから Immich にログインし、撮影した写真や動画をそのまま HDD にバックアップできる環境が整いました。
+当初掲げていた条件もすべてクリアしています。
+
+当初の条件もクリアです
+- [X] +1. 事実上、無限に写真と動画が保存できること+
+  - HDDの容量を大きいものに変更すればいいので
+- [X] +2. スマホから保存・閲覧できること+
+- [X] +3. サブスクはしないこと+
+- [X] +4. Google フォトに保存した大量のコンテンツを引き継げること+
+
+週に一度は別のHDDにもバックアップを行うことで、データの冗長性も確保[fn:backup]しています。
+
+加えて Immich のアルバム機能を使えば、「息子用アルバム」や「旅行用アルバム」を作成し、私と妻がそれぞれ写真を追加できます。これまで Google フォトや LINE で行っていた共有のスタイルも、そのまま実現できています。
+
+これにて
+- [X] 家庭内の写真ストレージ問題
+はクリアです
+
+* ゴール2: 遠隔地の家族に安全に写真をシェアする
+さて、これで夫婦間の写真管理は解決しました。しかし次の課題は *両親への共有* です。
+これまで私と妻は、それぞれの両親にLINEで写真を送っていました。これがかなり面倒...😇
+『一箇所にまとめておけば、好きなときに見てもらえる仕組み』がどうしても欲しいです。
+
+幸いImmichであれば複数アカウントが作成できます。アルバム機能もありますし、アルバム事に権限の管理もできます。そのため、親用のアカウントを作り、特定のアルバムに閲覧権限を付与すればよいです。両親はアプリを開いてアルバムをタップすれば、愛孫のかわいい〜👶写真を眺めることができます。
+
+src="ゴール2:_遠隔地の家族に安全に写真をシェアする/2025-08-18_20-25-09_IMG_B821482C98E1-1.jpeg"
+caption="アルバム機能"
+width=300
+
+しかし、自宅ホストのサーバである以上、外部（遠方の両親）からの *安全なアクセス手段* が必要です。
+
+この課題を解決するために、 ~Cloudflare Tunnel~ を用います。 
+
+** Cloudflare Tunnel
+
+Cloudflare Tunnel は、軽量ツール（ cloudflared ）をサーバに入れるだけで、公開IPやポート開放なしに外部公開できる仕組みです。通信はすべてCloudflare経由になるので安全に扱えます。
+
+https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/
+
+実際、2023年6月ごろに Immich公式Discord でも「どうやってインターネットに公開するのがよいか？」という議論があり、一定数のユーザーが Cloudflare Tunnel を採用しているようです。
+
+https://discord.com/channels/979116623879368755/1122615710846308484
+
+なお注意点として Cloudflare Tunnel にはアップロード制限があります。100MB以上のファイルをアップロードする際には注意が必要です（今回は閲覧オンリーなので問題はなし）
+
+また、 ~Cloudflare Access~ による認証を組み合わせれば限定公開も容易です。
+
+それではセットアップしていきます
+
+** 完成図（Cloudflare）
+
+#+begin_src mermaid
+graph LR
+
+subgraph lan["LAN"]
+subgraph rapy["Raspberry Pi 4"]
+    immich-server
+    cloudflared
+end
+
+subgraph hdds["HDDケース"]
+    hdd1
+    hdd2
+end
+
+web_in_lan
+mobile_in_lan
+end
+
+    immich-server -->|"DB / 写真"| hdd1["HDD 1"]
+    hdd1 -->|"バックアップ"| hdd2["HDD 2"]
+
+    mobile_in_lan["Mobile App"] <--> immich-server
+    web_in_lan["Web App"] <--> immich-server
+
+    cloudflared <--> immich-server
+    cloudflared <--> |"Cloudflare Tunnel"|cloudflare["Cloudflare"]
+    
+    cloudflare <--> |"サービストークン"|mobile["Mobile App"]
+    cloudflare <--> |"ワンタイムパスワード / SSO認証"|web["Web App"]
+
+    style cloudflared stroke:#008080,stroke-width:3px
+    style cloudflare stroke:#008080,stroke-width:3px
+    style mobile stroke:#008080,stroke-width:3px
+    style web stroke:#008080,stroke-width:3px
+
+    linkStyle 5 stroke:#008080,stroke-width:3px
+    linkStyle 6 stroke:#008080,stroke-width:3px
+    linkStyle 7 stroke:#008080,stroke-width:3px
+#+end_src
+
+** Cloudflare Registoryでドメインを取得する
+
+Cloudflareにサインアップし、[[https://dash.cloudflare.com/login][ダッシュボード]]から ~ドメインの登録 > ドメイン登録~ に遷移して任意のドメインを取得します
+
+** tunnelの作成
+ドメインの購入が完了したらトンネルを作成します。
+
+手順
+1. ~ダッシュボード~
+2. ~サイドメニュー~
+3. ~Zero Trust~
+4. ~ネットワーク~
+5. ~Tunnels~
+6. ~トンネルを作成する~
+
+src="ゴール2:_遠隔地の家族に安全に写真をシェアする/2025-08-17_01-32-54_スクリーンショット 2025-08-17 1.32.46.png"
+width=720
+caption="Cloudflare Zero Trustの管理画面"
+
+1. ~Cloudflaredを選択する~
+2. ~任意の名前をつけて保存~
+3. ~次へ~ 
+
+src="ゴール2:_遠隔地の家族に安全に写真をシェアする/2025-08-17_01-33-31_スクリーンショット 2025-08-17 1.33.29.png"
+width=720
+caption="トンネルの作成"
+
+次に、 ~Debian~ を選択して、表示されるコマンドをサーバで実行しましょう。
+
+src="ゴール2:_遠隔地の家族に安全に写真をシェアする/2025-08-17_08-10-30_スクリーンショット 2025-08-17 8.10.24.png"
+width=720
+caption="Cloudflare Tunnel コネクタのインストール・実行"
+
+サーバ側でのコマンドが成功すると、このようにコネクタIDと接続済みステータスが表示されるので次へ押下
+
+src="ゴール2:_遠隔地の家族に安全に写真をシェアする/2025-08-17_08-11-24_スクリーンショット 2025-08-17 8.11.14.png"
+caption="コネクタ接続完了"
+width=720
+
+以下を入力して保存を押下
+- サブドメイン: 任意の名前
+- ドメイン: Cloudflareで購入したドメインがプルダウンで表示されるため選択
+- サービス: HTTP
+- URL: localhost:2283
+
+src="ゴール2:_遠隔地の家族に安全に写真をシェアする/2025-08-17_08-15-34_スクリーンショット 2025-08-17 8.15.24.png"
+caption="トンネルのパブリックホスト名を入力"
+width=720
+
+これで、自宅サーバをCloudflare経由で外部公開可能となりました。設定したURLを打ち込むことで、アクセス可能となっているはずです。
+
+** Cloudflare Accessで認証機能を追加する
+
+しかし、このままだとアクセス制限がついてなくて危険です。特定の人物しかアクセスできないように設定していきます。
+
+*** Webブラウザからの認証
+まずはLAN外からブラウザで Immich へアクセスしたときに、Email認証ができるようにを設定します。
+
+ポリシーの追加画面に移動します
+1. ~Access~
+2. ~ポリシー~
+3. ~ポリシーを追加する~ 
+
+src="ゴール2:_遠隔地の家族に安全に写真をシェアする/2025-08-17_15-28-07_スクリーンショット 2025-08-17 15.28.04.png"
+caption="ポリシーの追加"
+width=720
+
+お次にポリシーを設定
+1. ポリシー名に任意の名前を設定
+2. セレクターで Emails を選択
+3. 認証時にSSO対象となるメールアドレスを追加する
+4. 保存
+  
+src="ゴール2:_遠隔地の家族に安全に写真をシェアする/2025-08-17_15-29-22_スクリーンショット 2025-08-17 15.29.18.png"
+caption="ポリシーを追加"
+width=720
+
+以下のように追加されます
+
+src="ゴール2:_遠隔地の家族に安全に写真をシェアする/2025-08-17_15-30-38_スクリーンショット 2025-08-17 15.30.32.png"
+caption="作成されたポリシー"
+
+続いて、作成したポリシーをアプリケーションに設定します。
+
+1. ~Access~
+2. ~アプリケーション~
+3. ~アプリケーションを追加する~
+   
+src="ゴール2:_遠隔地の家族に安全に写真をシェアする/2025-08-17_15-31-15_スクリーンショット 2025-08-17 15.31.02.png"
+caption="アプリケーションの追加"
+width=720
+
+次にアプリケーションの種類を選びます
+1. ~セルフホスト~
+2. ~選択する~
+
+src="ゴール2:_遠隔地の家族に安全に写真をシェアする/2025-08-17_15-31-51_スクリーンショット 2025-08-17 15.31.46.png"
+caption="アプリケーションの種類を選択"
+width=720
+
+アプリケーションの情報を入力します
+1. 任意のアプリケーション名を追加
+2. パブリックホスト名を追加をクリック > パブリックホストの入力欄が出てくる
+3. サブドメイン・ドメインは先程のTunnelと同様のものを入力
+4. Access ポリシー欄で、 ~既存のポリシーを選択~ を押下
+
+src="ゴール2:_遠隔地の家族に安全に写真をシェアする/2025-08-17_15-32-19_スクリーンショット 2025-08-17 15.32.17.png"
+caption="アプリケーション情報の入力画面"
+width=720
+
+1. 先ほど作成したポリシーがでてくるのでチェックして確認
+2. 次へ で進んでいくと、保存ボタンが出てくるので保存します
+   
+src="ゴール2:_遠隔地の家族に安全に写真をシェアする/2025-08-17_15-34-15_スクリーンショット 2025-08-17 15.34.02.png"
+caption="作済みのポリシーが表示される"
+width=720
+
+以上です。
+再び、設定したURLにブラウザでアクセスしてみると、SSO認証画面が表示されるはずです
+
+src="ゴール2:_遠隔地の家族に安全に写真をシェアする/2025-08-17_15-37-03_スクリーンショット 2025-08-17 15.36.51.png"
+caption="Cloudflareの認証画面"
+width=400
+
+ここでポリシーに追加した Email を入力すればメールが届き、メールに書いてあるパスコードを入力することで認証を突破できます。突破後はImmichのログイン画面に遷移します。
+（画像ではGoogle のOAuthでも認証できるようにしています）
+
+src="ゴール2:_遠隔地の家族に安全に写真をシェアする/2025-08-17_15-38-53_スクリーンショット 2025-08-17 15.38.49.png"
+caption="パスコード入力画面"
+width=500
+
+ブラウザから利用する場合は以上です。実家に帰ったとき、PCをTVにつなげて大画面で孫の画像を見ることがあるので、この設定は必須です
+
+*** モバイルアプリからの認証
+次に、Immichモバイルアプリからアクセスする方法です。モバイルアプリではブラウザのように認証画面に遷移できないので、そのままではログインできません。そこで Cloudflareの ~Service Token~ と、Immichモバイルアプリの設定 ~カスタムプロキシヘッダ設定~ を活用します。
+
+~Service Token~ は、アプリやプログラムから Cloudflare の制限されたリソースへとアクセスするための鍵です。
+
+Immich モバイルアプリには、サーバへアクセスする際のリクエストに任意の値を含めることができる ~カスタムプロキシヘッダ~ 設定があります。こちらにトークンを設定することで、認証を突破できるという寸法です。
+
+*** Cloudflare上の設定
+
+では、さっそく Service Token を作成していきましょう
+
+1. ~Cloudflare Zero Trustホーム~
+2. ~Access~
+3. ~サービス認証~
+4. ~サービストークンを作成する~
+
+src="ゴール2:_遠隔地の家族に安全に写真をシェアする/2025-08-17_15-40-38_スクリーンショット 2025-08-17 15.40.34.png"
+caption="Service認証画面"
+width=720
+
+1. 任意のトークン名を入力
+2. 任意の期限を入力
+3. トークンを生成する
+
+src="ゴール2:_遠隔地の家族に安全に写真をシェアする/2025-08-17_15-41-18_スクリーンショット 2025-08-17 15.41.14.png"
+caption="サービストークン作成画面"
+width=720
+
+すると、以下のように ~クライアントID~ と ~クライアントシークレット~ が表示されるのでコピーしておきます。
+
+src="ゴール2:_遠隔地の家族に安全に写真をシェアする/2025-08-17_15-42-01_スクリーンショット 2025-08-17 15.41.53.png"
+caption="生成されたトークン"
+width=720
+
+お次は再びポリシーを作成します
+
+次に、再びポリシーを作成します。セレクターから Service Token を選び、先ほど作成したトークンをプルダウンから選択します。
+
+src="ゴール2:_遠隔地の家族に安全に写真をシェアする/2025-08-18_18-18-51_スクリーンショット 2025-08-18 18.18.43.png"
+caption="セレクターでService Tokenを選択肢、値のフォームをクリックするとプルダウンで作成済みのサービス認証が表示される"
+width=720
+
+ポリシーを保存し、先ほど作成したアプリケーションにこのポリシーを設定します
+
+1. ~Access~
+2. ~アプリケーション~
+3. 作成したアプリケーション名の三点ドット
+4. ~編集~
+
+src="ゴール2:_遠隔地の家族に安全に写真をシェアする/2025-08-18_19-41-03_スクリーンショット 2025-08-18 19.40.58.png"
+width=720
+
+アプリケーションにポリシーを追加します
+
+1. ~タグ: ポリシー~
+2. ~既存のポリシーを選択~
+3. 作成した Service Tokenのポリシーを選択
+4. ~確認~
+5. ~アプリケーションを保存~ 
+
+src="ゴール2:_遠隔地の家族に安全に写真をシェアする/2025-08-18_19-42-21_スクリーンショット 2025-08-18 19.42.12.png"
+caption="作成したポリシーが選択できる"
+width=720
+
+これでCloudflare側の設定は完了です。
+
+*** Immich モバイルアプリ上の設定
+
+お次はImmichのモバイルアプリで、アクセス時にトークンを含めるように設定します。
+
+1. Immichモバイルアプリのログイン画面を開く
+2. 歯車マークをタップ
+3. カスタムプロキシヘッダをタップ
+4. プロキシヘッダに以下を入力します
+   1. 生成したクライアントIDのヘッダーと値
+   2. クライアントシークレットのヘッダーと値
+
+src="ゴール2:_遠隔地の家族に安全に写真をシェアする/2025-08-18_19-57-44_スクリーンショット 2025-08-18 19.57.38.png"
+width=8000
+caption="カスタムプロキシヘッダの設定"
+
+設定は以上です👍️
+これで、Immichモバイルアプリから外部向けURLにアクセスしても認証を通過でき、作成済みアカウントでログインすれば写真を閲覧できます。
+
+src="ゴール2:_遠隔地の家族に安全に写真をシェアする/2025-08-17_15-46-13_スクリーンショット 2025-08-17 15.46.07.png"
+width=500
+caption="ドメインを打ち込めば、ログイン画面に遷移できる！"
+
+つまり、以下の手順を4人分実施すれば良いわけです。
+1. Immichで両親のアカウントを作成する
+2. 両親のアカウントに、息子のアルバムへの閲覧権限を付与する
+3. 両親のスマホにモバイルアプリをダウンロードする
+4. モバイルアプリでカスタムプロキシヘッダを設定
+5. 各自のアカウントでログイン
+   
+これで、両親は自分のアカウントでログインし、アルバムをタップするだけで、いつでも孫の写真を見られるようになりました
+
+** Done👍️
+
+これにて、
+- [X] +遠隔地の家族に安全に写真をシェアする+
+クリアです。
+
+* 最後に
+
+今回の構築で、
+1. 事実上、無限に写真と動画が保存できること
+2. スマホから保存・閲覧できること
+3. サブスクはしないこと
+4. Google フォトに保存した大量のコンテンツを引き継げること
+5. 息子の写真を、遠方の両親にラクにシェアできること
+
+といった条件をすべて満たすことができました。
+
+費用とメリデメを振り返ってみます
+
+*** 費用
+| 項目                  | 単価     | 数量 | 小計     |
+|----------------------+---------+-----+---------|
+| Raspberry Pi 4 (8GB) | ¥12,000 |   1 | ¥12,000 |
+| HDD 1TB              | ¥7,000  |   2 | ¥14,000 |
+| HDDケース（スタンド）   | ¥4,000  |   1 | ¥4,000  |
+| 雑費（SD・ケーブル）    | ¥600    |   1 | ¥600    |
+|----------------------+---------+-----+---------|
+| 合計                  |         |     | ¥30,600 |
+
+#+TBLFM: $4=$2*$3;N::@>$4=vsum(@I..@II)
+
+| 項目      | 単価    | 数量 | 小計    |
+|----------+--------+-----+--------|
+| ドメイン代 | ¥1,000 |   1 | ¥1,000 |
+|----------+--------+-----+--------|
+| 年額合計   |        |     | ¥1,000 |
+#+TBLFM: $4=$2*$3;N::@>$4=vsum(@I..@II)
+
+Google One (2TB) は ¥17,400/年。
+初期費用はかかるものの、2年弱運用できればおとく...?!
+
+
+*** メリデメ
+メリット
+- サブスク費用が不要（HDD増設すれば容量は実質無限）
+- エンジニアとしての勉強になる
+
+デメリット
+- 初期構築の手間（Docker, Cloudflare などの理解が必要）
+- HDDが壊れたときのリスクが大きい。クラウドと比べてリスク分散も難しい
+- Immich のアップデート時、破壊的な変更がたまにあるため、しっかり調べて対応しなければならない
+  
+あれ...あんまりメリットがない...?🧐
+
+エンジニアの勉強・趣味としてはとても良いですが、とにかくたくさん写真・動画を保存したいならサブスクするのが早いですね。
+
+*** 今後の課題
+- もう一箇所バックアップを用意したい
+- 週1のバックアップ用にもかかわらず、HDD2が常時接続＆回転しっぱなし。
+  - 必要な時間だけ起動・それ以外はスリープできるようにできないか
+- iPhoneでImmichを開くと最初に1分ほどフリーズする
+  - おそらくスマホのローカルに入っている写真が多すぎるため、「バックアップ済みかどうかの確認」に時間がかかっている可能性がある
+  - 余裕があれば調査したい
+
+[fn:backup][[https://www.backblaze.com/blog/the-3-2-1-backup-strategy/][3-2-1 backup strategy]] に従うと、別の場所にもう1つバックアップを用意すべきでしょうね。

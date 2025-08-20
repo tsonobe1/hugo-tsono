@@ -1,0 +1,19 @@
+{{ $src := .Destination }}
+{{ $image := .Page.Resources.GetMatch $src }}
+
+{{ if not $image }}
+  {{ $image = resources.Get $src }}
+{{ end }}
+
+{{ if $image }}
+  <figure class="image-container">
+    <img src="{{ $image.RelPermalink }}" alt="{{ .Text }}" loading="lazy">
+    {{ with .Title }}
+      <figcaption>{{ . }}</figcaption>
+    {{ end }}
+  </figure>
+{{ else }}
+  <div style="border: 2px solid orange; padding: 1em;">
+    <p>Image not found: {{ $src }}</p>
+  </div>
+{{ end }}

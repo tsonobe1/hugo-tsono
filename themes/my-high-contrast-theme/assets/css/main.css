@@ -9,6 +9,7 @@
   --button-bg: #333;
   --button-color: #e0e0e0;
   --muted-text-color: #888;
+  --toc-top-offset: 250px;
 }
 
 html[data-theme='light'] {
@@ -208,8 +209,8 @@ img {
 
 .header-container {
     display: flex;
-    justify-content: space-between; /* 要素を両端に配置 */
-    align-items: center; /* 垂直方向中央揃え */
+    justify-content: space-between;
+    align-items: center;
     flex-wrap: wrap; /* 小さい画面で折り返す */
 }
 
@@ -442,4 +443,205 @@ body.no-scroll {
   margin-top: 0; /* ここを調整 */
   padding-top: 0; /* ここを調整 */
   margin-bottom: 0.2rem;
+}
+
+/* Table of Contents */
+#toc-container {
+  margin: 2em 0;
+  background-color: transparent;
+  border: none;
+  padding: 1em;
+}
+
+
+
+/* TOCのコンテナ自体のスタイルをリセット */
+#TableOfContents {
+    display: block !important;
+}
+
+#TableOfContents ul {
+  display: block !important;
+  padding-left: 0;
+  margin-bottom: 0;
+  list-style: none;
+  /* 縦線を追加 */
+  border-left: 1px solid var(--border-color); /* 縦線の色と太さ */
+  padding-left: 0.8em; /* 縦線とテキストの間のスペースをさらに調整 */
+}
+
+#TableOfContents ul ul {
+  padding-left: 0.8em; /* ネストされたリストのインデントをさらに調整 */
+}
+
+#TableOfContents li {
+  display: block !important;
+  margin: 0;
+  position: relative;
+  padding-left: 0;
+  white-space: normal; /* 改行を許可 */
+  line-height: 1.0;
+  font-size: 0.9em;
+  margin-bottom: 0.3em; /* li要素の下に余白を追加 */
+}
+
+#toc a {
+  text-decoration: none;
+  color: var(--text-color);
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background-color: transparent !important;
+  padding-left: 0; /* aタグの左パディングをリセット */
+}
+
+#toc a:hover {
+  text-decoration: underline;
+  color: var(--link-color);
+}
+
+/* PC Display */
+@media (min-width: 1200px) {
+  #toc-container {
+    position: fixed;
+    top: var(--toc-top-offset);
+    left: calc(50% + 420px);
+    width: auto; /* 幅を自動に */
+    max-width: 350px; /* 最大幅を指定 */
+    margin-top: 0;
+    z-index: 999;
+    max-height: calc(100vh - var(--toc-top-offset) - 100px); /* これも元に戻す */
+    overflow-y: auto;
+    /* スクロールバーを隠す */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* IE and Edge */
+    transition: top 0.3s ease-in-out; /* スムーズなアニメーション */
+  }
+
+  #toc-container.scrolled {
+    top: 50px; /* スクロール中の位置 */
+    max-height: calc(100vh - 20px - 200px); /* スクロール中のmax-height */
+  }
+
+  /* Webkit系のブラウザ向け */
+  #toc-container::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+#TableOfContents li.active > a {
+  color: var(--link-hover-color);
+  font-weight: bold;
+}
+
+.toc-absolute-bottom {
+  position: absolute !important;
+  bottom: 20px;
+  top: auto !important;
+  left: auto !important;
+  right: 20px !important;
+  max-height: calc(100vh - 40px) !important;
+}
+
+/* TOC Collapse */
+@media (max-width: 1199px) {
+  #toc-container {
+    /* 枠線を削除し、関連スタイルもリセット */
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    margin-bottom: 1em; /* 下に少し余白を追加 */
+  }
+
+  #toc-title {
+    cursor: pointer;
+    display: flex;
+    justify-content: flex-start; /* 左寄せに変更 */
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    border-bottom: none;
+    color: var(--text-color); /* 文字色を明示的に指定 */
+    font-size: 1.1em; /* フォントサイズを指定 */
+  }
+
+  #toc-title .toc-toggle-icon {
+    margin-right: 0.5em; /* アイコンとテキストの間のスペース */
+  }
+
+  #toc-title .toc-toggle-icon::before {
+    content: '▼';
+    font-size: 0.8em;
+  }
+
+  #toc-container.collapsed #toc-title .toc-toggle-icon::before {
+    content: '▶';
+  }
+
+  #toc-container.collapsed #toc {
+    display: none;
+  }
+
+  #toc {
+    padding-top: 1em;
+  }
+}
+
+/* Modern Image Caption Style */
+.image-container {
+  margin: 2.5em 0;
+}
+
+.image-container a {
+  display: inline-block;
+  line-height: 0; /* aタグが余分な高さを持たないように */
+}
+
+.image-container img {
+  /* 既存の article img スタイルを上書き・調整 */
+  margin: 0; 
+  border-radius: 8px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.image-container img:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.image-container figcaption {
+  margin-top: 1em;
+  font-size: 0.9em;
+  color: var(--muted-text-color);
+  text-align: center;
+  font-style: italic;
+  padding: 0 1em;
+}
+
+.image-container video {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+}
+
+
+
+
+
+html[data-theme='light'] .mermaid .edgePath,
+html[data-theme='light'] .mermaid .arrowheadPath {
+  stroke: var(--text-color);
+}
+html[data-theme='light'] .mermaid .node rect,
+html[data-theme='light'] .mermaid .node circle,
+html[data-theme='light'] .mermaid .node polygon,
+html[data-theme='light'] .mermaid .node ellipse {
+  fill: var(--accent-bg);
+  stroke: var(--border-color);
+}
+html[data-theme='light'] .mermaid .node .label {
+  color: var(--text-color);
 }

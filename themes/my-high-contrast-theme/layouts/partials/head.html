@@ -1,6 +1,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width">
 <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ printf "%s | %s" .Title site.Title }}{{ end }}</title>
+<script>
+  // FOUC(Flash of Unstyled Content)を防ぐため、CSSが読み込まれる前にテーマを設定する
+  (function() {
+    const theme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', theme);
+  })();
+</script>
 {{ if or (eq .Kind "taxonomy") (eq .Kind "term") (eq .Kind "section") }}
 <meta name="robots" content="noindex">
 {{ end }}

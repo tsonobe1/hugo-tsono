@@ -1,6 +1,15 @@
 {{ define "main" }}
   <h1>{{ .Title }}</h1>
 
+  
+    <div id="toc-container">
+      <h2 id="toc-title"><span class="toc-toggle-icon"></span> Table of Contents</h2>
+      <div id="toc">
+        {{ .TableOfContents }}
+      </div>
+    </div>
+  
+
   <div class="post-dates">
     <p>{{ i18n "published_date" }}: <time datetime="{{ .Date | time.Format "2006-01-02T15:04:05-07:00" }}">{{ .Date | time.Format ":date_long" }}</time></p>
     {{ if ne .Date .Lastmod }}
@@ -14,7 +23,6 @@
     {{ if ge $diff $oneYear }}
       <p class="old-article-warning">{{ i18n "old_article_warning" }}</p>
     {{ end }}
-  </div>
   </div>
 
   <div class="post-meta-tags-categories">
@@ -37,4 +45,9 @@
       {{ template "_internal/disqus.html" . }}
     </section>
   {{ end }}
+
+{{ if .Params.mermaid }}
+  {{ partial "mermaid.html" . }}
+{{ end }}
+
 {{ end }}

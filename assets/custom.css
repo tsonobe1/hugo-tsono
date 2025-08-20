@@ -1,3 +1,4 @@
+
 .post-meta-tags-categories {
     margin-top: 10px;
     margin-bottom: 10px;
@@ -261,6 +262,225 @@ button#theme-toggle {
   text-decoration-color: #4dff58; /* 黄緑色 */
 }
 
+
 .link-card__anchor:hover .link-card__title {
   color: #4dff58; /* 黄緑色 */
+}
+
+/* 新しいlink-cardのスタイル */
+.link-card {
+  display: flex;
+  align-items: center;
+  padding: 1em;
+  margin: 1em 0;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--accent-bg);
+  text-decoration: none;
+  color: var(--text-color);
+  transition: box-shadow 0.2s ease, background-color 0.2s ease;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.link-card:hover {
+  background-color: var(--hover-bg-color);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.link-card__anchor {
+  display: flex; /* Flexbox を有効にする */
+  width: 100%; /* 親要素の幅いっぱいに広がるようにする */
+  text-decoration: none;
+  color: inherit;
+}
+
+.link-card__content {
+  display: flex;
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.link-card__image-container {
+  flex-shrink: 0; /* 縮小しない */
+  width: 120px; /* サムネイルの固定幅 */
+  height: 120px; /* サムネイルの固定高さ */
+  margin-right: 1em;
+  border-radius: 4px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f0f0f0; /* サムネイルがない場合の背景色 */
+}
+
+.link-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* アスペクト比を維持してコンテナを埋める */
+}
+
+.link-card__text-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0; /* overflow-x: hidden; と組み合わせる */
+}
+
+.link-card__title {
+  font-weight: bold;
+  font-size: 1.1em;
+  margin-bottom: 0.3em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--link-color);
+  max-width: 100%;
+  display: block;
+}
+
+.link-card__description {
+  font-size: 0.9em;
+  color: var(--muted-text-color);
+  margin-bottom: 0.5em;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* 2行に制限 */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.link-card__site {
+  font-size: 0.8em;
+  color: var(--text-color);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  display: block;
+}
+
+/* 外部リンクアイコン (Generic) */
+.link-card:not(.link-card--github)::after {
+  content: "↗"; /* Unicode for external link arrow */
+  margin-left: 0.5em;
+  font-size: 1.2em;
+  color: var(--link-color);
+}
+
+/* GitHub Link Card Specific Styles */
+.link-card--github::after {
+  content: "09b"; /* Font Awesome GitHub icon */
+  font-family: "Font Awesome 6 Brands"; /* Font Awesomeが読み込まれていることを確認 */
+  color: var(--text-color); /* テーマのテキスト色を使用 */
+  margin-left: 0.5em;
+  font-size: 1.2em;
+}
+
+/* モバイル対応 */
+@media (max-width: 600px) {
+  .link-card {
+    flex-direction: column; /* モバイルでは縦並びにする */
+    align-items: flex-start; /* 左寄せ */
+    padding: 0.8em;
+  }
+
+  .link-card__anchor {
+    flex-direction: column; /* モバイルでは縦並びにする */
+  }
+
+  .link-card__image-container {
+    width: 100%; /* モバイルでは幅いっぱいに */
+    height: 180px; /* モバイルでの高さ */
+    margin-right: 0;
+    margin-bottom: 0.8em; /* テキストとの間に余白 */
+  }
+
+  .link-card__text-content {
+    width: 100%;
+  }
+
+  .link-card__title {
+    font-size: 1em;
+  }
+
+  .link-card__description {
+    font-size: 0.85em;
+  }
+
+  .link-card__site {
+    font-size: 0.75em;
+  }
+
+  .link-card:not(.link-card--github)::after,
+  .link-card--github::after {
+    margin-left: 0;
+    margin-top: 0.5em; /* モバイルではアイコンを下に配置 */
+    position: static;
+    transform: none;
+    align-self: flex-end; /* 右下に配置 */
+  }
+}
+
+.link-card__anchor:hover {
+  text-decoration: underline;
+  text-decoration-color: #4dff58; /* 黄緑色 */
+}
+
+.link-card__anchor:hover .link-card__title {
+  color: #4dff58; /* 黄緑色 */
+}
+
+/* Modern Table Styles - Refined */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2em 0;
+  font-size: 0.9em;
+  font-family: sans-serif;
+  border: 1px solid var(--border-color); /* 影の代わりにボーダーを使用 */
+  border-radius: 8px; /* 角を少し丸める */
+  overflow: hidden; /* 角丸を有効にするため */
+}
+
+table thead tr {
+  background-color: transparent; /* ヘッダーの背景色をなくす */
+  color: var(--text-color); /* ヘッダーの文字色を通常のテキスト色に */
+  text-align: left;
+}
+
+table th {
+  padding: 8px 15px;
+  font-weight: bold; /* ヘッダーを太字に */
+  border-bottom: 2px solid var(--border-color); /* ヘッダーの下線を太く */
+}
+
+table td {
+  padding: 8px 15px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+table tbody tr {
+  background-color: var(--bg-color); /* 背景色を基本色に */
+  transition: background-color 0.2s ease;
+}
+
+/* 偶数行の背景色をなくし、シンプルにする */
+table tbody tr:nth-of-type(even) {
+  background-color: var(--bg-color);
+}
+
+table tbody tr:last-of-type td {
+  border-bottom: none; /* 最後の行の下線をなくす */
+}
+
+table tbody tr:hover {
+  background-color: var(--accent-bg); /* ホバー時の色をアクセントカラーに */
+}
+
+table td:last-child,
+table th:last-child {
+  text-align: right;
 }

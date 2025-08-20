@@ -28,11 +28,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // 初期状態をlocalStorageから
-  const savedTheme = localStorage.getItem("theme") || "dark";
-  html.setAttribute("data-theme", savedTheme);
-  updateIcon(savedTheme);
-  setGiscusTheme(savedTheme === "dark" ? "dark" : "light");
+  // head.htmlで設定された現在のテーマを取得
+  const currentTheme = html.getAttribute("data-theme") || "dark";
+  updateIcon(currentTheme);
+  setGiscusTheme(currentTheme === "dark" ? "dark" : "light");
 
   toggleButton.addEventListener("click", () => {
     const current = html.getAttribute("data-theme");
@@ -64,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Image preview functionality
-  const images = document.querySelectorAll('main img');
+  const images = document.querySelectorAll('main img:not(.link-card__image)');
   
   const modal = document.createElement('div');
   modal.classList.add('image-preview-modal');
@@ -98,47 +97,130 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Add copy button to code blocks
   document.querySelectorAll('.highlight').forEach((highlightDiv) => {
-    // Hugo can generate code blocks with line numbers (using a table) or without.
-    // We need to handle both cases to find the correct element containing the code.
-    let codeElement = highlightDiv.querySelector('table.lntable td:nth-child(2) code');
-    let codeContainer = null;
-
-    if (codeElement) {
-      // This is a code block with line numbers. The container is the parent <pre> of the code cell.
-      codeContainer = codeElement.parentElement;
-    } else {
-      // This is a code block without line numbers.
-      codeElement = highlightDiv.querySelector('pre > code');
-      if (codeElement) {
-        codeContainer = codeElement.parentElement;
-      }
-    }
-
-    if (!codeElement) {
-      return;
-    }
-
-    const button = document.createElement('button');
-    button.className = 'copy-code-button';
-    button.innerText = 'copy';
-    button.setAttribute('aria-label', 'Copy code to clipboard');
-
-    // The button should be a direct child of the highlightDiv for positioning
-    highlightDiv.appendChild(button);
-
-    button.addEventListener('click', () => {
-      const codeToCopy = codeElement.textContent;
-      navigator.clipboard.writeText(codeToCopy).then(() => {
-        button.innerText = 'copied!';
-        button.classList.add('copied');
-        setTimeout(() => {
-          button.innerText = 'copy';
-          button.classList.remove('copied');
-        }, 2000);
-      }).catch(err => {
-        console.error('Failed to copy code: ', err);
-        button.innerText = 'Failed';
-      });
-    });
+    // Hugo can generate code blocks with line numbers (using a table) or without.\n    // We need to handle both cases to find the correct element containing the code.\n    let codeElement = highlightDiv.querySelector('table.lntable td:nth-child(2) code');\n    let codeContainer = null;\n\n    if (codeElement) {\n      // This is a code block with line numbers. The container is the parent <pre> of the code cell.\n      codeContainer = codeElement.parentElement;\n    } else {\n      // This is a code block without line numbers.\n      codeElement = highlightDiv.querySelector('pre > code');\n      if (codeElement) {\n        codeContainer = codeElement.parentElement;\n      }\n    }\n\n    if (!codeElement) {\n      return;\n    }\n\n    const button = document.createElement('button');\n    button.className = 'copy-code-button';\n    button.innerText = 'copy';\n    button.setAttribute('aria-label', 'Copy code to clipboard');\n\n    // The button should be a direct child of the highlightDiv for positioning\n    highlightDiv.appendChild(button);\n\n    button.addEventListener('click', () => {\n      const codeToCopy = codeElement.textContent;\n      navigator.clipboard.writeText(codeToCopy).then(() => {\n        button.innerText = 'copied!';\n        button.classList.add('copied');\n        setTimeout(() => {\n          button.innerText = 'copy';\n          button.classList.remove('copied');\n        }, 2000);\n      }).catch(err => {\n        console.error('Failed to copy code: ', err);\n        button.innerText = 'Failed';\n      });\n    });
   });
+
+  // Scrollspy for Table of Contents
+  const tocLinks = document.querySelectorAll('#TableOfContents a');
+  const tocContainer = document.getElementById('toc-container');
+  const header = document.querySelector('header[role="banner"]');
+
+  if (tocLinks.length > 0 && tocContainer && header) {
+    const sections = Array.from(tocLinks).map(link => {
+      const targetId = link.getAttribute('href');
+      if (targetId && targetId.startsWith('#')) {
+        const section = document.getElementById(targetId.substring(1));
+        if (section) {
+          return { link: link.parentElement, section: section };
+        }
+      }
+      return null;
+    }).filter(item => item !== null);
+
+    if (sections.length > 0) {
+      const onScroll = () => {
+        const offset = 180; // ヘッダーの高さなどを考慮したオフセット
+
+        const scrollPosition = window.scrollY || document.documentElement.scrollTop;
+        let currentSection = null;
+
+        // ヘッダーの高さ
+        const headerHeight = header.offsetHeight;
+
+        // スクロール位置がヘッダーの高さより大きい場合、scrolledクラスを追加
+        if (scrollPosition > headerHeight) {
+          tocContainer.classList.add('scrolled');
+        } else {
+          tocContainer.classList.remove('scrolled');
+        }
+
+        // すべてのセクションをチェックし、現在のスクロール位置に最も近いセクションを見つける
+        for (let i = sections.length - 1; i >= 0; i--) { // 後ろからループ
+          const item = sections[i];
+          if (item.section.offsetTop - offset <= scrollPosition) {
+            currentSection = item;
+            break; // 見つかったらループを抜ける
+          }
+        }
+        
+        // 一旦すべてのactiveクラスを削除
+        sections.forEach(item => {
+          item.link.classList.remove('active');
+        });
+
+        // 現在のセクションに対応するli要素にactiveクラスを追加
+        if (currentSection) {
+          currentSection.link.classList.add('active');
+
+          const tocContainer = document.getElementById('toc-container');
+          if (tocContainer) {
+            const activeLink = currentSection.link;
+
+            const containerHeight = tocContainer.clientHeight;
+            // アクティブなリンクのTOCコンテナ内での相対的な上端位置を正確に計算
+            const relativeLinkOffsetTop = activeLink.getBoundingClientRect().top - tocContainer.getBoundingClientRect().top + tocContainer.scrollTop;
+            const linkHeight = activeLink.offsetHeight;
+            const containerScrollTop = tocContainer.scrollTop;
+
+            // アクティブなリンクがコンテナの上端より上にある場合
+            if (relativeLinkOffsetTop < containerScrollTop) {
+              tocContainer.scrollTop = relativeLinkOffsetTop;
+            } 
+            // アクティブなリンクがコンテナの下端より下にある場合
+            else if (relativeLinkOffsetTop + linkHeight > containerScrollTop + containerHeight) {
+              tocContainer.scrollTop = relativeLinkOffsetTop + linkHeight - containerHeight;
+            }
+          }
+        }
+      };
+
+      // スクロールイベントの最適化（スロットリング）
+      let ticking = false;
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          window.requestAnimationFrame(() => {
+            onScroll();
+            ticking = false;
+          });
+          ticking = true;
+        }
+      }, { passive: true });
+      
+      // 初期表示時にも実行
+      onScroll();
+    }
+  }
+
+  // TOC Collapse for mobile
+  const tocContainerForCollapse = document.getElementById('toc-container');
+  if (tocContainerForCollapse) {
+    const tocTitle = document.getElementById('toc-title');
+    const toc = document.getElementById('toc');
+
+    if (tocTitle && toc) {
+      tocTitle.addEventListener('click', () => {
+        if (window.innerWidth < 1200) {
+          tocContainerForCollapse.classList.toggle('collapsed');
+        }
+      });
+    }
+
+    const initTocCollapse = () => {
+      if (window.innerWidth < 1200) {
+        tocContainerForCollapse.classList.add('collapsible');
+        tocContainerForCollapse.classList.add('collapsed');
+      } else {
+        tocContainerForCollapse.classList.remove('collapsible');
+        tocContainerForCollapse.classList.remove('collapsed');
+      }
+    };
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(initTocCollapse, 250);
+    });
+
+    initTocCollapse();
+  }
 });

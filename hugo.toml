@@ -91,8 +91,15 @@ defaultContentLanguageInSubdir = true
 
 [markup]
   [markup.goldmark]
+    [markup.goldmark.parser]
+      autoHeadingID = true
+      autoHeadingIDType = "github"
     [markup.goldmark.renderer]
       unsafe = true
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel = 4
+    ordered = false
 
   [markup.highlight]
     noClasses = false

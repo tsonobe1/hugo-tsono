@@ -1,8 +1,19 @@
-<video controls style="width: {{ .Get "width" | default "80%" }}; max-width: 100%;">
-  {{ with .Page.Resources.GetMatch (.Get "src") }}
-    <source src="{{ .RelPermalink }}" type="video/mp4">
-  {{ else }}
-    <source src="{{ .Get "src" | safeURL }}" type="video/mp4">
-  {{ end }}
-  Your browser does not support the video tag.
-</video>
+{{ $src := .Get "src" }}
+{{ $video := .Page.Resources.GetMatch $src }}
+{{ if not $video }}{{ $video = resources.Get $src }}{{ end }}
+
+{{ if $video }}
+  <figure class="image-container" {{ with .Get "width" }}style="max-width: {{ . }}px; margin-left: auto; margin-right: auto;"{{ end }}>
+    <video controls playsinline>
+      <source src="{{ $video.RelPermalink }}" type="{{ $video.MediaType.Type }}">
+      Your browser does not support the video tag.
+    </video>
+    {{ with .Get "caption" }}
+      <figcaption>{{ . }}</figcaption>
+    {{ end }}
+  </figure>
+{{ else }}
+  <div style="border: 2px solid orange; padding: 1em;">
+    <p>Video not found: {{ $src }}</p>
+  </div>
+{{ end }}

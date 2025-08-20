@@ -1,19 +1,64 @@
-{{- $url := .Get 0 -}}
-{{- $title := "" -}}
+{{- $url := .Get "url" | default (.Get 0) -}}
+{{- $manualTitle := .Get "title" -}}
+{{- $manualDescription := .Get "description" -}}
+{{- $manualImage := .Get "image" -}}
 
-{{- if site.Params.enableLinkCardRemoteFetch | default true -}}
-  {{- with try (resources.GetRemote $url) -}}
-    {{- with .Err -}}
-      {{- warnf "Error getting remote resource %q: %s" $url . -}}
-    {{- else with .Value -}}
-      {{- $matches := findRE "<title>(?s)(.*?)(?:</title>)" .Content -}}
-      {{- if ge (len $matches) 1 -}}
-        {{- $title = index $matches 0 | replaceRE "<title>(?s)(.*?)(?:</title>)" "$1" | htmlUnescape -}}
-        {{- $title = $title | replaceRE "\\s*·\\s*GitHub.*$" "" -}}
+{{- $title := "" -}}
+{{- $description := "" -}}
+{{- $image := "" -}}
+
+{{- if $manualTitle -}}
+  {{- $title = $manualTitle -}}
+{{- end -}}
+{{- if $manualDescription -}}
+  {{- $description = $manualDescription -}}
+{{- end -}}
+{{- if $manualImage -}}
+  {{- $image = $manualImage -}}
+{{- end -}}
+
+{{- if not (and $manualTitle $manualDescription $manualImage) -}}
+  {{- if site.Params.enableLinkCardRemoteFetch | default true -}}
+    {{- with try (resources.GetRemote $url) -}}
+      {{- with .Err -}}
+        {{- warnf "Error getting remote resource %q: %s" $url . -}}
+      {{- else with .Value -}}
+        {{- $content := .Content -}}
+
+        {{- if not $manualTitle -}}
+          {{- /* Extract Open Graph Title */ -}}
+          {{- $ogTitleMatches := findRE `<meta property="og:title" content="(.*?)"` $content -}}
+          {{- if ge (len $ogTitleMatches) 1 -}}
+            {{- $title = index $ogTitleMatches 0 | replaceRE `<meta property="og:title" content="(.*?)"` "$1" | htmlUnescape -}}
+          {{- else -}}
+            {{- /* Fallback to <title> tag if og:title not found */ -}}
+            {{- $titleMatches := findRE `<title>(?s)(.*?)(?:</title>)` $content -}}
+            {{- if ge (len $titleMatches) 1 -}}
+              {{- $title = index $titleMatches 0 | replaceRE `<title>(?s)(.*?)(?:</title>)` "$1" | htmlUnescape -}}
+              {{- $title = $title | replaceRE `\s*·\s*GitHub.*$` "" -}}
+            {{- end -}}
+          {{- end -}}
+        {{- end -}}
+
+        {{- if not $manualDescription -}}
+          {{- /* Extract Open Graph Description */ -}}
+          {{- $ogDescriptionMatches := findRE `<meta property="og:description" content="(.*?)"` $content -}}
+          {{- if ge (len $ogDescriptionMatches) 1 -}}
+            {{- $description = index $ogDescriptionMatches 0 | replaceRE `<meta property="og:description" content="(.*?)"` "$1" | htmlUnescape -}}
+          {{- end -}}
+        {{- end -}}
+
+        {{- if not $manualImage -}}
+          {{- /* Extract Open Graph Image */ -}}
+          {{- $ogImageMatches := findRE `<meta property="og:image" content="(.*?)"` $content -}}
+          {{- if ge (len $ogImageMatches) 1 -}}
+            {{- $image = index $ogImageMatches 0 | replaceRE `<meta property="og:image" content="(.*?)"` "$1" | htmlUnescape -}}
+          {{- end -}}
+        {{- end -}}
       {{- end -}}
+    {{- else -}}
+      {{- warnf "Unable to get remote resource %q" $url -}}
     {{- end -}}
-  {{- else -}}
-    {{- warnf "Unable to get remote resource %q" $url -}}
   {{- end -}}
 {{- end -}}
 
@@ -23,10 +68,20 @@
 <article class="link-card{{ if $isGitHub }} link-card--github{{ end }}">
   <a href="{{ $url }}" target="_blank" rel="noopener noreferrer" class="link-card__anchor">
     <div class="link-card__content">
-      <div class="link-card__title">{{ if $title }}{{ $title }}{{ else }}{{ $url | truncate 60 "..." }}{{ end }}</div>
-      {{- if and $host (not (in $title $host)) -}}
-        <div class="link-card__site">{{ $host }}</div>
+      {{- if $image -}}
+        <div class="link-card__image-container">
+          <img src="{{ $image }}" alt="Thumbnail" class="link-card__image">
+        </div>
       {{- end -}}
+      <div class="link-card__text-content">
+        <div class="link-card__title">{{ if $title }}{{ $title }}{{ else }}{{ $url | truncate 60 "..." }}{{ end }}</div>
+        {{- if $description -}}
+          <div class="link-card__description">{{ $description | truncate 120 "..." }}</div>
+        {{- end -}}
+        {{- if and $host (not (in $title $host)) -}}
+          <div class="link-card__site">{{ $host }}</div>
+        {{- end -}}
+      </div>
     </div>
   </a>
 </article>

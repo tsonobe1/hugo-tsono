@@ -9,3 +9,6 @@ other = "Last Updated"
 
 [comments_title]
 other = "Comments"
+
+[toc_title]
+other = "Table of Contents"

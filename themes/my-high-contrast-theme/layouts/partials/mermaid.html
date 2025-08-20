@@ -1,0 +1,38 @@
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+  function getMermaidTheme() {
+    const siteTheme = document.documentElement.getAttribute('data-theme');
+    // ダークモードなら 'dark'、それ以外（ライトモードなど）なら 'default' を返す
+    return siteTheme === 'dark' ? 'dark' : 'default';
+  }
+
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: getMermaidTheme()
+  });
+
+  // 無限リロードを防ぐためのフラグ
+  let isInitialLoad = true;
+
+  const observer = new MutationObserver((mutations) => {
+    // 初期読み込み完了後（isInitialLoad = false）の変更のみを対象とする
+    if (isInitialLoad) {
+      return;
+    }
+
+    mutations.forEach((mutation) => {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+        window.location.reload();
+      }
+    });
+  });
+
+  observer.observe(document.documentElement, {
+    attributes: true
+  });
+
+  // ページの初期化処理が終わったであろうタイミングで、フラグをfalseにする
+  setTimeout(() => {
+    isInitialLoad = false;
+  }, 500);
+</script>
