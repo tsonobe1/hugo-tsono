@@ -2,7 +2,7 @@
 title: "ラズパイで写真管理をするようになって、1年経った"
 author: ["tsonobe"]
 date: 2025-08-20T00:00:00+09:00
-lastmod: 2025-08-20T09:25:40+09:00
+lastmod: 2025-08-20T18:35:08+09:00
 tags: ["RaspberryPi", "Immich", "写真管理", "自宅サーバー", "Cloudflare", "Cloudflare Tunnel", "Docker", "Googleフォト移行", "写真管理", "self-hosting"]
 categories: ["tips", "tech", "life"]
 draft: false
@@ -159,11 +159,11 @@ OSSのフォトアプリケーションはたくさんありますが、我が�
 
 ラズパイなら小さくて扱いやすいし、クリアケースもよく売っているので選びやすいのです。
 
-{{< linkcard url="https://amzn.to/4fJMDiX" image="https://m.media-amazon.com/images/I/71RL4VEhHkS._AC_SY300_SX300_QL70_ML2_.jpg" >}}
-{{< linkcard url="https://www.amazon.co.jp/dp/B08PTQMZY3?ref_=ppx_hzod_title_dt_b_fed_asin_title_0_1" image="https://m.media-amazon.com/images/I/71bdQexTguL._SS568_.jpg" >}}
+{{< linkcard url="https://amzn.to/4fJMDiX" image="https://m.media-amazon.com/images/I/71RL4VEhHkS._AC_SY300_SX300_QL70_ML2_.jpg" title="Amazon.co.jp: ラズベリーパイ 4 コンピューターモデルB 8GB Raspberry Pi 4 ラズパイ 4 TELEC認定取得済み (Raspberry Pi 4 8GB) : パソコン・周辺機器" description="Amazon.co.jp: ラズベリーパイ 4 コンピューターモデルB 8GB Raspberry Pi 4 ラズパイ 4 TELEC認定取得済み (Raspberry Pi 4 8GB) : パソコン・周辺機器" >}}
+{{< linkcard url="https://amzn.to/46Zbo8y" image="https://m.media-amazon.com/images/I/71bdQexTguL._SS568_.jpg" title="Amazon | KIOXIA(キオクシア) 旧東芝メモリ microSD 64GB UHS-I Class10 (最大読出速度100MB/s) Nintendo Switch動作確認済 国内サポート正規品 メーカー保証5年 KLMEA064G | KIOXIA | microSDカード 通販" description="KIOXIA(キオクシア) 旧東芝メモリ microSD 64GB UHS-I Class10 (最大読出速度100MB/s) Nintendo Switch動作確認済 国内サポート正規品 メーカー保証5年 KLMEA064GがmicroSDカードストアでいつでもお買い得。当日お急ぎ便対象商品は、当日お届け可能です。アマゾン配送商品は、通常配送無料（一部除く）。" >}}
 OSのインストール用に必要
 
-{{< linkcard url="https://amzn.to/4mJ9zBl" image="https://m.media-amazon.com/images/I/513LEFJLOML._AC_.jpg" >}}
+{{< linkcard url="https://amzn.to/4mJ9zBl" image="https://m.media-amazon.com/images/I/513LEFJLOML._AC_.jpg" title="Amazon.co.jp: Miuzei 最新 Raspberry Pi 4 ケース ラスベリー パイ4 5.1V 3A USB-C 電源アダプター+冷却ファン+ヒートシンクラズパイ 4 Model B対応（Raspberry Pi 4 本体含まりません）PSE取得 : パソコン・周辺機器" description="Amazon.co.jp: Miuzei 最新 Raspberry Pi 4 ケース ラスベリー パイ4 5.1V 3A USB-C 電源アダプター+冷却ファン+ヒートシンクラズパイ 4 Model B対応（Raspberry Pi 4 本体含まりません）PSE取得 : パソコン・周辺機器" >}}
 電源はケースについてます
 
 Immichの必須要件をクリアしている必要はあるので注意。
@@ -175,7 +175,7 @@ Immichの必須要件をクリアしている必要はあるので注意。
 
 容量については物理HDDを2つ（1つはバックアップ用）用意。
 
-{{< linkcard url="https://kakaku.com/item/K0000385373/" title="WD10EZEX [1TB SATA600 7200]" description="TEST容量1TBの3.5インチHDD。WESTERN DIGITAL WD10EZEX [1TB SATA600 7200]全国各地のお店の価格情報がリアルタイムにわかるのは価格.comならでは。製品レビューやクチコミもあります。" >}}
+{{< linkcard url="https://amzn.to/4fTmU7W" image="https://m.media-amazon.com/images/I/71W2471QktL._AC_SX679_.jpg" title="Amazon.co.jp: WESTERN DIGITAL 3.5インチ内蔵HDD 1TB SATA6.0Gb/s 7200rpm 64MB WD10EZEX : パソコン・周辺機器" description="Amazon.co.jp: WESTERN DIGITAL 3.5インチ内蔵HDD 1TB SATA6.0Gb/s 7200rpm 64MB WD10EZEX : パソコン・周辺機器" >}}
 {{< linkcard url="https://amzn.to/4fFb29p" image="https://m.media-amazon.com/images/I/71DyDE5k9bL._AC_SL1500_.jpg" description="Amazon.co.jp: ロジテック HDD SSD コピー スタンド デュプリケーター クローン 換装 usb対応 SATA 【 エラースキップ機能 / 3.5インチ / 2.5インチ / Win/Mac/テレビ 】 国内メーカー LHR-2BDPU3ES : パソコン・周辺機器" >}}
 玄人志向のスタンドに裸のHDDを立てて、クリアケースに入れたラズパイを隣においておく...
 これもやりたかったんですよね...。
