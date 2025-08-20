@@ -53,14 +53,14 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // 外部リンクを新規タブで開く
-  document.querySelectorAll('a').forEach(link => {
-    const hostname = window.location.hostname;
-    const linkHostname = new URL(link.href).hostname;
-    if (linkHostname !== hostname && linkHostname.length > 0) {
-      link.setAttribute('target', '_blank');
-      link.setAttribute('rel', 'noopener');
-    }
-  });
+  // document.querySelectorAll('a').forEach(link => {
+  //   const hostname = window.location.hostname;
+  //   const linkHostname = new URL(link.href).hostname;
+  //   if (linkHostname !== hostname && linkHostname.length > 0) {
+  //     link.setAttribute('target', '_blank');
+  //     link.setAttribute('rel', 'noopener');
+  //   }
+  // });
 
   // Image preview functionality
   const images = document.querySelectorAll('main img:not(.link-card__image)');
