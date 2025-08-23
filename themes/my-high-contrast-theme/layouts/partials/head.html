@@ -14,6 +14,11 @@
 {{ with .Description }}<meta name="description" content="{{ . }}">{{ end }}
 
 <link rel="canonical" href="{{ .Permalink }}">
+{{ if .IsTranslated -}}
+{{ range .Translations }}
+<link rel="alternate" hreflang="{{ .Lang }}" href="{{ .Permalink }}">
+{{ end -}}
+{{ end -}}
 {{ partialCached "head/css.html" . }}
 {{ partialCached "head/js.html" . }}
 {{ partial "head/meta.html" . }}
