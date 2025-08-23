@@ -1,0 +1,26 @@
+{{ printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  {{ range .Data.Pages }}
+  <url>
+    <loc>{{ .Permalink }}</loc>
+    {{ $lastmod := .Lastmod }}
+    {{ if or .IsHome .IsSection }}
+      {{ $latestPost := (first 1 (where .RegularPages "Type" "posts").ByLastmod.Reverse) }}
+      {{ if $latestPost }}
+        {{ $lastmod = (index $latestPost 0).Lastmod }}
+      {{ end }}
+    {{ end }}
+    {{ if not $lastmod.IsZero }}<lastmod>{{ $lastmod.Format "2006-01-02T15:04:05-07:00" | safeHTML }}</lastmod>{{ end }}
+    {{ if .IsTranslated }}
+    {{ range .Translations }}
+    <xhtml:link
+              rel="alternate"
+              hreflang="{{ .Lang }}"
+              href="{{ .Permalink }}"
+              />
+    {{ end }}
+    {{ end }}
+  </url>
+  {{ end }}
+</urlset>

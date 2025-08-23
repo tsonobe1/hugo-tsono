@@ -3,6 +3,7 @@ baseURL = 'https://blog.tsono.org'
 languageCode = 'ja'
 title = 'tsono blog'
 theme = "my-high-contrast-theme"
+enableGitInfo = true
 defaultContentLanguage = 'ja'
 defaultContentLanguageInSubdir = true
 
