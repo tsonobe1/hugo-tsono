@@ -4,7 +4,7 @@ languageCode = 'ja'
 title = 'tsono blog'
 theme = "my-high-contrast-theme"
 defaultContentLanguage = 'ja'
-defaultContentLanguageInSubdir = true
+# defaultContentLanguageInSubdir = true
 
 
 
@@ -14,9 +14,11 @@ defaultContentLanguageInSubdir = true
 
 [languages]
   [languages.en]
+    languageCode = "en"
     languageName = "English"
     weight = 10
   [languages.ja]
+    languageCode = "ja"
     languageName = "Japanese"
     weight = 20
 
