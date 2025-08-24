@@ -31,7 +31,7 @@ width=720
 2024年前半に第一子が生まれ、写真・動画が一気に増えました。
 それまで Google フォト のフリープランで運用していましたが[無制限が終了](https://www.itmedia.co.jp/news/articles/2011/12/news057.html)したことで容量が 16GB ほどに制限されてしまいおり、さすがに限界を迎えました。
 
-/*この記事内で「写真」と表記している箇所は「写真と動画」 を意味しています。*/
+/*この記事での「写真」は「写真と動画」 を意味しています。*/
 
 息子の写真を撮るたびに容量が気になります...。長時間の動画も気にせず撮りたい...。容量問題は解決しなければならない課題でした。
 
@@ -801,6 +801,43 @@ width=720
 しかし、このままだとアクセス制限がついてなくて危険です。特定の人物しかアクセスできないように設定していきます。
 
 *** Webブラウザからの認証
+#+begin_src mermaid
+  graph LR
+
+subgraph lan["LAN"]
+subgraph rapy["Raspberry Pi 4"]
+    immich-server
+    cloudflared
+end
+
+subgraph hdds["HDDケース"]
+    hdd1
+    hdd2
+end
+
+web_in_lan
+mobile_in_lan
+end
+
+    immich-server -->|"DB / 写真"| hdd1["HDD 1"]
+    hdd1 -->|"バックアップ"| hdd2["HDD 2"]
+
+    mobile_in_lan["Mobile App"] <--> immich-server
+    web_in_lan["Web App"] <--> immich-server
+
+    cloudflared <--> immich-server
+    cloudflared <--> |"Cloudflare Tunnel"|cloudflare["Cloudflare"]
+
+    cloudflare <--> |"サービストークン"|mobile["Mobile App"]
+    cloudflare <--> |"ワンタイムパスワード / SSO認証"|web["Web App"]
+
+    style cloudflared fill:#008080,stroke:#008080,stroke-width:3px,color:white
+    style cloudflare fill:#008080,stroke:#008080,stroke-width:3px,color:white
+    style web fill:#008080,stroke:#008080,stroke-width:3px,color:white
+
+    linkStyle 5 stroke:#008080,stroke-width:3px
+    linkStyle 7 stroke:#008080,stroke-width:3px
+#+end_src
 まずはLAN外からブラウザで Immich へアクセスしたときに、Email認証ができるようにを設定します。
 
 ポリシーの追加画面に移動します
@@ -879,6 +916,43 @@ width=500
 ブラウザから利用する場合は以上です。実家に帰ったとき、PCをTVにつなげて大画面で孫の画像を見ることがあるので、この設定は必須です
 
 *** モバイルアプリからの認証
+#+begin_src mermaid
+graph LR
+
+subgraph lan["LAN"]
+subgraph rapy["Raspberry Pi 4"]
+    immich-server
+    cloudflared
+end
+
+subgraph hdds["HDDケース"]
+    hdd1
+    hdd2
+end
+
+web_in_lan
+mobile_in_lan
+end
+
+    immich-server -->|"DB / 写真"| hdd1["HDD 1"]
+    hdd1 -->|"バックアップ"| hdd2["HDD 2"]
+
+    mobile_in_lan["Mobile App"] <--> immich-server
+    web_in_lan["Web App"] <--> immich-server
+
+    cloudflared <--> immich-server
+    cloudflared <--> |"Cloudflare Tunnel"|cloudflare["Cloudflare"]
+
+    cloudflare <--> |"サービストークン"|mobile["Mobile App"]
+    cloudflare <--> |"ワンタイムパスワード / SSO認証"|web["Web App"]
+
+    style cloudflared fill:#008080,stroke:#008080,stroke-width:3px,color:white
+    style cloudflare fill:#008080,stroke:#008080,stroke-width:3px,color:white
+    style mobile fill:#008080,stroke:#008080,stroke-width:3px,color:white
+
+    linkStyle 5 stroke:#008080,stroke-width:3px
+    linkStyle 6 stroke:#008080,stroke-width:3px
+#+end_src
 次に、Immichモバイルアプリからアクセスする方法です。モバイルアプリではブラウザのように認証画面に遷移できないので、そのままではログインできません。そこで Cloudflareの ~Service Token~ と、Immichモバイルアプリの設定 ~カスタムプロキシヘッダ設定~ を活用します。
 
 ~Service Token~ は、アプリやプログラムから Cloudflare の制限されたリソースへとアクセスするための鍵です。

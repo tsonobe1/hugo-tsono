@@ -2,7 +2,7 @@
 title: "ラズパイで写真管理をするようになって、1年経った"
 author: ["tsonobe"]
 date: 2025-08-20T00:00:00+09:00
-lastmod: 2025-08-24T16:18:47+09:00
+lastmod: 2025-08-24T16:31:41+09:00
 tags: ["RaspberryPi", "Immich", "写真管理", "自宅サーバー", "Cloudflare", "Cloudflare Tunnel", "Docker", "Googleフォト移行", "写真管理", "self-hosting"]
 categories: ["tips", "tech", "life"]
 draft: false
@@ -740,6 +740,44 @@ Cloudflareにサインアップし、[ダッシュボード](https://dash.cloudf
 
 #### Webブラウザからの認証 {#webブラウザからの認証}
 
+```mermaid
+  graph LR
+
+subgraph lan["LAN"]
+subgraph rapy["Raspberry Pi 4"]
+    immich-server
+    cloudflared
+end
+
+subgraph hdds["HDDケース"]
+    hdd1
+    hdd2
+end
+
+web_in_lan
+mobile_in_lan
+end
+
+    immich-server -->|"DB / 写真"| hdd1["HDD 1"]
+    hdd1 -->|"バックアップ"| hdd2["HDD 2"]
+
+    mobile_in_lan["Mobile App"] <--> immich-server
+    web_in_lan["Web App"] <--> immich-server
+
+    cloudflared <--> immich-server
+    cloudflared <--> |"Cloudflare Tunnel"|cloudflare["Cloudflare"]
+
+    cloudflare <--> |"サービストークン"|mobile["Mobile App"]
+    cloudflare <--> |"ワンタイムパスワード / SSO認証"|web["Web App"]
+
+    style cloudflared fill:#008080,stroke:#008080,stroke-width:3px,color:white
+    style cloudflare fill:#008080,stroke:#008080,stroke-width:3px,color:white
+    style web fill:#008080,stroke:#008080,stroke-width:3px,color:white
+
+    linkStyle 5 stroke:#008080,stroke-width:3px
+    linkStyle 7 stroke:#008080,stroke-width:3px
+```
+
 まずはLAN外からブラウザで Immich へアクセスしたときに、Email認証ができるようにを設定します。
 
 ポリシーの追加画面に移動します
@@ -797,6 +835,44 @@ Cloudflareにサインアップし、[ダッシュボード](https://dash.cloudf
 
 
 #### モバイルアプリからの認証 {#モバイルアプリからの認証}
+
+```mermaid
+graph LR
+
+subgraph lan["LAN"]
+subgraph rapy["Raspberry Pi 4"]
+    immich-server
+    cloudflared
+end
+
+subgraph hdds["HDDケース"]
+    hdd1
+    hdd2
+end
+
+web_in_lan
+mobile_in_lan
+end
+
+    immich-server -->|"DB / 写真"| hdd1["HDD 1"]
+    hdd1 -->|"バックアップ"| hdd2["HDD 2"]
+
+    mobile_in_lan["Mobile App"] <--> immich-server
+    web_in_lan["Web App"] <--> immich-server
+
+    cloudflared <--> immich-server
+    cloudflared <--> |"Cloudflare Tunnel"|cloudflare["Cloudflare"]
+
+    cloudflare <--> |"サービストークン"|mobile["Mobile App"]
+    cloudflare <--> |"ワンタイムパスワード / SSO認証"|web["Web App"]
+
+    style cloudflared fill:#008080,stroke:#008080,stroke-width:3px,color:white
+    style cloudflare fill:#008080,stroke:#008080,stroke-width:3px,color:white
+    style mobile fill:#008080,stroke:#008080,stroke-width:3px,color:white
+
+    linkStyle 5 stroke:#008080,stroke-width:3px
+    linkStyle 6 stroke:#008080,stroke-width:3px
+```
 
 次に、Immichモバイルアプリからアクセスする方法です。モバイルアプリではブラウザのように認証画面に遷移できないので、そのままではログインできません。そこで Cloudflareの `Service Token` と、Immichモバイルアプリの設定 `カスタムプロキシヘッダ設定` を活用します。
 

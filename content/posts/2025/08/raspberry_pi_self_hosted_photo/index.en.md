@@ -703,6 +703,43 @@ With this, your home server can now be exposed externally via Cloudflare. You sh
 However, leaving it as is is dangerous without access restrictions. I will set it up so that only specific individuals can access it.
 
 #### Authentication from Web Browser {#authentication-from-web-browser}
+```mermaid
+graph LR
+
+subgraph lan["LAN"]
+subgraph rapy["Raspberry Pi 4"]
+    immich-server
+    cloudflared
+end
+
+subgraph hdds["HDD Case"]
+    hdd1
+    hdd2
+end
+
+web_in_lan
+mobile_in_lan
+end
+
+    immich-server -->|"DB / Photos"| hdd1["HDD 1"]
+    hdd1 -->|"Backup"| hdd2["HDD 2"]
+
+    mobile_in_lan["Mobile App"] <--> immich-server
+    web_in_lan["Web App"] <--> immich-server
+
+    cloudflared <--> immich-server
+    cloudflared <--> |"Cloudflare Tunnel"|cloudflare["Cloudflare"]
+
+    cloudflare <--> |"Service Token"|mobile["Mobile App"]
+    cloudflare <--> |"One-time Password / SSO Authentication"|web["Web App"]
+
+    style cloudflared fill:#008080,stroke:#008080,stroke-width:3px,color:white
+    style cloudflare fill:#008080,stroke:#008080,stroke-width:3px,color:white
+    style web fill:#008080,stroke:#008080,stroke-width:3px,color:white
+
+    linkStyle 5 stroke:#008080,stroke-width:3px
+    linkStyle 7 stroke:#008080,stroke-width:3px
+```
 
 First, set up Email authentication when accessing Immich from outside the LAN via a browser.
 
@@ -760,6 +797,44 @@ If you enter the email address added to the policy here, you will receive an ema
 This is all for using it from a browser. When I go back to my parents' house, I sometimes connect my PC to the TV to view grandchild photos on a large screen, so this setting is essential.
 
 #### Authentication from Mobile App {#authentication-from-mobile-app}
+```mermaid
+graph LR
+
+subgraph lan["LAN"]
+subgraph rapy["Raspberry Pi 4"]
+    immich-server
+    cloudflared
+end
+
+subgraph hdds["HDD Case"]
+    hdd1
+    hdd2
+end
+
+web_in_lan
+mobile_in_lan
+end
+
+    immich-server -->|"DB / Photos"| hdd1["HDD 1"]
+    hdd1 -->|"Backup"| hdd2["HDD 2"]
+
+    mobile_in_lan["Mobile App"] <--> immich-server
+    web_in_lan["Web App"] <--> immich-server
+
+    cloudflared <--> immich-server
+    cloudflared <--> |"Cloudflare Tunnel"|cloudflare["Cloudflare"]
+
+    cloudflare <--> |"Service Token"|mobile["Mobile App"]
+    cloudflare <--> |"One-time Password / SSO Authentication"|web["Web App"]
+
+    style cloudflared fill:#008080,stroke:#008080,stroke-width:3px,color:white
+    style cloudflare fill:#008080,stroke:#008080,stroke-width:3px,color:white
+    style mobile fill:#008080,stroke:#008080,stroke-width:3px,color:white
+
+    linkStyle 5 stroke:#008080,stroke-width:3px
+    linkStyle 6 stroke:#008080,stroke-width:3px
+```
+
 
 Next, how to access from the Immich mobile app. Since the mobile app cannot transition to an authentication screen like a browser, you cannot log in as is. Therefore, I will utilize Cloudflare's `Service Token` and the Immich mobile app's `Custom Proxy Header Settings`.
 
