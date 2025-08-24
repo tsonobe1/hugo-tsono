@@ -2,7 +2,7 @@
 title: "ラズパイで写真管理をするようになって、1年経った"
 author: ["tsonobe"]
 date: 2025-08-20T00:00:00+09:00
-lastmod: 2025-08-20T18:35:08+09:00
+lastmod: 2025-08-24T16:18:47+09:00
 tags: ["RaspberryPi", "Immich", "写真管理", "自宅サーバー", "Cloudflare", "Cloudflare Tunnel", "Docker", "Googleフォト移行", "写真管理", "self-hosting"]
 categories: ["tips", "tech", "life"]
 draft: false
@@ -26,7 +26,7 @@ mermaid: true
 2024年前半に第一子が生まれ、写真・動画が一気に増えました。
 それまで Google フォト のフリープランで運用していましたが[無制限が終了](<https://www.itmedia.co.jp/news/articles/2011/12/news057.html>)したことで容量が 16GB ほどに制限されてしまいおり、さすがに限界を迎えました。
 
-_**この記事内で「写真」と表記している箇所は「写真と動画」 を意味しています。**_
+_**この記事での「写真」は「写真と動画」 を意味しています。**_
 
 息子の写真を撮るたびに容量が気になります...。長時間の動画も気にせず撮りたい...。容量問題は解決しなければならない課題でした。
 
@@ -164,8 +164,6 @@ OSSのフォトアプリケーションはたくさんありますが、我が�
 OSのインストール用に必要
 
 {{< linkcard url="https://amzn.to/4mJ9zBl" image="https://m.media-amazon.com/images/I/513LEFJLOML._AC_.jpg" title="Amazon.co.jp: Miuzei 最新 Raspberry Pi 4 ケース ラスベリー パイ4 5.1V 3A USB-C 電源アダプター+冷却ファン+ヒートシンクラズパイ 4 Model B対応（Raspberry Pi 4 本体含まりません）PSE取得 : パソコン・周辺機器" description="Amazon.co.jp: Miuzei 最新 Raspberry Pi 4 ケース ラスベリー パイ4 5.1V 3A USB-C 電源アダプター+冷却ファン+ヒートシンクラズパイ 4 Model B対応（Raspberry Pi 4 本体含まりません）PSE取得 : パソコン・周辺機器" >}}
-電源はケースについてます
-
 Immichの必須要件をクリアしている必要はあるので注意。
 
 {{< linkcard url="https://immich.app/docs/install/requirements/" image="https://immich.app/img/feature-panel.png" title="Requirements | Immich" description="Hardware and software requirements for Immich:" >}}
@@ -177,7 +175,7 @@ Immichの必須要件をクリアしている必要はあるので注意。
 
 {{< linkcard url="https://amzn.to/4fTmU7W" image="https://m.media-amazon.com/images/I/71W2471QktL._AC_SX679_.jpg" title="Amazon.co.jp: WESTERN DIGITAL 3.5インチ内蔵HDD 1TB SATA6.0Gb/s 7200rpm 64MB WD10EZEX : パソコン・周辺機器" description="Amazon.co.jp: WESTERN DIGITAL 3.5インチ内蔵HDD 1TB SATA6.0Gb/s 7200rpm 64MB WD10EZEX : パソコン・周辺機器" >}}
 {{< linkcard url="https://amzn.to/4fFb29p" image="https://m.media-amazon.com/images/I/71DyDE5k9bL._AC_SL1500_.jpg" description="Amazon.co.jp: ロジテック HDD SSD コピー スタンド デュプリケーター クローン 換装 usb対応 SATA 【 エラースキップ機能 / 3.5インチ / 2.5インチ / Win/Mac/テレビ 】 国内メーカー LHR-2BDPU3ES : パソコン・周辺機器" >}}
-玄人志向のスタンドに裸のHDDを立てて、クリアケースに入れたラズパイを隣においておく...
+玄人志向のスタンドに裸のHDDを立てて（いわゆる裸族）、クリアケースに入れたラズパイを隣においておく...
 これもやりたかったんですよね...。
 
 さて、必要なものが揃ったら次にラズパイをセットアップします
@@ -605,19 +603,19 @@ Immich公式でも `borg` によるバックアップ方法がドキュメント
 
 当初の条件もクリアです
 
--   [X] ~~1. 事実上、無限に写真と動画が保存できること~~
+-   [X] 1. 事実上、無限に写真と動画が保存できること
     -   HDDの容量を大きいものに変更すればいいので
--   [X] ~~2. スマホから保存・閲覧できること~~
--   [X] ~~3. サブスクはしないこと~~
--   [X] ~~4. Google フォトに保存した大量のコンテンツを引き継げること~~
+-   [X] 2. スマホから保存・閲覧できること
+-   [X] 3. サブスクはしないこと
+-   [X] 4. Google フォトに保存した大量のコンテンツを引き継げること
 
 週に一度は別のHDDにもバックアップを行うことで、データの冗長性も確保[^fn:1]しています。
 
-加えて Immich のアルバム機能を使えば、「息子用アルバム」や「旅行用アルバム」を作成し、私と妻がそれぞれ写真を追加できます。これまで Google フォトや LINE で行っていた共有のスタイルも、そのまま実現できています。
+加えて Immich のアルバム機能を使えば、「息子用アルバム」や「旅行用アルバム」を作成し、私と妻がそれぞれ写真を追加できます。これまで Google フォトや [LINE](https://en.wikipedia.org/wiki/Line_(software)) で行っていた共有のスタイルも、そのまま実現できています。
 
 これにて
 
--   [X] 家庭内の写真ストレージ問題
+-   [X] ゴール1: 容量無制限フォトストレージの構築
 
 はクリアです
 
@@ -625,7 +623,7 @@ Immich公式でも `borg` によるバックアップ方法がドキュメント
 ## ゴール2: 遠隔地の家族に安全に写真をシェアする {#ゴール2-遠隔地の家族に安全に写真をシェアする}
 
 さて、これで夫婦間の写真管理は解決しました。しかし次の課題は **両親への共有** です。
-これまで私と妻は、それぞれの両親にLINEで写真を送っていました。これがかなり面倒...😇
+これまで私と妻は、それぞれの両親に[LINE](https://en.wikipedia.org/wiki/Line_(software))で写真を送っていました。これがかなり面倒...😇
 『一箇所にまとめておけば、好きなときに見てもらえる仕組み』がどうしても欲しいです。
 
 幸いImmichであれば複数アカウントが作成できます。アルバム機能もありますし、アルバム事に権限の管理もできます。そのため、親用のアカウントを作り、特定のアルバムに閲覧権限を付与すればよいです。両親はアプリを開いてアルバムをタップすれば、愛孫のかわいい〜👶写真を眺めることができます。
@@ -636,7 +634,7 @@ Immich公式でも `borg` によるバックアップ方法がドキュメント
 この課題を解決するために、 `Cloudflare Tunnel` を用います。
 
 
-### Cloudflare Tunnel {#cloudflare-tunnel}
+### Cloudflare Tunnel × Cloudflare Access {#cloudflare-tunnel-cloudflare-access}
 
 Cloudflare Tunnel は、軽量ツール（ cloudflared ）をサーバに入れるだけで、公開IPやポート開放なしに外部公開できる仕組みです。通信はすべてCloudflare経由になるので安全に扱えます。
 
@@ -881,7 +879,7 @@ Immich モバイルアプリには、サーバへアクセスする際のリク�
 
 これにて、
 
--   [X] ~~遠隔地の家族に安全に写真をシェアする~~
+-   [X] 遠隔地の家族に安全に写真をシェアする
 
 クリアです。
 

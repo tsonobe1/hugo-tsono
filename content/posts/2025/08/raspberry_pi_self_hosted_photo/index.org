@@ -157,17 +157,21 @@ image=https://immich.app/img/feature-panel.png
 ラズパイなら小さくて扱いやすいし、クリアケースもよく売っているので選びやすいのです。
 
 url=https://amzn.to/4fJMDiX
+title="Amazon.co.jp: ラズベリーパイ 4 コンピューターモデルB 8GB Raspberry Pi 4 ラズパイ 4 TELEC認定取得済み (Raspberry Pi 4 8GB) : パソコン・周辺機器"
+description="Amazon.co.jp: ラズベリーパイ 4 コンピューターモデルB 8GB Raspberry Pi 4 ラズパイ 4 TELEC認定取得済み (Raspberry Pi 4 8GB) : パソコン・周辺機器"
 image=https://m.media-amazon.com/images/I/71RL4VEhHkS._AC_SY300_SX300_QL70_ML2_.jpg
 
-url=https://www.amazon.co.jp/dp/B08PTQMZY3?ref_=ppx_hzod_title_dt_b_fed_asin_title_0_1
+url=https://amzn.to/46Zbo8y
+title="Amazon | KIOXIA(キオクシア) 旧東芝メモリ microSD 64GB UHS-I Class10 (最大読出速度100MB/s) Nintendo Switch動作確認済 国内サポート正規品 メーカー保証5年 KLMEA064G | KIOXIA | microSDカード 通販"
+description="KIOXIA(キオクシア) 旧東芝メモリ microSD 64GB UHS-I Class10 (最大読出速度100MB/s) Nintendo Switch動作確認済 国内サポート正規品 メーカー保証5年 KLMEA064GがmicroSDカードストアでいつでもお買い得。当日お急ぎ便対象商品は、当日お届け可能です。アマゾン配送商品は、通常配送無料（一部除く）。"
 image=https://m.media-amazon.com/images/I/71bdQexTguL._SS568_.jpg
 
 OSのインストール用に必要
 
 url=https://amzn.to/4mJ9zBl
+title="Amazon.co.jp: Miuzei 最新 Raspberry Pi 4 ケース ラスベリー パイ4 5.1V 3A USB-C 電源アダプター+冷却ファン+ヒートシンクラズパイ 4 Model B対応（Raspberry Pi 4 本体含まりません）PSE取得 : パソコン・周辺機器"
+description="Amazon.co.jp: Miuzei 最新 Raspberry Pi 4 ケース ラスベリー パイ4 5.1V 3A USB-C 電源アダプター+冷却ファン+ヒートシンクラズパイ 4 Model B対応（Raspberry Pi 4 本体含まりません）PSE取得 : パソコン・周辺機器"
 image=https://m.media-amazon.com/images/I/513LEFJLOML._AC_.jpg
-
-電源はケースについてます
 
 Immichの必須要件をクリアしている必要はあるので注意。
 
@@ -179,9 +183,10 @@ image=https://immich.app/img/feature-panel.png
 *** 保存領域
 容量については物理HDDを2つ（1つはバックアップ用）用意。
 
-url=https://kakaku.com/item/K0000385373/
-description="TEST容量1TBの3.5インチHDD。WESTERN DIGITAL WD10EZEX [1TB SATA600 7200]全国各地のお店の価格情報がリアルタイムにわかるのは価格.comならでは。製品レビューやクチコミもあります。"
-title="WD10EZEX [1TB SATA600 7200]"
+url=https://amzn.to/4fTmU7W
+description="Amazon.co.jp: WESTERN DIGITAL 3.5インチ内蔵HDD 1TB SATA6.0Gb/s 7200rpm 64MB WD10EZEX : パソコン・周辺機器"
+title="Amazon.co.jp: WESTERN DIGITAL 3.5インチ内蔵HDD 1TB SATA6.0Gb/s 7200rpm 64MB WD10EZEX : パソコン・周辺機器"
+image=https://m.media-amazon.com/images/I/71W2471QktL._AC_SX679_.jpg
 
 
 url=https://amzn.to/4fFb29p
@@ -189,7 +194,7 @@ description="Amazon.co.jp: ロジテック HDD SSD コピー スタンド デュ
 image=https://m.media-amazon.com/images/I/71DyDE5k9bL._AC_SL1500_.jpg 
 
 
-玄人志向のスタンドに裸のHDDを立てて、クリアケースに入れたラズパイを隣においておく...
+玄人志向のスタンドに裸のHDDを立てて（いわゆる裸族）、クリアケースに入れたラズパイを隣においておく...
 これもやりたかったんですよね...。
 
 さて、必要なものが揃ったら次にラズパイをセットアップします
@@ -653,23 +658,23 @@ image=https://immich.app/img/feature-panel.png
 当初掲げていた条件もすべてクリアしています。
 
 当初の条件もクリアです
-- [X] +1. 事実上、無限に写真と動画が保存できること+
+- [X] 1. 事実上、無限に写真と動画が保存できること
   - HDDの容量を大きいものに変更すればいいので
-- [X] +2. スマホから保存・閲覧できること+
-- [X] +3. サブスクはしないこと+
-- [X] +4. Google フォトに保存した大量のコンテンツを引き継げること+
+- [X] 2. スマホから保存・閲覧できること
+- [X] 3. サブスクはしないこと
+- [X] 4. Google フォトに保存した大量のコンテンツを引き継げること
 
 週に一度は別のHDDにもバックアップを行うことで、データの冗長性も確保[fn:backup]しています。
 
-加えて Immich のアルバム機能を使えば、「息子用アルバム」や「旅行用アルバム」を作成し、私と妻がそれぞれ写真を追加できます。これまで Google フォトや LINE で行っていた共有のスタイルも、そのまま実現できています。
+加えて Immich のアルバム機能を使えば、「息子用アルバム」や「旅行用アルバム」を作成し、私と妻がそれぞれ写真を追加できます。これまで Google フォトや [[https://en.wikipedia.org/wiki/Line_(software)][LINE]] で行っていた共有のスタイルも、そのまま実現できています。
 
 これにて
-- [X] 家庭内の写真ストレージ問題
+- [X] ゴール1: 容量無制限フォトストレージの構築
 はクリアです
 
 * ゴール2: 遠隔地の家族に安全に写真をシェアする
 さて、これで夫婦間の写真管理は解決しました。しかし次の課題は *両親への共有* です。
-これまで私と妻は、それぞれの両親にLINEで写真を送っていました。これがかなり面倒...😇
+これまで私と妻は、それぞれの両親に[[https://en.wikipedia.org/wiki/Line_(software)][LINE]]で写真を送っていました。これがかなり面倒...😇
 『一箇所にまとめておけば、好きなときに見てもらえる仕組み』がどうしても欲しいです。
 
 幸いImmichであれば複数アカウントが作成できます。アルバム機能もありますし、アルバム事に権限の管理もできます。そのため、親用のアカウントを作り、特定のアルバムに閲覧権限を付与すればよいです。両親はアプリを開いてアルバムをタップすれば、愛孫のかわいい〜👶写真を眺めることができます。
@@ -682,7 +687,7 @@ width=300
 
 この課題を解決するために、 ~Cloudflare Tunnel~ を用います。 
 
-** Cloudflare Tunnel
+** Cloudflare Tunnel × Cloudflare Access
 
 Cloudflare Tunnel は、軽量ツール（ cloudflared ）をサーバに入れるだけで、公開IPやポート開放なしに外部公開できる仕組みです。通信はすべてCloudflare経由になるので安全に扱えます。
 
@@ -973,7 +978,7 @@ caption="ドメインを打ち込めば、ログイン画面に遷移できる�
 ** Done👍️
 
 これにて、
-- [X] +遠隔地の家族に安全に写真をシェアする+
+- [X] 遠隔地の家族に安全に写真をシェアする
 クリアです。
 
 * 最後に
