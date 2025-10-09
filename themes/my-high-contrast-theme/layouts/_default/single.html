@@ -39,12 +39,7 @@
   
   {{ partial "share_buttons.html" . }}
 
-    {{ if .Site.Params.comments.enabled }}
-    <section class="comments">
-      <h3>{{ i18n "comments_title" }}</h3>
-      {{ template "_internal/disqus.html" . }}
-    </section>
-  {{ end }}
+
 
 {{ if .Params.mermaid }}
   {{ partial "mermaid.html" . }}

@@ -10,8 +10,6 @@ defaultContentLanguageInSubdir = true
 
 
 [services]
-  [services.disqus]
-    shortname = 'blog-tsono'
 
 [languages]
   [languages.en]

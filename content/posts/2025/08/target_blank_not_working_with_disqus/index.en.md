@@ -1,6 +1,7 @@
 ---
 title: "Links with target='_blank' not opening"
 author: ["tsonobe"]
+description: "On this blog, I use `target=\"_blank\"` for external links to open them in a new tab by default. However, when I published an article to the production environment and viewed it, I encountered a phenomenon where external links would not open correctly."
 date: 2025-08-24T00:00:00+09:00
 lastmod: 2025-09-15T20:22:49+09:00
 tags: ["Disqus", "target_blank", "noopener", "noreferrer", "Affiliate Link", "External Link", "Chrome", "Safari", "Hugo"]

@@ -1,6 +1,7 @@
 ---
 title: "One Year of Photo Management with Raspberry Pi"
 author: ["tsonobe"]
+description: "Since June 2024, I've been operating a home server for photo and video management, similar to \"Google Photos at home.\" It allows me to back up almost unlimited photos and videos taken with my smartphone and view them comfortably with features like timelines and albums."
 date: 2025-08-20T00:00:00+09:00
 lastmod: 2025-08-20T18:35:08+09:00
 tags: ["RaspberryPi", "Immich", "Photo Management", "Home Server", "Cloudflare", "Cloudflare Tunnel", "Docker", "Google Photos Migration", "self-hosting"]

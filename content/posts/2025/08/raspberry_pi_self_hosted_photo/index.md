@@ -1,6 +1,7 @@
 ---
 title: "ラズパイで写真管理をするようになって、1年経った"
 author: ["tsonobe"]
+description: "2024年6月から、自宅サーバを作って「おうちGoogleフォト」的な写真・動画管理環境を運用しています。スマホで撮影した写真・動画をほぼ無制限にバックアップし、タイムライン・アルバムなどの機能で快適に閲覧できます。"
 date: 2025-08-20T00:00:00+09:00
 lastmod: 2025-08-24T16:31:41+09:00
 tags: ["RaspberryPi", "Immich", "写真管理", "自宅サーバー", "Cloudflare", "Cloudflare Tunnel", "Docker", "Googleフォト移行", "写真管理", "self-hosting"]

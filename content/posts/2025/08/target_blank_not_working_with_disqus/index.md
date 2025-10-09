@@ -1,6 +1,7 @@
 ---
 title: "target='_blank'なリンクが開かない"
 author: ["tsonobe"]
+description: "このブログでは、外部リンクに `target=\"_blank\"` を付けることで、デフォルトで新しいタブを開くようにしています。ところが、本番環境に記事を公開して閲覧していたところ、外部リンクが正しく開かない現象に遭遇しました。"
 date: 2025-08-24T00:00:00+09:00
 lastmod: 2025-09-15T20:24:23+09:00
 tags: ["Disqus", "target_blank", "noopener", "noreferrer", "アフィリエイトリンク", "外部リンク", "Chrome", "Safari", "Hugo"]

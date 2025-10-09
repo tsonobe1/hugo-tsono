@@ -15,18 +15,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
   }
 
-  function reloadDisqus() {
-    if (window.DISQUS) {
-      DISQUS.reset({
-        reload: true,
-        config: function () {
-          this.page.url = window.location.href;
-          this.page.identifier = window.location.pathname;
-          this.page.title = document.title;
-        }
-      });
-    }
-  }
 
   // head.htmlで設定された現在のテーマを取得
   const currentTheme = html.getAttribute("data-theme") || "dark";
@@ -40,7 +28,6 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem("theme", next);
     updateIcon(next);
     setGiscusTheme(next === "dark" ? "dark" : "light");
-    reloadDisqus();
   });
 
   // giscusからのメッセージを監視してテーマを切り替える

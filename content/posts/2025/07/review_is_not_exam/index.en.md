@@ -1,6 +1,7 @@
 ---
 title: "I'm Starting to Understand That Code Reviews Aren't Exams"
 author: ["tsonobe"]
+description: "In April of last year, I changed careers and became an IT engineer. Since then, I've been working remotely on maintenance and development."
 date: 2025-07-14T00:00:00+09:00
 lastmod: 2025-07-16T08:30:34+09:00
 tags: ["Code Review", "Psychological Safety", "Mid-career Beginner"]

@@ -1,0 +1,38 @@
+#+TITLE: serenaでwebダッシュボードを開かないようにする
+#+IMAGE:
+#+DATE: 2025-10-09T23:12:15+0900
+#+HUGO_AUTO_SET_LASTMOD: t
+#+DESCRIPTION:
+#+HUGO_TAGS: mcp serena codex gemini
+#+HUGO_CATEGORIES: tips tech
+#+DRAFT: false
+#+mermaid: false
+#+HUGO_BUNDLE: 2025/10/serena_web_dashboard_no_open
+#+EXPORT_FILE_NAME: index
+
+CLI系のaiエージェントのmcpサーバにserenaを設定しているとき、ダッシュボードが自動で立ち上がりブラウザ自走遷移してしまう。これを止めたい。
+
+* 結論
+~--enabled-web-dashboard~ を false にする
+
+** ~~/.codex~
+#+begin_src 
+[mcp_servers.serena]
+command = "uvx"
+args = ["--from", "git+https://github.com/oraios/serena", "serena", "start-mcp-server", "--context", "codex", "--enable-web-dashboard", "false"]
+#+end_src
+
+** ~~./gemini~
+#+begin_src 
+  "mcpServers": {
+    "serena": {
+      "command": "uvx",
+      "args": [
+        "--from", "git+https://github.com/oraios/serena",
+        "serena-mcp-server",
+        "--context", "ide-assistant",
+        "--enable-web-dashboard", "false"
+      ]
+    }
+  }
+#+end_src
