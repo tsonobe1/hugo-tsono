@@ -107,5 +107,3 @@ defaultContentLanguageInSubdir = true
     # lineNos = true
     style = "github"
     # lineNumbersInTable = true
-
-ignoreFiles = ["\\.org$"]
