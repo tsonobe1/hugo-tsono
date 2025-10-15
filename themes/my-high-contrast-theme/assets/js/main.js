@@ -8,18 +8,10 @@ document.addEventListener("DOMContentLoaded", () => {
     toggleButton.innerHTML = theme === "dark" ? "<i class=\"fas fa-sun\"></i>" : "<i class=\"fas fa-moon\"></i>";
   }
 
-  function setGiscusTheme(theme) {
-      const giscusFrame = document.querySelector('iframe.giscus-frame');
-      if (giscusFrame) {
-          giscusFrame.contentWindow.postMessage({ giscus: { setTheme: theme } }, 'https://giscus.app');
-      }
-  }
-
 
   // head.htmlで設定された現在のテーマを取得
   const currentTheme = html.getAttribute("data-theme") || "dark";
   updateIcon(currentTheme);
-  setGiscusTheme(currentTheme === "dark" ? "dark" : "light");
 
   toggleButton.addEventListener("click", () => {
     const current = html.getAttribute("data-theme");
@@ -27,16 +19,6 @@ document.addEventListener("DOMContentLoaded", () => {
     html.setAttribute("data-theme", next);
     localStorage.setItem("theme", next);
     updateIcon(next);
-    setGiscusTheme(next === "dark" ? "dark" : "light");
-  });
-
-  // giscusからのメッセージを監視してテーマを切り替える
-  window.addEventListener('message', event => {
-      if (event.origin !== 'https://giscus.app') return;
-      if (event.data && event.data.giscus) {
-          const savedTheme = localStorage.getItem("theme") || "dark";
-          setGiscusTheme(savedTheme === "dark" ? "dark" : "light");
-      }
   });
 
   // 外部リンクを新規タブで開く
