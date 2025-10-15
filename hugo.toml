@@ -50,6 +50,7 @@ defaultContentLanguageInSubdir = true
   mainSections = ["posts"]
   toc = true
   favicon = "/favicon.ico"
+  logo = "/images/logo.png"
   description = ""
   customCSS = ["css/custom.css"]
 
