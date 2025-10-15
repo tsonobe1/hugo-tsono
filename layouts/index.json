@@ -1,0 +1,20 @@
+{
+  "title": {{ site.Title | jsonify }},
+  "lang": {{ .Lang | jsonify }},
+  "lastBuild": "{{ now.Format "2006-01-02T15:04:05Z07:00" }}",
+  "pages": [
+    {{- $pages := (site.GetPage "section" "posts").Pages -}}
+    {{- range $i, $p := $pages -}}
+      {{- if $i }},{{ end }}
+      {
+        "title": {{ $p.Title | jsonify }},
+        "link": {{ $p.RelPermalink | jsonify }},
+        "date": "{{ $p.Date.Format "2006-01-02T15:04:05Z07:00" }}",
+        "summary": {{ (plainify $p.Summary) | chomp | jsonify }},
+        "tags": {{ ($p.Params.tags | default (slice)) | jsonify }},
+        "categories": {{ ($p.Params.categories | default (slice)) | jsonify }}
+      }
+    {{- end -}}
+  ]
+}
+
