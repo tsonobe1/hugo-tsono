@@ -13,10 +13,16 @@
 {{ end }}
 {{ with .Description }}<meta name="description" content="{{ . }}">{{ end }}
 
+<!--suppress HtmlUnknownTarget -->
 <link rel="canonical" href="{{ .Permalink }}">
-{{ range sort (.AllTranslations) "Lang" -}}
+<!--suppress HtmlUnknownTarget -->
 <link rel="alternate" hreflang="{{ .Lang }}" href="{{ .Permalink }}">
+{{ range sort (.AllTranslations) "Lang" -}}
+  <!--suppress HtmlUnknownTarget -->
+  <link rel="alternate" hreflang="{{ .Lang }}" href="{{ .Permalink }}">
 {{ end -}}
+<!--suppress HtmlUnknownTarget -->
+<link rel="alternate" hreflang="x-default" href="{{ .Permalink }}">
 {{ partialCached "head/css.html" . }}
 {{ partialCached "head/js.html" . }}
 {{ partial "head/meta.html" . }}
