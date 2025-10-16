@@ -14,13 +14,7 @@
 {{ with .Description }}<meta name="description" content="{{ . }}">{{ end }}
 
 <link rel="canonical" href="{{ .Permalink }}">
-{{ $alternates := slice . -}}
-{{ if .IsTranslated -}}
-  {{ range .Translations -}}
-    {{ $alternates = $alternates | append . -}}
-  {{ end -}}
-{{ end -}}
-{{ range $alternates -}}
+{{ range sort (.AllTranslations) "Lang" -}}
 <link rel="alternate" hreflang="{{ .Lang }}" href="{{ .Permalink }}">
 {{ end -}}
 {{ partialCached "head/css.html" . }}
