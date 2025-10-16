@@ -1,5 +1,6 @@
 # Hugo build output
 /public/
+/public-test/
 
 # Hugo cache
 /resources/_gen/
@@ -11,6 +12,9 @@ node_modules/
 # OS-specific files
 .DS_Store
 Thumbs.db
+
+# Hugo lock
+.hugo_build.lock
 
 # Emacs / VSCode
 *~
