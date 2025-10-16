@@ -4,11 +4,12 @@
   <div class="lang-switch" style="margin: 0 0 1rem; font-size: 0.95rem;">
     {{ $current := . }}
     <span>{{ i18n "languages" | default "Languages" }}: </span>
-    <a href="{{ $current.RelPermalink }}" aria-current="{{ if eq $current.Lang .Lang }}page{{ end }}">{{ $current.Language.LanguageName }}</a>
-    {{ range sort ($current.AllTranslations) "Lang" }}
-      &nbsp;|&nbsp;
-      <a href="{{ .RelPermalink }}">{{ .Language.LanguageName }}</a>
-    {{ end }}
+    <a href="{{ $current.RelPermalink }}" aria-current="page">{{ $current.Language.LanguageName }}</a>
+    {{- $translations := sort ($current.Translations) "Lang" -}}
+    {{- range $i, $t := $translations -}}
+      {{- if eq $i 0 }}&nbsp;|&nbsp;{{ else }}&nbsp;|&nbsp;{{ end -}}
+      <a href="{{ $t.RelPermalink }}">{{ $t.Language.LanguageName }}</a>
+    {{- end -}}
   </div>
 
   

@@ -17,7 +17,7 @@
     <changefreq>{{ $p.Sitemap.ChangeFreq }}</changefreq>
     {{- end }}
     <xhtml:link rel="alternate" hreflang="{{ $p.Lang }}" href="{{ $p.Permalink }}" />
-    {{- range sort ($p.AllTranslations) "Lang" }}
+    {{- range sort ($p.Translations) "Lang" }}
     <xhtml:link rel="alternate" hreflang="{{ .Lang }}" href="{{ .Permalink }}" />
     {{- end }}
     <xhtml:link rel="alternate" hreflang="x-default" href="{{ $p.Permalink }}" />
