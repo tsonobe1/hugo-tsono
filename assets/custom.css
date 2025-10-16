@@ -106,30 +106,46 @@ button#theme-toggle {
 
 
 
+.copy-code-toolbar {
+    position: absolute; /* anchored to the block */
+    top: 0.25em;
+    right: 0.25em;
+    z-index: 2;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5em;
+    padding: 0; 
+    background: transparent;
+}
+
 .copy-code-button {
-    position: absolute;
-    top: 0.5em;
-    right: 0.5em;
-    padding: 4px 10px;
+    padding: 2px 8px; /* compact */
     border: 1px solid var(--border-color);
-    border-radius: 6px;
+    border-radius: 4px;
     background-color: var(--button-bg);
     color: var(--button-color);
     cursor: pointer;
-    font-size: 12px;
+    font-size: 11px; /* compact */
     font-family: sans-serif;
-    opacity: 1;
-    transition: background-color 0.2s ease;
+    opacity: 0; /* show on hover to reduce perceived extra spacing */
+    transition: background-color 0.2s ease, opacity 0.15s ease-in-out;
 }
 
 .highlight {
     position: relative;
     background-color: #262626;
     border-radius: 6px;
-    overflow-x: auto;
+    /* コンテナではなく内側の pre にスクロールを持たせる */
+    overflow: visible !important;
     font-size: 0.9em;
-    width: 100%; /* コードブロックが親要素の全幅を占めるようにする */
+    width: 100%;
+    /* keep minimal vertical breathing room */
+    padding-top: 0.35em;
+    padding-bottom: 0.9em;
 }
+
+/* Emphasize on hover */
+.highlight:hover .copy-code-button { opacity: 1; }
 
 .copy-code-button:hover {
     background-color: var(--hover-bg-color);
@@ -139,6 +155,9 @@ button#theme-toggle {
     background-color: #28a745; /* Green for success */
     color: white;
 }
+
+/* Always show on touch devices (no hover) */
+@media (hover: none) { .copy-code-button { opacity: 1; } }
 
 .link-card {
   display: flex;
