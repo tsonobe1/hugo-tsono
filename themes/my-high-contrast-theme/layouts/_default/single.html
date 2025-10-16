@@ -1,6 +1,17 @@
 {{ define "main" }}
   <h1>{{ .Title }}</h1>
 
+  <div class="lang-switch" style="margin: 0 0 1rem; font-size: 0.95rem;">
+    {{ $current := . }}
+    <span>{{ i18n "languages" | default "Languages" }}: </span>
+    <a href="{{ $current.RelPermalink }}" aria-current="page">{{ $current.Language.LanguageName }}</a>
+    {{- $translations := sort ($current.Translations) "Lang" -}}
+    {{- range $i, $t := $translations -}}
+      {{- if eq $i 0 }}&nbsp;|&nbsp;{{ else }}&nbsp;|&nbsp;{{ end -}}
+      <a href="{{ $t.RelPermalink }}">{{ $t.Language.LanguageName }}</a>
+    {{- end -}}
+  </div>
+
   
     <div id="toc-container">
       <h2 id="toc-title"><span class="toc-toggle-icon"></span> Table of Contents</h2>
@@ -11,9 +22,9 @@
   
 
   <div class="post-dates">
-    <p>{{ i18n "published_date" }}: <time datetime="{{ .Date | time.Format "2006-01-02T15:04:05-07:00" }}">{{ .Date | time.Format ":date_long" }}</time></p>
+    <p>{{ i18n "published_date" }}: <time datetime='{{ .Date | time.Format "2006-01-02T15:04:05-07:00" }}'>{{ .Date | time.Format ":date_long" }}</time></p>
     {{ if ne .Date .Lastmod }}
-      <p>{{ i18n "last_updated_date" }}: <time datetime="{{ .Lastmod | time.Format "2006-01-02T15:04:05-07:00" }}">{{ .Lastmod | time.Format ":date_long" }}</time></p>
+      <p>{{ i18n "last_updated_date" }}: <time datetime='{{ .Lastmod | time.Format "2006-01-02T15:04:05-07:00" }}'>{{ .Lastmod | time.Format ":date_long" }}</time></p>
     {{ end }}
     {{ $publishedDate := .Date }}
     {{ $currentDate := now }}
