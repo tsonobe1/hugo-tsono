@@ -14,10 +14,14 @@
 {{ with .Description }}<meta name="description" content="{{ . }}">{{ end }}
 
 <link rel="canonical" href="{{ .Permalink }}">
+{{ $alternates := slice . -}}
 {{ if .IsTranslated -}}
-{{ range .Translations }}
-<link rel="alternate" hreflang="{{ .Lang }}" href="{{ .Permalink }}">
+  {{ range .Translations -}}
+    {{ $alternates = $alternates | append . -}}
+  {{ end -}}
 {{ end -}}
+{{ range $alternates -}}
+<link rel="alternate" hreflang="{{ .Lang }}" href="{{ .Permalink }}">
 {{ end -}}
 {{ partialCached "head/css.html" . }}
 {{ partialCached "head/js.html" . }}

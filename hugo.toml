@@ -34,7 +34,7 @@ defaultContentLanguageInSubdir = true
 #  posts = "/posts/:year/:month/:slug/"
 
 [outputs]
-  home = ["HTML", "RSS"]
+  home = ["HTML", "RSS", "SITEMAP"]
   page = ["HTML"]
   section = ["HTML", "RSS"]
   taxonomy = ["HTML", "RSS"]

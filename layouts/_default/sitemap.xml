@@ -12,14 +12,18 @@
       {{ end }}
     {{ end }}
     {{ if not $lastmod.IsZero }}<lastmod>{{ $lastmod.Format "2006-01-02T15:04:05-07:00" | safeHTML }}</lastmod>{{ end }}
+    {{ $alternates := slice . }}
     {{ if .IsTranslated }}
     {{ range .Translations }}
+    {{ $alternates = $alternates | append . }}
+    {{ end }}
+    {{ end }}
+    {{ range $alternates }}
     <xhtml:link
               rel="alternate"
               hreflang="{{ .Lang }}"
               href="{{ .Permalink }}"
               />
-    {{ end }}
     {{ end }}
   </url>
   {{ end }}
