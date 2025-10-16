@@ -3,23 +3,22 @@ document.addEventListener("DOMContentLoaded", () => {
   const toggleButton = document.getElementById("theme-toggle");
   const html = document.documentElement;
 
-  function updateIcon(theme) {
-    // テキストを削除し、アイコンのみにする
-    toggleButton.innerHTML = theme === "dark" ? "<i class=\"fas fa-sun\"></i>" : "<i class=\"fas fa-moon\"></i>";
+  if (toggleButton) {
+    function updateIcon(theme) {
+      toggleButton.innerHTML = theme === "dark" ? "<i class=\"fas fa-sun\"></i>" : "<i class=\"fas fa-moon\"></i>";
+    }
+
+    const currentTheme = html.getAttribute("data-theme") || "dark";
+    updateIcon(currentTheme);
+
+    toggleButton.addEventListener("click", () => {
+      const current = html.getAttribute("data-theme");
+      const next = current === "dark" ? "light" : "dark";
+      html.setAttribute("data-theme", next);
+      localStorage.setItem("theme", next);
+      updateIcon(next);
+    });
   }
-
-
-  // head.htmlで設定された現在のテーマを取得
-  const currentTheme = html.getAttribute("data-theme") || "dark";
-  updateIcon(currentTheme);
-
-  toggleButton.addEventListener("click", () => {
-    const current = html.getAttribute("data-theme");
-    const next = current === "dark" ? "light" : "dark";
-    html.setAttribute("data-theme", next);
-    localStorage.setItem("theme", next);
-    updateIcon(next);
-  });
 
   // 外部リンクを新規タブで開く
   // document.querySelectorAll('a').forEach(link => {
@@ -66,7 +65,59 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Add copy button to code blocks
   document.querySelectorAll('.highlight').forEach((highlightDiv) => {
-    // Hugo can generate code blocks with line numbers (using a table) or without.\n    // We need to handle both cases to find the correct element containing the code.\n    let codeElement = highlightDiv.querySelector('table.lntable td:nth-child(2) code');\n    let codeContainer = null;\n\n    if (codeElement) {\n      // This is a code block with line numbers. The container is the parent <pre> of the code cell.\n      codeContainer = codeElement.parentElement;\n    } else {\n      // This is a code block without line numbers.\n      codeElement = highlightDiv.querySelector('pre > code');\n      if (codeElement) {\n        codeContainer = codeElement.parentElement;\n      }\n    }\n\n    if (!codeElement) {\n      return;\n    }\n\n    const button = document.createElement('button');\n    button.className = 'copy-code-button';\n    button.innerText = 'copy';\n    button.setAttribute('aria-label', 'Copy code to clipboard');\n\n    // The button should be a direct child of the highlightDiv for positioning\n    highlightDiv.appendChild(button);\n\n    button.addEventListener('click', () => {\n      const codeToCopy = codeElement.textContent;\n      navigator.clipboard.writeText(codeToCopy).then(() => {\n        button.innerText = 'copied!';\n        button.classList.add('copied');\n        setTimeout(() => {\n          button.innerText = 'copy';\n          button.classList.remove('copied');\n        }, 2000);\n      }).catch(err => {\n        console.error('Failed to copy code: ', err);\n        button.innerText = 'Failed';\n      });\n    });
+    // Hugo can generate code blocks with line numbers (using a table) or without.
+    // We need to handle both cases to find the correct element containing the code.
+    let codeElement = highlightDiv.querySelector('table.lntable td:nth-child(2) code');
+    let codeContainer = null;
+
+    if (codeElement) {
+      // This is a code block with line numbers. The container is the parent <pre> of the code cell.
+      codeContainer = codeElement.parentElement;
+    } else {
+      // This is a code block without line numbers.
+      codeElement = highlightDiv.querySelector('pre > code');
+      if (codeElement) {
+        codeContainer = codeElement.parentElement;
+      }
+    }
+
+    if (!codeElement) {
+      return;
+    }
+
+    // Ensure we have a sticky toolbar as the first child for housing buttons
+    let toolbar = highlightDiv.querySelector('.copy-code-toolbar');
+    if (!toolbar) {
+      toolbar = document.createElement('div');
+      toolbar.className = 'copy-code-toolbar';
+      highlightDiv.insertBefore(toolbar, highlightDiv.firstChild);
+    }
+
+    const button = document.createElement('button');
+    button.className = 'copy-code-button';
+    button.innerText = 'copy';
+    button.setAttribute('aria-label', 'Copy code to clipboard');
+
+    // Add the button into the toolbar
+    toolbar.appendChild(button);
+
+    // No scroll-follow behavior per request: ensure any previous transform is cleared
+    toolbar.style.transform = 'none';
+
+    button.addEventListener('click', () => {
+      const codeToCopy = codeElement.textContent;
+      navigator.clipboard.writeText(codeToCopy).then(() => {
+        button.innerText = 'copied!';
+        button.classList.add('copied');
+        setTimeout(() => {
+          button.innerText = 'copy';
+          button.classList.remove('copied');
+        }, 2000);
+      }).catch(err => {
+        console.error('Failed to copy code: ', err);
+        button.innerText = 'Failed';
+      });
+    });
   });
 
   // Scrollspy for Table of Contents
