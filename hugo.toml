@@ -61,23 +61,6 @@ defaultContentLanguageInSubdir = true
     name = "tsono"
     image = "/images/profile.png"
 
-  [params.comments]
-    enabled = true
-
-[params.comments.giscus]
-  repo = "tsonobe1/hugo-tsono"
-  repoID = "R_kgDOPDr9kw"
-  category = "General"
-  categoryID = "DIC_kwDOPDr9k84CsOK_"
-  mapping = "issue-term"
-  strict = false
-  reactionsEnabled = true
-  emitMetadata = false
-  inputPosition = "bottom"
-  theme = "preferred_color_scheme"
-  
-  loading = "lazy"
-
   [params.social]
     github = "https://github.com/tsonobe1"
     twitter = "https://twitter.com/tsonobe_"
@@ -108,5 +91,3 @@ defaultContentLanguageInSubdir = true
     # lineNos = true
     style = "github"
     # lineNumbersInTable = true
-
-ignoreFiles = ["\\.org$"]

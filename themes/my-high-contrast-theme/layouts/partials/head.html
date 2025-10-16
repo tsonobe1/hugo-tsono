@@ -8,7 +8,7 @@
     document.documentElement.setAttribute('data-theme', theme);
   })();
 </script>
-{{ if or (eq .Kind "taxonomy") (eq .Kind "term") (eq .Kind "section") }}
+{{ if or (eq .Kind "taxonomy") (eq .Kind "term") }}
 <meta name="robots" content="noindex">
 {{ end }}
 {{ with .Description }}<meta name="description" content="{{ . }}">{{ end }}

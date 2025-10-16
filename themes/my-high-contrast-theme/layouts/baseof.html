@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja" data-theme="dark">
+<html lang="{{ .Lang }}" data-theme="dark">
 
 <head>
   {{ partial "head.html" . }}
@@ -16,7 +16,7 @@
 
   <footer role="contentinfo">
     <div class="container">
-      <p>&copy; {{ now.Format "2006" }} tsono</p>
+      {{ partial "footer.html" . }}
     </div>
   </footer>
 </body>
