@@ -406,7 +406,8 @@ body.no-scroll {
 .highlight {
     background-color: #262626;
     border-radius: 6px;
-    overflow-x: auto;
+    /* override by site custom.css: scroll is on pre */
+    overflow: visible;
     font-size: 1em;
 }
 
